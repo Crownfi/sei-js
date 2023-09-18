@@ -1,6 +1,6 @@
 {
 	"name": "@crownfi/sei-js-core",
-	"version": "3.0.2",
+	"version": "3.0.2-beta.0",
 	"description": "TypeScript library for front end integrations with Sei",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
@@ -11,14 +11,20 @@
 		"build:js": "tsc",
 		"test": "jest"
 	},
-	"homepage": "https://github.com/sei-protocol/sei-js#readme",
+	"homepage": "https://github.com/Crownfi/sei-js#readme",
 	"keywords": [
 		"sei",
 		"javascript",
 		"typescript",
 		"cosmos"
 	],
-	"repository": "git@github.com:sei-protocol/sei-js.git",
+	"repository": {
+	  "type": "git",
+	  "url": "https://github.com/Crownfi/sei-js"
+	},
+	"bugs": {
+	  "url": "https://github.com/Crownfi/sei-js/issues"
+	},
 	"license": "MIT",
 	"private": false,
 	"dependencies": {
@@ -45,5 +51,8 @@
 		"@types/crypto-js": "^4.1.1",
 		"@types/elliptic": "^6.4.14",
 		"@types/sha.js": "^2.4.1"
+	},
+	"publishConfig": {
+		"access": "public"
 	}
 }
