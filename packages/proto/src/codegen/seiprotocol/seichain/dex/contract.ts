@@ -1,42 +1,77 @@
-import { Long, DeepPartial } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../../binary";
 export interface ContractInfo {
-  codeId: Long;
+  codeId: bigint;
   contractAddr: string;
   needHook: boolean;
   needOrderMatching: boolean;
   dependencies: ContractDependencyInfo[];
-  numIncomingDependencies: Long;
+  numIncomingDependencies: bigint;
+}
+export interface ContractInfoProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.ContractInfo";
+  value: Uint8Array;
+}
+export interface ContractInfoAmino {
+  codeId: string;
+  contractAddr: string;
+  needHook: boolean;
+  needOrderMatching: boolean;
+  dependencies: ContractDependencyInfoAmino[];
+  numIncomingDependencies: string;
+}
+export interface ContractInfoAminoMsg {
+  type: "/seiprotocol.seichain.dex.ContractInfo";
+  value: ContractInfoAmino;
 }
 export interface ContractInfoSDKType {
-  codeId: Long;
+  codeId: bigint;
   contractAddr: string;
   needHook: boolean;
   needOrderMatching: boolean;
   dependencies: ContractDependencyInfoSDKType[];
-  numIncomingDependencies: Long;
+  numIncomingDependencies: bigint;
 }
 export interface ContractInfoV2 {
-  codeId: Long;
+  codeId: bigint;
   contractAddr: string;
   needHook: boolean;
   needOrderMatching: boolean;
   dependencies: ContractDependencyInfo[];
-  numIncomingDependencies: Long;
+  numIncomingDependencies: bigint;
   creator: string;
-  rentBalance: Long;
+  rentBalance: bigint;
   suspended: boolean;
   suspensionReason: string;
 }
+export interface ContractInfoV2ProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.ContractInfoV2";
+  value: Uint8Array;
+}
+export interface ContractInfoV2Amino {
+  codeId: string;
+  contractAddr: string;
+  needHook: boolean;
+  needOrderMatching: boolean;
+  dependencies: ContractDependencyInfoAmino[];
+  numIncomingDependencies: string;
+  creator: string;
+  rentBalance: string;
+  suspended: boolean;
+  suspensionReason: string;
+}
+export interface ContractInfoV2AminoMsg {
+  type: "/seiprotocol.seichain.dex.ContractInfoV2";
+  value: ContractInfoV2Amino;
+}
 export interface ContractInfoV2SDKType {
-  codeId: Long;
+  codeId: bigint;
   contractAddr: string;
   needHook: boolean;
   needOrderMatching: boolean;
   dependencies: ContractDependencyInfoSDKType[];
-  numIncomingDependencies: Long;
+  numIncomingDependencies: bigint;
   creator: string;
-  rentBalance: Long;
+  rentBalance: bigint;
   suspended: boolean;
   suspensionReason: string;
 }
@@ -50,6 +85,24 @@ export interface ContractDependencyInfo {
   immediateElderSibling: string;
   immediateYoungerSibling: string;
 }
+export interface ContractDependencyInfoProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.ContractDependencyInfo";
+  value: Uint8Array;
+}
+/**
+ * suppose A is first registered and depends on X, then B is added and depends on X,
+ * and then C is added and depends on X, then A is the elder sibling to B and B is
+ * the younger sibling to A, and B is the elder sibling to C and C is the younger to B
+ */
+export interface ContractDependencyInfoAmino {
+  dependency: string;
+  immediateElderSibling: string;
+  immediateYoungerSibling: string;
+}
+export interface ContractDependencyInfoAminoMsg {
+  type: "/seiprotocol.seichain.dex.ContractDependencyInfo";
+  value: ContractDependencyInfoAmino;
+}
 /**
  * suppose A is first registered and depends on X, then B is added and depends on X,
  * and then C is added and depends on X, then A is the elder sibling to B and B is
@@ -61,14 +114,29 @@ export interface ContractDependencyInfoSDKType {
   immediateYoungerSibling: string;
 }
 export interface LegacyContractInfo {
-  codeId: Long;
+  codeId: bigint;
   contractAddr: string;
   needHook: boolean;
   needOrderMatching: boolean;
   dependentContractAddrs: string[];
 }
+export interface LegacyContractInfoProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.LegacyContractInfo";
+  value: Uint8Array;
+}
+export interface LegacyContractInfoAmino {
+  codeId: string;
+  contractAddr: string;
+  needHook: boolean;
+  needOrderMatching: boolean;
+  dependentContractAddrs: string[];
+}
+export interface LegacyContractInfoAminoMsg {
+  type: "/seiprotocol.seichain.dex.LegacyContractInfo";
+  value: LegacyContractInfoAmino;
+}
 export interface LegacyContractInfoSDKType {
-  codeId: Long;
+  codeId: bigint;
   contractAddr: string;
   needHook: boolean;
   needOrderMatching: boolean;
@@ -76,17 +144,18 @@ export interface LegacyContractInfoSDKType {
 }
 function createBaseContractInfo(): ContractInfo {
   return {
-    codeId: Long.UZERO,
+    codeId: BigInt(0),
     contractAddr: "",
     needHook: false,
     needOrderMatching: false,
     dependencies: [],
-    numIncomingDependencies: Long.ZERO
+    numIncomingDependencies: BigInt(0)
   };
 }
 export const ContractInfo = {
-  encode(message: ContractInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.codeId.isZero()) {
+  typeUrl: "/seiprotocol.seichain.dex.ContractInfo",
+  encode(message: ContractInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.codeId !== BigInt(0)) {
       writer.uint32(8).uint64(message.codeId);
     }
     if (message.contractAddr !== "") {
@@ -101,20 +170,20 @@ export const ContractInfo = {
     for (const v of message.dependencies) {
       ContractDependencyInfo.encode(v!, writer.uint32(42).fork()).ldelim();
     }
-    if (!message.numIncomingDependencies.isZero()) {
+    if (message.numIncomingDependencies !== BigInt(0)) {
       writer.uint32(48).int64(message.numIncomingDependencies);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ContractInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ContractInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseContractInfo();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.codeId = (reader.uint64() as Long);
+          message.codeId = reader.uint64();
           break;
         case 2:
           message.contractAddr = reader.string();
@@ -129,7 +198,7 @@ export const ContractInfo = {
           message.dependencies.push(ContractDependencyInfo.decode(reader, reader.uint32()));
           break;
         case 6:
-          message.numIncomingDependencies = (reader.int64() as Long);
+          message.numIncomingDependencies = reader.int64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -138,34 +207,74 @@ export const ContractInfo = {
     }
     return message;
   },
-  fromPartial(object: DeepPartial<ContractInfo>): ContractInfo {
+  fromPartial(object: Partial<ContractInfo>): ContractInfo {
     const message = createBaseContractInfo();
-    message.codeId = object.codeId !== undefined && object.codeId !== null ? Long.fromValue(object.codeId) : Long.UZERO;
+    message.codeId = object.codeId !== undefined && object.codeId !== null ? BigInt(object.codeId.toString()) : BigInt(0);
     message.contractAddr = object.contractAddr ?? "";
     message.needHook = object.needHook ?? false;
     message.needOrderMatching = object.needOrderMatching ?? false;
     message.dependencies = object.dependencies?.map(e => ContractDependencyInfo.fromPartial(e)) || [];
-    message.numIncomingDependencies = object.numIncomingDependencies !== undefined && object.numIncomingDependencies !== null ? Long.fromValue(object.numIncomingDependencies) : Long.ZERO;
+    message.numIncomingDependencies = object.numIncomingDependencies !== undefined && object.numIncomingDependencies !== null ? BigInt(object.numIncomingDependencies.toString()) : BigInt(0);
     return message;
+  },
+  fromAmino(object: ContractInfoAmino): ContractInfo {
+    return {
+      codeId: BigInt(object.codeId),
+      contractAddr: object.contractAddr,
+      needHook: object.needHook,
+      needOrderMatching: object.needOrderMatching,
+      dependencies: Array.isArray(object?.dependencies) ? object.dependencies.map((e: any) => ContractDependencyInfo.fromAmino(e)) : [],
+      numIncomingDependencies: BigInt(object.numIncomingDependencies)
+    };
+  },
+  toAmino(message: ContractInfo): ContractInfoAmino {
+    const obj: any = {};
+    obj.codeId = message.codeId ? message.codeId.toString() : undefined;
+    obj.contractAddr = message.contractAddr;
+    obj.needHook = message.needHook;
+    obj.needOrderMatching = message.needOrderMatching;
+    if (message.dependencies) {
+      obj.dependencies = message.dependencies.map(e => e ? ContractDependencyInfo.toAmino(e) : undefined);
+    } else {
+      obj.dependencies = [];
+    }
+    obj.numIncomingDependencies = message.numIncomingDependencies ? message.numIncomingDependencies.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: ContractInfoAminoMsg): ContractInfo {
+    return ContractInfo.fromAmino(object.value);
+  },
+  fromProtoMsg(message: ContractInfoProtoMsg): ContractInfo {
+    return ContractInfo.decode(message.value);
+  },
+  toProto(message: ContractInfo): Uint8Array {
+    return ContractInfo.encode(message).finish();
+  },
+  toProtoMsg(message: ContractInfo): ContractInfoProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.ContractInfo",
+      value: ContractInfo.encode(message).finish()
+    };
   }
 };
 function createBaseContractInfoV2(): ContractInfoV2 {
   return {
-    codeId: Long.UZERO,
+    codeId: BigInt(0),
     contractAddr: "",
     needHook: false,
     needOrderMatching: false,
     dependencies: [],
-    numIncomingDependencies: Long.ZERO,
+    numIncomingDependencies: BigInt(0),
     creator: "",
-    rentBalance: Long.UZERO,
+    rentBalance: BigInt(0),
     suspended: false,
     suspensionReason: ""
   };
 }
 export const ContractInfoV2 = {
-  encode(message: ContractInfoV2, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.codeId.isZero()) {
+  typeUrl: "/seiprotocol.seichain.dex.ContractInfoV2",
+  encode(message: ContractInfoV2, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.codeId !== BigInt(0)) {
       writer.uint32(8).uint64(message.codeId);
     }
     if (message.contractAddr !== "") {
@@ -180,13 +289,13 @@ export const ContractInfoV2 = {
     for (const v of message.dependencies) {
       ContractDependencyInfo.encode(v!, writer.uint32(42).fork()).ldelim();
     }
-    if (!message.numIncomingDependencies.isZero()) {
+    if (message.numIncomingDependencies !== BigInt(0)) {
       writer.uint32(48).int64(message.numIncomingDependencies);
     }
     if (message.creator !== "") {
       writer.uint32(58).string(message.creator);
     }
-    if (!message.rentBalance.isZero()) {
+    if (message.rentBalance !== BigInt(0)) {
       writer.uint32(64).uint64(message.rentBalance);
     }
     if (message.suspended === true) {
@@ -197,15 +306,15 @@ export const ContractInfoV2 = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ContractInfoV2 {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ContractInfoV2 {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseContractInfoV2();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.codeId = (reader.uint64() as Long);
+          message.codeId = reader.uint64();
           break;
         case 2:
           message.contractAddr = reader.string();
@@ -220,13 +329,13 @@ export const ContractInfoV2 = {
           message.dependencies.push(ContractDependencyInfo.decode(reader, reader.uint32()));
           break;
         case 6:
-          message.numIncomingDependencies = (reader.int64() as Long);
+          message.numIncomingDependencies = reader.int64();
           break;
         case 7:
           message.creator = reader.string();
           break;
         case 8:
-          message.rentBalance = (reader.uint64() as Long);
+          message.rentBalance = reader.uint64();
           break;
         case 9:
           message.suspended = reader.bool();
@@ -241,19 +350,66 @@ export const ContractInfoV2 = {
     }
     return message;
   },
-  fromPartial(object: DeepPartial<ContractInfoV2>): ContractInfoV2 {
+  fromPartial(object: Partial<ContractInfoV2>): ContractInfoV2 {
     const message = createBaseContractInfoV2();
-    message.codeId = object.codeId !== undefined && object.codeId !== null ? Long.fromValue(object.codeId) : Long.UZERO;
+    message.codeId = object.codeId !== undefined && object.codeId !== null ? BigInt(object.codeId.toString()) : BigInt(0);
     message.contractAddr = object.contractAddr ?? "";
     message.needHook = object.needHook ?? false;
     message.needOrderMatching = object.needOrderMatching ?? false;
     message.dependencies = object.dependencies?.map(e => ContractDependencyInfo.fromPartial(e)) || [];
-    message.numIncomingDependencies = object.numIncomingDependencies !== undefined && object.numIncomingDependencies !== null ? Long.fromValue(object.numIncomingDependencies) : Long.ZERO;
+    message.numIncomingDependencies = object.numIncomingDependencies !== undefined && object.numIncomingDependencies !== null ? BigInt(object.numIncomingDependencies.toString()) : BigInt(0);
     message.creator = object.creator ?? "";
-    message.rentBalance = object.rentBalance !== undefined && object.rentBalance !== null ? Long.fromValue(object.rentBalance) : Long.UZERO;
+    message.rentBalance = object.rentBalance !== undefined && object.rentBalance !== null ? BigInt(object.rentBalance.toString()) : BigInt(0);
     message.suspended = object.suspended ?? false;
     message.suspensionReason = object.suspensionReason ?? "";
     return message;
+  },
+  fromAmino(object: ContractInfoV2Amino): ContractInfoV2 {
+    return {
+      codeId: BigInt(object.codeId),
+      contractAddr: object.contractAddr,
+      needHook: object.needHook,
+      needOrderMatching: object.needOrderMatching,
+      dependencies: Array.isArray(object?.dependencies) ? object.dependencies.map((e: any) => ContractDependencyInfo.fromAmino(e)) : [],
+      numIncomingDependencies: BigInt(object.numIncomingDependencies),
+      creator: object.creator,
+      rentBalance: BigInt(object.rentBalance),
+      suspended: object.suspended,
+      suspensionReason: object.suspensionReason
+    };
+  },
+  toAmino(message: ContractInfoV2): ContractInfoV2Amino {
+    const obj: any = {};
+    obj.codeId = message.codeId ? message.codeId.toString() : undefined;
+    obj.contractAddr = message.contractAddr;
+    obj.needHook = message.needHook;
+    obj.needOrderMatching = message.needOrderMatching;
+    if (message.dependencies) {
+      obj.dependencies = message.dependencies.map(e => e ? ContractDependencyInfo.toAmino(e) : undefined);
+    } else {
+      obj.dependencies = [];
+    }
+    obj.numIncomingDependencies = message.numIncomingDependencies ? message.numIncomingDependencies.toString() : undefined;
+    obj.creator = message.creator;
+    obj.rentBalance = message.rentBalance ? message.rentBalance.toString() : undefined;
+    obj.suspended = message.suspended;
+    obj.suspensionReason = message.suspensionReason;
+    return obj;
+  },
+  fromAminoMsg(object: ContractInfoV2AminoMsg): ContractInfoV2 {
+    return ContractInfoV2.fromAmino(object.value);
+  },
+  fromProtoMsg(message: ContractInfoV2ProtoMsg): ContractInfoV2 {
+    return ContractInfoV2.decode(message.value);
+  },
+  toProto(message: ContractInfoV2): Uint8Array {
+    return ContractInfoV2.encode(message).finish();
+  },
+  toProtoMsg(message: ContractInfoV2): ContractInfoV2ProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.ContractInfoV2",
+      value: ContractInfoV2.encode(message).finish()
+    };
   }
 };
 function createBaseContractDependencyInfo(): ContractDependencyInfo {
@@ -264,7 +420,8 @@ function createBaseContractDependencyInfo(): ContractDependencyInfo {
   };
 }
 export const ContractDependencyInfo = {
-  encode(message: ContractDependencyInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.dex.ContractDependencyInfo",
+  encode(message: ContractDependencyInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.dependency !== "") {
       writer.uint32(10).string(message.dependency);
     }
@@ -276,8 +433,8 @@ export const ContractDependencyInfo = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ContractDependencyInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ContractDependencyInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseContractDependencyInfo();
     while (reader.pos < end) {
@@ -299,17 +456,46 @@ export const ContractDependencyInfo = {
     }
     return message;
   },
-  fromPartial(object: DeepPartial<ContractDependencyInfo>): ContractDependencyInfo {
+  fromPartial(object: Partial<ContractDependencyInfo>): ContractDependencyInfo {
     const message = createBaseContractDependencyInfo();
     message.dependency = object.dependency ?? "";
     message.immediateElderSibling = object.immediateElderSibling ?? "";
     message.immediateYoungerSibling = object.immediateYoungerSibling ?? "";
     return message;
+  },
+  fromAmino(object: ContractDependencyInfoAmino): ContractDependencyInfo {
+    return {
+      dependency: object.dependency,
+      immediateElderSibling: object.immediateElderSibling,
+      immediateYoungerSibling: object.immediateYoungerSibling
+    };
+  },
+  toAmino(message: ContractDependencyInfo): ContractDependencyInfoAmino {
+    const obj: any = {};
+    obj.dependency = message.dependency;
+    obj.immediateElderSibling = message.immediateElderSibling;
+    obj.immediateYoungerSibling = message.immediateYoungerSibling;
+    return obj;
+  },
+  fromAminoMsg(object: ContractDependencyInfoAminoMsg): ContractDependencyInfo {
+    return ContractDependencyInfo.fromAmino(object.value);
+  },
+  fromProtoMsg(message: ContractDependencyInfoProtoMsg): ContractDependencyInfo {
+    return ContractDependencyInfo.decode(message.value);
+  },
+  toProto(message: ContractDependencyInfo): Uint8Array {
+    return ContractDependencyInfo.encode(message).finish();
+  },
+  toProtoMsg(message: ContractDependencyInfo): ContractDependencyInfoProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.ContractDependencyInfo",
+      value: ContractDependencyInfo.encode(message).finish()
+    };
   }
 };
 function createBaseLegacyContractInfo(): LegacyContractInfo {
   return {
-    codeId: Long.UZERO,
+    codeId: BigInt(0),
     contractAddr: "",
     needHook: false,
     needOrderMatching: false,
@@ -317,8 +503,9 @@ function createBaseLegacyContractInfo(): LegacyContractInfo {
   };
 }
 export const LegacyContractInfo = {
-  encode(message: LegacyContractInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.codeId.isZero()) {
+  typeUrl: "/seiprotocol.seichain.dex.LegacyContractInfo",
+  encode(message: LegacyContractInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.codeId !== BigInt(0)) {
       writer.uint32(8).uint64(message.codeId);
     }
     if (message.contractAddr !== "") {
@@ -335,15 +522,15 @@ export const LegacyContractInfo = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): LegacyContractInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): LegacyContractInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseLegacyContractInfo();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.codeId = (reader.uint64() as Long);
+          message.codeId = reader.uint64();
           break;
         case 2:
           message.contractAddr = reader.string();
@@ -364,13 +551,50 @@ export const LegacyContractInfo = {
     }
     return message;
   },
-  fromPartial(object: DeepPartial<LegacyContractInfo>): LegacyContractInfo {
+  fromPartial(object: Partial<LegacyContractInfo>): LegacyContractInfo {
     const message = createBaseLegacyContractInfo();
-    message.codeId = object.codeId !== undefined && object.codeId !== null ? Long.fromValue(object.codeId) : Long.UZERO;
+    message.codeId = object.codeId !== undefined && object.codeId !== null ? BigInt(object.codeId.toString()) : BigInt(0);
     message.contractAddr = object.contractAddr ?? "";
     message.needHook = object.needHook ?? false;
     message.needOrderMatching = object.needOrderMatching ?? false;
     message.dependentContractAddrs = object.dependentContractAddrs?.map(e => e) || [];
     return message;
+  },
+  fromAmino(object: LegacyContractInfoAmino): LegacyContractInfo {
+    return {
+      codeId: BigInt(object.codeId),
+      contractAddr: object.contractAddr,
+      needHook: object.needHook,
+      needOrderMatching: object.needOrderMatching,
+      dependentContractAddrs: Array.isArray(object?.dependentContractAddrs) ? object.dependentContractAddrs.map((e: any) => e) : []
+    };
+  },
+  toAmino(message: LegacyContractInfo): LegacyContractInfoAmino {
+    const obj: any = {};
+    obj.codeId = message.codeId ? message.codeId.toString() : undefined;
+    obj.contractAddr = message.contractAddr;
+    obj.needHook = message.needHook;
+    obj.needOrderMatching = message.needOrderMatching;
+    if (message.dependentContractAddrs) {
+      obj.dependentContractAddrs = message.dependentContractAddrs.map(e => e);
+    } else {
+      obj.dependentContractAddrs = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: LegacyContractInfoAminoMsg): LegacyContractInfo {
+    return LegacyContractInfo.fromAmino(object.value);
+  },
+  fromProtoMsg(message: LegacyContractInfoProtoMsg): LegacyContractInfo {
+    return LegacyContractInfo.decode(message.value);
+  },
+  toProto(message: LegacyContractInfo): Uint8Array {
+    return LegacyContractInfo.encode(message).finish();
+  },
+  toProtoMsg(message: LegacyContractInfo): LegacyContractInfoProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.LegacyContractInfo",
+      value: LegacyContractInfo.encode(message).finish()
+    };
   }
 };

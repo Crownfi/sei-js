@@ -1,9 +1,9 @@
-import { join } from 'path';
-import telescope from '@osmonauts/telescope';
+import { resolve } from 'path';
+import telescope from '@cosmology/telescope';
 import { sync as rimraf } from 'rimraf';
 
-const protoDirs = [join(__dirname, '/../proto')];
-const outPath = join(__dirname, '../src/codegen');
+const protoDirs = [resolve(__dirname, "..", "proto")];
+const outPath = resolve(__dirname, "..", "src", "codegen");
 rimraf(outPath);
 
 telescope({

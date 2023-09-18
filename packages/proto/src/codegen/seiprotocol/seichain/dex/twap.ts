@@ -1,38 +1,52 @@
-import { Pair, PairSDKType } from "./pair";
-import { Long, DeepPartial } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { Pair, PairAmino, PairSDKType } from "./pair";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { Decimal } from "@cosmjs/math";
 export interface Twap {
   pair: Pair;
   twap: string;
-  lookbackSeconds: Long;
+  lookbackSeconds: bigint;
+}
+export interface TwapProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.Twap";
+  value: Uint8Array;
+}
+export interface TwapAmino {
+  pair?: PairAmino;
+  twap: string;
+  lookbackSeconds: string;
+}
+export interface TwapAminoMsg {
+  type: "/seiprotocol.seichain.dex.Twap";
+  value: TwapAmino;
 }
 export interface TwapSDKType {
   pair: PairSDKType;
   twap: string;
-  lookbackSeconds: Long;
+  lookbackSeconds: bigint;
 }
 function createBaseTwap(): Twap {
   return {
     pair: Pair.fromPartial({}),
     twap: "",
-    lookbackSeconds: Long.UZERO
+    lookbackSeconds: BigInt(0)
   };
 }
 export const Twap = {
-  encode(message: Twap, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.dex.Twap",
+  encode(message: Twap, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pair !== undefined) {
       Pair.encode(message.pair, writer.uint32(10).fork()).ldelim();
     }
     if (message.twap !== "") {
-      writer.uint32(18).string(message.twap);
+      writer.uint32(18).string(Decimal.fromUserInput(message.twap, 18).atomics);
     }
-    if (!message.lookbackSeconds.isZero()) {
+    if (message.lookbackSeconds !== BigInt(0)) {
       writer.uint32(24).uint64(message.lookbackSeconds);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Twap {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Twap {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseTwap();
     while (reader.pos < end) {
@@ -42,10 +56,10 @@ export const Twap = {
           message.pair = Pair.decode(reader, reader.uint32());
           break;
         case 2:
-          message.twap = reader.string();
+          message.twap = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 3:
-          message.lookbackSeconds = (reader.uint64() as Long);
+          message.lookbackSeconds = reader.uint64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -54,11 +68,40 @@ export const Twap = {
     }
     return message;
   },
-  fromPartial(object: DeepPartial<Twap>): Twap {
+  fromPartial(object: Partial<Twap>): Twap {
     const message = createBaseTwap();
     message.pair = object.pair !== undefined && object.pair !== null ? Pair.fromPartial(object.pair) : undefined;
     message.twap = object.twap ?? "";
-    message.lookbackSeconds = object.lookbackSeconds !== undefined && object.lookbackSeconds !== null ? Long.fromValue(object.lookbackSeconds) : Long.UZERO;
+    message.lookbackSeconds = object.lookbackSeconds !== undefined && object.lookbackSeconds !== null ? BigInt(object.lookbackSeconds.toString()) : BigInt(0);
     return message;
+  },
+  fromAmino(object: TwapAmino): Twap {
+    return {
+      pair: object?.pair ? Pair.fromAmino(object.pair) : undefined,
+      twap: object.twap,
+      lookbackSeconds: BigInt(object.lookbackSeconds)
+    };
+  },
+  toAmino(message: Twap): TwapAmino {
+    const obj: any = {};
+    obj.pair = message.pair ? Pair.toAmino(message.pair) : undefined;
+    obj.twap = message.twap;
+    obj.lookbackSeconds = message.lookbackSeconds ? message.lookbackSeconds.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: TwapAminoMsg): Twap {
+    return Twap.fromAmino(object.value);
+  },
+  fromProtoMsg(message: TwapProtoMsg): Twap {
+    return Twap.decode(message.value);
+  },
+  toProto(message: Twap): Uint8Array {
+    return Twap.encode(message).finish();
+  },
+  toProtoMsg(message: Twap): TwapProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.Twap",
+      value: Twap.encode(message).finish()
+    };
   }
 };

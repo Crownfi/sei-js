@@ -1,5 +1,5 @@
 import { Rpc } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader } from "../../../binary";
 import { MsgPlaceOrders, MsgPlaceOrdersResponse, MsgCancelOrders, MsgCancelOrdersResponse, MsgRegisterContract, MsgRegisterContractResponse, MsgContractDepositRent, MsgContractDepositRentResponse, MsgUnregisterContract, MsgUnregisterContractResponse, MsgRegisterPairs, MsgRegisterPairsResponse, MsgUpdatePriceTickSize, MsgUpdateTickSizeResponse, MsgUpdateQuantityTickSize, MsgUnsuspendContract, MsgUnsuspendContractResponse } from "./tx";
 /** Msg defines the Msg service. */
 export interface Msg {
@@ -30,46 +30,46 @@ export class MsgClientImpl implements Msg {
   placeOrders(request: MsgPlaceOrders): Promise<MsgPlaceOrdersResponse> {
     const data = MsgPlaceOrders.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.dex.Msg", "PlaceOrders", data);
-    return promise.then(data => MsgPlaceOrdersResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgPlaceOrdersResponse.decode(new BinaryReader(data)));
   }
   cancelOrders(request: MsgCancelOrders): Promise<MsgCancelOrdersResponse> {
     const data = MsgCancelOrders.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.dex.Msg", "CancelOrders", data);
-    return promise.then(data => MsgCancelOrdersResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgCancelOrdersResponse.decode(new BinaryReader(data)));
   }
   registerContract(request: MsgRegisterContract): Promise<MsgRegisterContractResponse> {
     const data = MsgRegisterContract.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.dex.Msg", "RegisterContract", data);
-    return promise.then(data => MsgRegisterContractResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgRegisterContractResponse.decode(new BinaryReader(data)));
   }
   contractDepositRent(request: MsgContractDepositRent): Promise<MsgContractDepositRentResponse> {
     const data = MsgContractDepositRent.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.dex.Msg", "ContractDepositRent", data);
-    return promise.then(data => MsgContractDepositRentResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgContractDepositRentResponse.decode(new BinaryReader(data)));
   }
   unregisterContract(request: MsgUnregisterContract): Promise<MsgUnregisterContractResponse> {
     const data = MsgUnregisterContract.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.dex.Msg", "UnregisterContract", data);
-    return promise.then(data => MsgUnregisterContractResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgUnregisterContractResponse.decode(new BinaryReader(data)));
   }
   registerPairs(request: MsgRegisterPairs): Promise<MsgRegisterPairsResponse> {
     const data = MsgRegisterPairs.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.dex.Msg", "RegisterPairs", data);
-    return promise.then(data => MsgRegisterPairsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgRegisterPairsResponse.decode(new BinaryReader(data)));
   }
   updatePriceTickSize(request: MsgUpdatePriceTickSize): Promise<MsgUpdateTickSizeResponse> {
     const data = MsgUpdatePriceTickSize.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.dex.Msg", "UpdatePriceTickSize", data);
-    return promise.then(data => MsgUpdateTickSizeResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgUpdateTickSizeResponse.decode(new BinaryReader(data)));
   }
   updateQuantityTickSize(request: MsgUpdateQuantityTickSize): Promise<MsgUpdateTickSizeResponse> {
     const data = MsgUpdateQuantityTickSize.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.dex.Msg", "UpdateQuantityTickSize", data);
-    return promise.then(data => MsgUpdateTickSizeResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgUpdateTickSizeResponse.decode(new BinaryReader(data)));
   }
   unsuspendContract(request: MsgUnsuspendContract): Promise<MsgUnsuspendContractResponse> {
     const data = MsgUnsuspendContract.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.dex.Msg", "UnsuspendContract", data);
-    return promise.then(data => MsgUnsuspendContractResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgUnsuspendContractResponse.decode(new BinaryReader(data)));
   }
 }

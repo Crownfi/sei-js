@@ -1,5 +1,5 @@
 import { Rpc } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader } from "../../../binary";
 import { QueryClient, createProtobufRpcClient } from "@cosmjs/stargate";
 import { QueryEpochRequest, QueryEpochResponse, QueryParamsRequest, QueryParamsResponse } from "./query";
 /** Query defines the gRPC querier service. */
@@ -19,12 +19,12 @@ export class QueryClientImpl implements Query {
   epoch(request: QueryEpochRequest = {}): Promise<QueryEpochResponse> {
     const data = QueryEpochRequest.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.epoch.Query", "Epoch", data);
-    return promise.then(data => QueryEpochResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryEpochResponse.decode(new BinaryReader(data)));
   }
   params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.epoch.Query", "Params", data);
-    return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
   }
 }
 export const createRpcQueryExtension = (base: QueryClient) => {

@@ -1,5 +1,5 @@
 import { Rpc } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader } from "../../../binary";
 import { QueryClient, createProtobufRpcClient } from "@cosmjs/stargate";
 import { QueryParamsRequest, QueryParamsResponse, QueryGetLongBookRequest, QueryGetLongBookResponse, QueryAllLongBookRequest, QueryAllLongBookResponse, QueryGetShortBookRequest, QueryGetShortBookResponse, QueryAllShortBookRequest, QueryAllShortBookResponse, QueryGetPriceRequest, QueryGetPriceResponse, QueryGetLatestPriceRequest, QueryGetLatestPriceResponse, QueryGetPricesRequest, QueryGetPricesResponse, QueryGetTwapsRequest, QueryGetTwapsResponse, QueryAssetMetadataRequest, QueryAssetMetadataResponse, QueryAssetListRequest, QueryAssetListResponse, QueryRegisteredPairsRequest, QueryRegisteredPairsResponse, QueryRegisteredContractRequest, QueryRegisteredContractResponse, QueryGetOrdersRequest, QueryGetOrdersResponse, QueryGetOrderByIDRequest, QueryGetOrderByIDResponse, QueryGetHistoricalPricesRequest, QueryGetHistoricalPricesResponse, QueryGetMarketSummaryRequest, QueryGetMarketSummaryResponse, QueryOrderSimulationRequest, QueryOrderSimulationResponse, QueryGetMatchResultRequest, QueryGetMatchResultResponse, QueryGetOrderCountRequest, QueryGetOrderCountResponse } from "./query";
 /** Query defines the gRPC querier service. */
@@ -62,102 +62,102 @@ export class QueryClientImpl implements Query {
   params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.dex.Query", "Params", data);
-    return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
   }
   longBook(request: QueryGetLongBookRequest): Promise<QueryGetLongBookResponse> {
     const data = QueryGetLongBookRequest.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.dex.Query", "LongBook", data);
-    return promise.then(data => QueryGetLongBookResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryGetLongBookResponse.decode(new BinaryReader(data)));
   }
   longBookAll(request: QueryAllLongBookRequest): Promise<QueryAllLongBookResponse> {
     const data = QueryAllLongBookRequest.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.dex.Query", "LongBookAll", data);
-    return promise.then(data => QueryAllLongBookResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryAllLongBookResponse.decode(new BinaryReader(data)));
   }
   shortBook(request: QueryGetShortBookRequest): Promise<QueryGetShortBookResponse> {
     const data = QueryGetShortBookRequest.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.dex.Query", "ShortBook", data);
-    return promise.then(data => QueryGetShortBookResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryGetShortBookResponse.decode(new BinaryReader(data)));
   }
   shortBookAll(request: QueryAllShortBookRequest): Promise<QueryAllShortBookResponse> {
     const data = QueryAllShortBookRequest.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.dex.Query", "ShortBookAll", data);
-    return promise.then(data => QueryAllShortBookResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryAllShortBookResponse.decode(new BinaryReader(data)));
   }
   getPrice(request: QueryGetPriceRequest): Promise<QueryGetPriceResponse> {
     const data = QueryGetPriceRequest.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.dex.Query", "GetPrice", data);
-    return promise.then(data => QueryGetPriceResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryGetPriceResponse.decode(new BinaryReader(data)));
   }
   getLatestPrice(request: QueryGetLatestPriceRequest): Promise<QueryGetLatestPriceResponse> {
     const data = QueryGetLatestPriceRequest.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.dex.Query", "GetLatestPrice", data);
-    return promise.then(data => QueryGetLatestPriceResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryGetLatestPriceResponse.decode(new BinaryReader(data)));
   }
   getPrices(request: QueryGetPricesRequest): Promise<QueryGetPricesResponse> {
     const data = QueryGetPricesRequest.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.dex.Query", "GetPrices", data);
-    return promise.then(data => QueryGetPricesResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryGetPricesResponse.decode(new BinaryReader(data)));
   }
   getTwaps(request: QueryGetTwapsRequest): Promise<QueryGetTwapsResponse> {
     const data = QueryGetTwapsRequest.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.dex.Query", "GetTwaps", data);
-    return promise.then(data => QueryGetTwapsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryGetTwapsResponse.decode(new BinaryReader(data)));
   }
   assetMetadata(request: QueryAssetMetadataRequest): Promise<QueryAssetMetadataResponse> {
     const data = QueryAssetMetadataRequest.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.dex.Query", "AssetMetadata", data);
-    return promise.then(data => QueryAssetMetadataResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryAssetMetadataResponse.decode(new BinaryReader(data)));
   }
   assetList(request: QueryAssetListRequest = {}): Promise<QueryAssetListResponse> {
     const data = QueryAssetListRequest.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.dex.Query", "AssetList", data);
-    return promise.then(data => QueryAssetListResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryAssetListResponse.decode(new BinaryReader(data)));
   }
   getRegisteredPairs(request: QueryRegisteredPairsRequest): Promise<QueryRegisteredPairsResponse> {
     const data = QueryRegisteredPairsRequest.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.dex.Query", "GetRegisteredPairs", data);
-    return promise.then(data => QueryRegisteredPairsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryRegisteredPairsResponse.decode(new BinaryReader(data)));
   }
   getRegisteredContract(request: QueryRegisteredContractRequest): Promise<QueryRegisteredContractResponse> {
     const data = QueryRegisteredContractRequest.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.dex.Query", "GetRegisteredContract", data);
-    return promise.then(data => QueryRegisteredContractResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryRegisteredContractResponse.decode(new BinaryReader(data)));
   }
   getOrders(request: QueryGetOrdersRequest): Promise<QueryGetOrdersResponse> {
     const data = QueryGetOrdersRequest.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.dex.Query", "GetOrders", data);
-    return promise.then(data => QueryGetOrdersResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryGetOrdersResponse.decode(new BinaryReader(data)));
   }
   getOrder(request: QueryGetOrderByIDRequest): Promise<QueryGetOrderByIDResponse> {
     const data = QueryGetOrderByIDRequest.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.dex.Query", "GetOrder", data);
-    return promise.then(data => QueryGetOrderByIDResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryGetOrderByIDResponse.decode(new BinaryReader(data)));
   }
   getHistoricalPrices(request: QueryGetHistoricalPricesRequest): Promise<QueryGetHistoricalPricesResponse> {
     const data = QueryGetHistoricalPricesRequest.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.dex.Query", "GetHistoricalPrices", data);
-    return promise.then(data => QueryGetHistoricalPricesResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryGetHistoricalPricesResponse.decode(new BinaryReader(data)));
   }
   getMarketSummary(request: QueryGetMarketSummaryRequest): Promise<QueryGetMarketSummaryResponse> {
     const data = QueryGetMarketSummaryRequest.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.dex.Query", "GetMarketSummary", data);
-    return promise.then(data => QueryGetMarketSummaryResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryGetMarketSummaryResponse.decode(new BinaryReader(data)));
   }
   getOrderSimulation(request: QueryOrderSimulationRequest): Promise<QueryOrderSimulationResponse> {
     const data = QueryOrderSimulationRequest.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.dex.Query", "GetOrderSimulation", data);
-    return promise.then(data => QueryOrderSimulationResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryOrderSimulationResponse.decode(new BinaryReader(data)));
   }
   getMatchResult(request: QueryGetMatchResultRequest): Promise<QueryGetMatchResultResponse> {
     const data = QueryGetMatchResultRequest.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.dex.Query", "GetMatchResult", data);
-    return promise.then(data => QueryGetMatchResultResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryGetMatchResultResponse.decode(new BinaryReader(data)));
   }
   getOrderCount(request: QueryGetOrderCountRequest): Promise<QueryGetOrderCountResponse> {
     const data = QueryGetOrderCountRequest.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.dex.Query", "GetOrderCount", data);
-    return promise.then(data => QueryGetOrderCountResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryGetOrderCountResponse.decode(new BinaryReader(data)));
   }
 }
 export const createRpcQueryExtension = (base: QueryClient) => {

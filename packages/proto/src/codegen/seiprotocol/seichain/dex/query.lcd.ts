@@ -1,5 +1,5 @@
 import { setPaginationParams } from "../../../helpers";
-import { LCDClient } from "@osmonauts/lcd";
+import { LCDClient } from "@cosmology/lcd";
 import { QueryParamsRequest, QueryParamsResponseSDKType, QueryGetLongBookRequest, QueryGetLongBookResponseSDKType, QueryAllLongBookRequest, QueryAllLongBookResponseSDKType, QueryGetShortBookRequest, QueryGetShortBookResponseSDKType, QueryAllShortBookRequest, QueryAllShortBookResponseSDKType, QueryGetPriceRequest, QueryGetPriceResponseSDKType, QueryGetLatestPriceRequest, QueryGetLatestPriceResponseSDKType, QueryGetPricesRequest, QueryGetPricesResponseSDKType, QueryGetTwapsRequest, QueryGetTwapsResponseSDKType, QueryAssetMetadataRequest, QueryAssetMetadataResponseSDKType, QueryAssetListRequest, QueryAssetListResponseSDKType, QueryRegisteredPairsRequest, QueryRegisteredPairsResponseSDKType, QueryRegisteredContractRequest, QueryRegisteredContractResponseSDKType, QueryGetOrdersRequest, QueryGetOrdersResponseSDKType, QueryGetOrderByIDRequest, QueryGetOrderByIDResponseSDKType, QueryGetHistoricalPricesRequest, QueryGetHistoricalPricesResponseSDKType, QueryGetMarketSummaryRequest, QueryGetMarketSummaryResponseSDKType } from "./query";
 export class LCDQueryClient {
   req: LCDClient;

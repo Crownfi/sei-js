@@ -1,15 +1,28 @@
-import { Order, OrderSDKType, Cancellation, CancellationSDKType } from "./order";
-import { Coin, CoinSDKType } from "../../../cosmos/base/v1beta1/coin";
-import { ContractInfoV2, ContractInfoV2SDKType } from "./contract";
-import { BatchContractPair, BatchContractPairSDKType } from "./pair";
-import { TickSize, TickSizeSDKType } from "./tick_size";
-import { Long, DeepPartial } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { Order, OrderAmino, OrderSDKType, Cancellation, CancellationAmino, CancellationSDKType } from "./order";
+import { Coin, CoinAmino, CoinSDKType } from "../../../cosmos/base/v1beta1/coin";
+import { ContractInfoV2, ContractInfoV2Amino, ContractInfoV2SDKType } from "./contract";
+import { BatchContractPair, BatchContractPairAmino, BatchContractPairSDKType } from "./pair";
+import { TickSize, TickSizeAmino, TickSizeSDKType } from "./tick_size";
+import { BinaryReader, BinaryWriter } from "../../../binary";
 export interface MsgPlaceOrders {
   creator: string;
   orders: Order[];
   contractAddr: string;
   funds: Coin[];
+}
+export interface MsgPlaceOrdersProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.MsgPlaceOrders";
+  value: Uint8Array;
+}
+export interface MsgPlaceOrdersAmino {
+  creator: string;
+  orders: OrderAmino[];
+  contractAddr: string;
+  funds: CoinAmino[];
+}
+export interface MsgPlaceOrdersAminoMsg {
+  type: "/seiprotocol.seichain.dex.MsgPlaceOrders";
+  value: MsgPlaceOrdersAmino;
 }
 export interface MsgPlaceOrdersSDKType {
   creator: string;
@@ -18,15 +31,39 @@ export interface MsgPlaceOrdersSDKType {
   funds: CoinSDKType[];
 }
 export interface MsgPlaceOrdersResponse {
-  orderIds: Long[];
+  orderIds: bigint[];
+}
+export interface MsgPlaceOrdersResponseProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.MsgPlaceOrdersResponse";
+  value: Uint8Array;
+}
+export interface MsgPlaceOrdersResponseAmino {
+  orderIds: string[];
+}
+export interface MsgPlaceOrdersResponseAminoMsg {
+  type: "/seiprotocol.seichain.dex.MsgPlaceOrdersResponse";
+  value: MsgPlaceOrdersResponseAmino;
 }
 export interface MsgPlaceOrdersResponseSDKType {
-  orderIds: Long[];
+  orderIds: bigint[];
 }
 export interface MsgCancelOrders {
   creator: string;
   cancellations: Cancellation[];
   contractAddr: string;
+}
+export interface MsgCancelOrdersProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.MsgCancelOrders";
+  value: Uint8Array;
+}
+export interface MsgCancelOrdersAmino {
+  creator: string;
+  cancellations: CancellationAmino[];
+  contractAddr: string;
+}
+export interface MsgCancelOrdersAminoMsg {
+  type: "/seiprotocol.seichain.dex.MsgCancelOrders";
+  value: MsgCancelOrdersAmino;
 }
 export interface MsgCancelOrdersSDKType {
   creator: string;
@@ -34,52 +71,158 @@ export interface MsgCancelOrdersSDKType {
   contractAddr: string;
 }
 export interface MsgCancelOrdersResponse {}
+export interface MsgCancelOrdersResponseProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.MsgCancelOrdersResponse";
+  value: Uint8Array;
+}
+export interface MsgCancelOrdersResponseAmino {}
+export interface MsgCancelOrdersResponseAminoMsg {
+  type: "/seiprotocol.seichain.dex.MsgCancelOrdersResponse";
+  value: MsgCancelOrdersResponseAmino;
+}
 export interface MsgCancelOrdersResponseSDKType {}
 export interface MsgRegisterContract {
   creator: string;
   contract: ContractInfoV2;
+}
+export interface MsgRegisterContractProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.MsgRegisterContract";
+  value: Uint8Array;
+}
+export interface MsgRegisterContractAmino {
+  creator: string;
+  contract?: ContractInfoV2Amino;
+}
+export interface MsgRegisterContractAminoMsg {
+  type: "/seiprotocol.seichain.dex.MsgRegisterContract";
+  value: MsgRegisterContractAmino;
 }
 export interface MsgRegisterContractSDKType {
   creator: string;
   contract: ContractInfoV2SDKType;
 }
 export interface MsgRegisterContractResponse {}
+export interface MsgRegisterContractResponseProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.MsgRegisterContractResponse";
+  value: Uint8Array;
+}
+export interface MsgRegisterContractResponseAmino {}
+export interface MsgRegisterContractResponseAminoMsg {
+  type: "/seiprotocol.seichain.dex.MsgRegisterContractResponse";
+  value: MsgRegisterContractResponseAmino;
+}
 export interface MsgRegisterContractResponseSDKType {}
 export interface MsgContractDepositRent {
   contractAddr: string;
-  amount: Long;
+  amount: bigint;
   sender: string;
+}
+export interface MsgContractDepositRentProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.MsgContractDepositRent";
+  value: Uint8Array;
+}
+export interface MsgContractDepositRentAmino {
+  contractAddr: string;
+  amount: string;
+  sender: string;
+}
+export interface MsgContractDepositRentAminoMsg {
+  type: "/seiprotocol.seichain.dex.MsgContractDepositRent";
+  value: MsgContractDepositRentAmino;
 }
 export interface MsgContractDepositRentSDKType {
   contractAddr: string;
-  amount: Long;
+  amount: bigint;
   sender: string;
 }
 export interface MsgContractDepositRentResponse {}
+export interface MsgContractDepositRentResponseProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.MsgContractDepositRentResponse";
+  value: Uint8Array;
+}
+export interface MsgContractDepositRentResponseAmino {}
+export interface MsgContractDepositRentResponseAminoMsg {
+  type: "/seiprotocol.seichain.dex.MsgContractDepositRentResponse";
+  value: MsgContractDepositRentResponseAmino;
+}
 export interface MsgContractDepositRentResponseSDKType {}
 export interface MsgUnregisterContract {
   creator: string;
   contractAddr: string;
+}
+export interface MsgUnregisterContractProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.MsgUnregisterContract";
+  value: Uint8Array;
+}
+export interface MsgUnregisterContractAmino {
+  creator: string;
+  contractAddr: string;
+}
+export interface MsgUnregisterContractAminoMsg {
+  type: "/seiprotocol.seichain.dex.MsgUnregisterContract";
+  value: MsgUnregisterContractAmino;
 }
 export interface MsgUnregisterContractSDKType {
   creator: string;
   contractAddr: string;
 }
 export interface MsgUnregisterContractResponse {}
+export interface MsgUnregisterContractResponseProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.MsgUnregisterContractResponse";
+  value: Uint8Array;
+}
+export interface MsgUnregisterContractResponseAmino {}
+export interface MsgUnregisterContractResponseAminoMsg {
+  type: "/seiprotocol.seichain.dex.MsgUnregisterContractResponse";
+  value: MsgUnregisterContractResponseAmino;
+}
 export interface MsgUnregisterContractResponseSDKType {}
 export interface MsgRegisterPairs {
   creator: string;
   batchcontractpair: BatchContractPair[];
+}
+export interface MsgRegisterPairsProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.MsgRegisterPairs";
+  value: Uint8Array;
+}
+export interface MsgRegisterPairsAmino {
+  creator: string;
+  batchcontractpair: BatchContractPairAmino[];
+}
+export interface MsgRegisterPairsAminoMsg {
+  type: "/seiprotocol.seichain.dex.MsgRegisterPairs";
+  value: MsgRegisterPairsAmino;
 }
 export interface MsgRegisterPairsSDKType {
   creator: string;
   batchcontractpair: BatchContractPairSDKType[];
 }
 export interface MsgRegisterPairsResponse {}
+export interface MsgRegisterPairsResponseProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.MsgRegisterPairsResponse";
+  value: Uint8Array;
+}
+export interface MsgRegisterPairsResponseAmino {}
+export interface MsgRegisterPairsResponseAminoMsg {
+  type: "/seiprotocol.seichain.dex.MsgRegisterPairsResponse";
+  value: MsgRegisterPairsResponseAmino;
+}
 export interface MsgRegisterPairsResponseSDKType {}
 export interface MsgUpdatePriceTickSize {
   creator: string;
   tickSizeList: TickSize[];
+}
+export interface MsgUpdatePriceTickSizeProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.MsgUpdatePriceTickSize";
+  value: Uint8Array;
+}
+export interface MsgUpdatePriceTickSizeAmino {
+  creator: string;
+  tickSizeList: TickSizeAmino[];
+}
+export interface MsgUpdatePriceTickSizeAminoMsg {
+  type: "/seiprotocol.seichain.dex.MsgUpdatePriceTickSize";
+  value: MsgUpdatePriceTickSizeAmino;
 }
 export interface MsgUpdatePriceTickSizeSDKType {
   creator: string;
@@ -89,21 +232,63 @@ export interface MsgUpdateQuantityTickSize {
   creator: string;
   tickSizeList: TickSize[];
 }
+export interface MsgUpdateQuantityTickSizeProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.MsgUpdateQuantityTickSize";
+  value: Uint8Array;
+}
+export interface MsgUpdateQuantityTickSizeAmino {
+  creator: string;
+  tickSizeList: TickSizeAmino[];
+}
+export interface MsgUpdateQuantityTickSizeAminoMsg {
+  type: "/seiprotocol.seichain.dex.MsgUpdateQuantityTickSize";
+  value: MsgUpdateQuantityTickSizeAmino;
+}
 export interface MsgUpdateQuantityTickSizeSDKType {
   creator: string;
   tickSizeList: TickSizeSDKType[];
 }
 export interface MsgUpdateTickSizeResponse {}
+export interface MsgUpdateTickSizeResponseProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.MsgUpdateTickSizeResponse";
+  value: Uint8Array;
+}
+export interface MsgUpdateTickSizeResponseAmino {}
+export interface MsgUpdateTickSizeResponseAminoMsg {
+  type: "/seiprotocol.seichain.dex.MsgUpdateTickSizeResponse";
+  value: MsgUpdateTickSizeResponseAmino;
+}
 export interface MsgUpdateTickSizeResponseSDKType {}
 export interface MsgUnsuspendContract {
   creator: string;
   contractAddr: string;
+}
+export interface MsgUnsuspendContractProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.MsgUnsuspendContract";
+  value: Uint8Array;
+}
+export interface MsgUnsuspendContractAmino {
+  creator: string;
+  contractAddr: string;
+}
+export interface MsgUnsuspendContractAminoMsg {
+  type: "/seiprotocol.seichain.dex.MsgUnsuspendContract";
+  value: MsgUnsuspendContractAmino;
 }
 export interface MsgUnsuspendContractSDKType {
   creator: string;
   contractAddr: string;
 }
 export interface MsgUnsuspendContractResponse {}
+export interface MsgUnsuspendContractResponseProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.MsgUnsuspendContractResponse";
+  value: Uint8Array;
+}
+export interface MsgUnsuspendContractResponseAmino {}
+export interface MsgUnsuspendContractResponseAminoMsg {
+  type: "/seiprotocol.seichain.dex.MsgUnsuspendContractResponse";
+  value: MsgUnsuspendContractResponseAmino;
+}
 export interface MsgUnsuspendContractResponseSDKType {}
 function createBaseMsgPlaceOrders(): MsgPlaceOrders {
   return {
@@ -114,7 +299,8 @@ function createBaseMsgPlaceOrders(): MsgPlaceOrders {
   };
 }
 export const MsgPlaceOrders = {
-  encode(message: MsgPlaceOrders, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.dex.MsgPlaceOrders",
+  encode(message: MsgPlaceOrders, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
@@ -129,8 +315,8 @@ export const MsgPlaceOrders = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgPlaceOrders {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgPlaceOrders {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgPlaceOrders();
     while (reader.pos < end) {
@@ -155,13 +341,52 @@ export const MsgPlaceOrders = {
     }
     return message;
   },
-  fromPartial(object: DeepPartial<MsgPlaceOrders>): MsgPlaceOrders {
+  fromPartial(object: Partial<MsgPlaceOrders>): MsgPlaceOrders {
     const message = createBaseMsgPlaceOrders();
     message.creator = object.creator ?? "";
     message.orders = object.orders?.map(e => Order.fromPartial(e)) || [];
     message.contractAddr = object.contractAddr ?? "";
     message.funds = object.funds?.map(e => Coin.fromPartial(e)) || [];
     return message;
+  },
+  fromAmino(object: MsgPlaceOrdersAmino): MsgPlaceOrders {
+    return {
+      creator: object.creator,
+      orders: Array.isArray(object?.orders) ? object.orders.map((e: any) => Order.fromAmino(e)) : [],
+      contractAddr: object.contractAddr,
+      funds: Array.isArray(object?.funds) ? object.funds.map((e: any) => Coin.fromAmino(e)) : []
+    };
+  },
+  toAmino(message: MsgPlaceOrders): MsgPlaceOrdersAmino {
+    const obj: any = {};
+    obj.creator = message.creator;
+    if (message.orders) {
+      obj.orders = message.orders.map(e => e ? Order.toAmino(e) : undefined);
+    } else {
+      obj.orders = [];
+    }
+    obj.contractAddr = message.contractAddr;
+    if (message.funds) {
+      obj.funds = message.funds.map(e => e ? Coin.toAmino(e) : undefined);
+    } else {
+      obj.funds = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: MsgPlaceOrdersAminoMsg): MsgPlaceOrders {
+    return MsgPlaceOrders.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgPlaceOrdersProtoMsg): MsgPlaceOrders {
+    return MsgPlaceOrders.decode(message.value);
+  },
+  toProto(message: MsgPlaceOrders): Uint8Array {
+    return MsgPlaceOrders.encode(message).finish();
+  },
+  toProtoMsg(message: MsgPlaceOrders): MsgPlaceOrdersProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.MsgPlaceOrders",
+      value: MsgPlaceOrders.encode(message).finish()
+    };
   }
 };
 function createBaseMsgPlaceOrdersResponse(): MsgPlaceOrdersResponse {
@@ -170,7 +395,8 @@ function createBaseMsgPlaceOrdersResponse(): MsgPlaceOrdersResponse {
   };
 }
 export const MsgPlaceOrdersResponse = {
-  encode(message: MsgPlaceOrdersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.dex.MsgPlaceOrdersResponse",
+  encode(message: MsgPlaceOrdersResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     writer.uint32(10).fork();
     for (const v of message.orderIds) {
       writer.uint64(v);
@@ -178,8 +404,8 @@ export const MsgPlaceOrdersResponse = {
     writer.ldelim();
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgPlaceOrdersResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgPlaceOrdersResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgPlaceOrdersResponse();
     while (reader.pos < end) {
@@ -189,10 +415,10 @@ export const MsgPlaceOrdersResponse = {
           if ((tag & 7) === 2) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
-              message.orderIds.push((reader.uint64() as Long));
+              message.orderIds.push(reader.uint64());
             }
           } else {
-            message.orderIds.push((reader.uint64() as Long));
+            message.orderIds.push(reader.uint64());
           }
           break;
         default:
@@ -202,10 +428,39 @@ export const MsgPlaceOrdersResponse = {
     }
     return message;
   },
-  fromPartial(object: DeepPartial<MsgPlaceOrdersResponse>): MsgPlaceOrdersResponse {
+  fromPartial(object: Partial<MsgPlaceOrdersResponse>): MsgPlaceOrdersResponse {
     const message = createBaseMsgPlaceOrdersResponse();
-    message.orderIds = object.orderIds?.map(e => Long.fromValue(e)) || [];
+    message.orderIds = object.orderIds?.map(e => BigInt(e.toString())) || [];
     return message;
+  },
+  fromAmino(object: MsgPlaceOrdersResponseAmino): MsgPlaceOrdersResponse {
+    return {
+      orderIds: Array.isArray(object?.orderIds) ? object.orderIds.map((e: any) => BigInt(e)) : []
+    };
+  },
+  toAmino(message: MsgPlaceOrdersResponse): MsgPlaceOrdersResponseAmino {
+    const obj: any = {};
+    if (message.orderIds) {
+      obj.orderIds = message.orderIds.map(e => e.toString());
+    } else {
+      obj.orderIds = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: MsgPlaceOrdersResponseAminoMsg): MsgPlaceOrdersResponse {
+    return MsgPlaceOrdersResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgPlaceOrdersResponseProtoMsg): MsgPlaceOrdersResponse {
+    return MsgPlaceOrdersResponse.decode(message.value);
+  },
+  toProto(message: MsgPlaceOrdersResponse): Uint8Array {
+    return MsgPlaceOrdersResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgPlaceOrdersResponse): MsgPlaceOrdersResponseProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.MsgPlaceOrdersResponse",
+      value: MsgPlaceOrdersResponse.encode(message).finish()
+    };
   }
 };
 function createBaseMsgCancelOrders(): MsgCancelOrders {
@@ -216,7 +471,8 @@ function createBaseMsgCancelOrders(): MsgCancelOrders {
   };
 }
 export const MsgCancelOrders = {
-  encode(message: MsgCancelOrders, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.dex.MsgCancelOrders",
+  encode(message: MsgCancelOrders, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
@@ -228,8 +484,8 @@ export const MsgCancelOrders = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCancelOrders {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgCancelOrders {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCancelOrders();
     while (reader.pos < end) {
@@ -251,23 +507,57 @@ export const MsgCancelOrders = {
     }
     return message;
   },
-  fromPartial(object: DeepPartial<MsgCancelOrders>): MsgCancelOrders {
+  fromPartial(object: Partial<MsgCancelOrders>): MsgCancelOrders {
     const message = createBaseMsgCancelOrders();
     message.creator = object.creator ?? "";
     message.cancellations = object.cancellations?.map(e => Cancellation.fromPartial(e)) || [];
     message.contractAddr = object.contractAddr ?? "";
     return message;
+  },
+  fromAmino(object: MsgCancelOrdersAmino): MsgCancelOrders {
+    return {
+      creator: object.creator,
+      cancellations: Array.isArray(object?.cancellations) ? object.cancellations.map((e: any) => Cancellation.fromAmino(e)) : [],
+      contractAddr: object.contractAddr
+    };
+  },
+  toAmino(message: MsgCancelOrders): MsgCancelOrdersAmino {
+    const obj: any = {};
+    obj.creator = message.creator;
+    if (message.cancellations) {
+      obj.cancellations = message.cancellations.map(e => e ? Cancellation.toAmino(e) : undefined);
+    } else {
+      obj.cancellations = [];
+    }
+    obj.contractAddr = message.contractAddr;
+    return obj;
+  },
+  fromAminoMsg(object: MsgCancelOrdersAminoMsg): MsgCancelOrders {
+    return MsgCancelOrders.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgCancelOrdersProtoMsg): MsgCancelOrders {
+    return MsgCancelOrders.decode(message.value);
+  },
+  toProto(message: MsgCancelOrders): Uint8Array {
+    return MsgCancelOrders.encode(message).finish();
+  },
+  toProtoMsg(message: MsgCancelOrders): MsgCancelOrdersProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.MsgCancelOrders",
+      value: MsgCancelOrders.encode(message).finish()
+    };
   }
 };
 function createBaseMsgCancelOrdersResponse(): MsgCancelOrdersResponse {
   return {};
 }
 export const MsgCancelOrdersResponse = {
-  encode(_: MsgCancelOrdersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.dex.MsgCancelOrdersResponse",
+  encode(_: MsgCancelOrdersResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCancelOrdersResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgCancelOrdersResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCancelOrdersResponse();
     while (reader.pos < end) {
@@ -280,9 +570,31 @@ export const MsgCancelOrdersResponse = {
     }
     return message;
   },
-  fromPartial(_: DeepPartial<MsgCancelOrdersResponse>): MsgCancelOrdersResponse {
+  fromPartial(_: Partial<MsgCancelOrdersResponse>): MsgCancelOrdersResponse {
     const message = createBaseMsgCancelOrdersResponse();
     return message;
+  },
+  fromAmino(_: MsgCancelOrdersResponseAmino): MsgCancelOrdersResponse {
+    return {};
+  },
+  toAmino(_: MsgCancelOrdersResponse): MsgCancelOrdersResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgCancelOrdersResponseAminoMsg): MsgCancelOrdersResponse {
+    return MsgCancelOrdersResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgCancelOrdersResponseProtoMsg): MsgCancelOrdersResponse {
+    return MsgCancelOrdersResponse.decode(message.value);
+  },
+  toProto(message: MsgCancelOrdersResponse): Uint8Array {
+    return MsgCancelOrdersResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgCancelOrdersResponse): MsgCancelOrdersResponseProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.MsgCancelOrdersResponse",
+      value: MsgCancelOrdersResponse.encode(message).finish()
+    };
   }
 };
 function createBaseMsgRegisterContract(): MsgRegisterContract {
@@ -292,7 +604,8 @@ function createBaseMsgRegisterContract(): MsgRegisterContract {
   };
 }
 export const MsgRegisterContract = {
-  encode(message: MsgRegisterContract, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.dex.MsgRegisterContract",
+  encode(message: MsgRegisterContract, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
@@ -301,8 +614,8 @@ export const MsgRegisterContract = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgRegisterContract {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgRegisterContract {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgRegisterContract();
     while (reader.pos < end) {
@@ -321,22 +634,50 @@ export const MsgRegisterContract = {
     }
     return message;
   },
-  fromPartial(object: DeepPartial<MsgRegisterContract>): MsgRegisterContract {
+  fromPartial(object: Partial<MsgRegisterContract>): MsgRegisterContract {
     const message = createBaseMsgRegisterContract();
     message.creator = object.creator ?? "";
     message.contract = object.contract !== undefined && object.contract !== null ? ContractInfoV2.fromPartial(object.contract) : undefined;
     return message;
+  },
+  fromAmino(object: MsgRegisterContractAmino): MsgRegisterContract {
+    return {
+      creator: object.creator,
+      contract: object?.contract ? ContractInfoV2.fromAmino(object.contract) : undefined
+    };
+  },
+  toAmino(message: MsgRegisterContract): MsgRegisterContractAmino {
+    const obj: any = {};
+    obj.creator = message.creator;
+    obj.contract = message.contract ? ContractInfoV2.toAmino(message.contract) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: MsgRegisterContractAminoMsg): MsgRegisterContract {
+    return MsgRegisterContract.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgRegisterContractProtoMsg): MsgRegisterContract {
+    return MsgRegisterContract.decode(message.value);
+  },
+  toProto(message: MsgRegisterContract): Uint8Array {
+    return MsgRegisterContract.encode(message).finish();
+  },
+  toProtoMsg(message: MsgRegisterContract): MsgRegisterContractProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.MsgRegisterContract",
+      value: MsgRegisterContract.encode(message).finish()
+    };
   }
 };
 function createBaseMsgRegisterContractResponse(): MsgRegisterContractResponse {
   return {};
 }
 export const MsgRegisterContractResponse = {
-  encode(_: MsgRegisterContractResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.dex.MsgRegisterContractResponse",
+  encode(_: MsgRegisterContractResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgRegisterContractResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgRegisterContractResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgRegisterContractResponse();
     while (reader.pos < end) {
@@ -349,24 +690,47 @@ export const MsgRegisterContractResponse = {
     }
     return message;
   },
-  fromPartial(_: DeepPartial<MsgRegisterContractResponse>): MsgRegisterContractResponse {
+  fromPartial(_: Partial<MsgRegisterContractResponse>): MsgRegisterContractResponse {
     const message = createBaseMsgRegisterContractResponse();
     return message;
+  },
+  fromAmino(_: MsgRegisterContractResponseAmino): MsgRegisterContractResponse {
+    return {};
+  },
+  toAmino(_: MsgRegisterContractResponse): MsgRegisterContractResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgRegisterContractResponseAminoMsg): MsgRegisterContractResponse {
+    return MsgRegisterContractResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgRegisterContractResponseProtoMsg): MsgRegisterContractResponse {
+    return MsgRegisterContractResponse.decode(message.value);
+  },
+  toProto(message: MsgRegisterContractResponse): Uint8Array {
+    return MsgRegisterContractResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgRegisterContractResponse): MsgRegisterContractResponseProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.MsgRegisterContractResponse",
+      value: MsgRegisterContractResponse.encode(message).finish()
+    };
   }
 };
 function createBaseMsgContractDepositRent(): MsgContractDepositRent {
   return {
     contractAddr: "",
-    amount: Long.UZERO,
+    amount: BigInt(0),
     sender: ""
   };
 }
 export const MsgContractDepositRent = {
-  encode(message: MsgContractDepositRent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.dex.MsgContractDepositRent",
+  encode(message: MsgContractDepositRent, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.contractAddr !== "") {
       writer.uint32(10).string(message.contractAddr);
     }
-    if (!message.amount.isZero()) {
+    if (message.amount !== BigInt(0)) {
       writer.uint32(16).uint64(message.amount);
     }
     if (message.sender !== "") {
@@ -374,8 +738,8 @@ export const MsgContractDepositRent = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgContractDepositRent {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgContractDepositRent {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgContractDepositRent();
     while (reader.pos < end) {
@@ -385,7 +749,7 @@ export const MsgContractDepositRent = {
           message.contractAddr = reader.string();
           break;
         case 2:
-          message.amount = (reader.uint64() as Long);
+          message.amount = reader.uint64();
           break;
         case 3:
           message.sender = reader.string();
@@ -397,23 +761,53 @@ export const MsgContractDepositRent = {
     }
     return message;
   },
-  fromPartial(object: DeepPartial<MsgContractDepositRent>): MsgContractDepositRent {
+  fromPartial(object: Partial<MsgContractDepositRent>): MsgContractDepositRent {
     const message = createBaseMsgContractDepositRent();
     message.contractAddr = object.contractAddr ?? "";
-    message.amount = object.amount !== undefined && object.amount !== null ? Long.fromValue(object.amount) : Long.UZERO;
+    message.amount = object.amount !== undefined && object.amount !== null ? BigInt(object.amount.toString()) : BigInt(0);
     message.sender = object.sender ?? "";
     return message;
+  },
+  fromAmino(object: MsgContractDepositRentAmino): MsgContractDepositRent {
+    return {
+      contractAddr: object.contractAddr,
+      amount: BigInt(object.amount),
+      sender: object.sender
+    };
+  },
+  toAmino(message: MsgContractDepositRent): MsgContractDepositRentAmino {
+    const obj: any = {};
+    obj.contractAddr = message.contractAddr;
+    obj.amount = message.amount ? message.amount.toString() : undefined;
+    obj.sender = message.sender;
+    return obj;
+  },
+  fromAminoMsg(object: MsgContractDepositRentAminoMsg): MsgContractDepositRent {
+    return MsgContractDepositRent.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgContractDepositRentProtoMsg): MsgContractDepositRent {
+    return MsgContractDepositRent.decode(message.value);
+  },
+  toProto(message: MsgContractDepositRent): Uint8Array {
+    return MsgContractDepositRent.encode(message).finish();
+  },
+  toProtoMsg(message: MsgContractDepositRent): MsgContractDepositRentProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.MsgContractDepositRent",
+      value: MsgContractDepositRent.encode(message).finish()
+    };
   }
 };
 function createBaseMsgContractDepositRentResponse(): MsgContractDepositRentResponse {
   return {};
 }
 export const MsgContractDepositRentResponse = {
-  encode(_: MsgContractDepositRentResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.dex.MsgContractDepositRentResponse",
+  encode(_: MsgContractDepositRentResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgContractDepositRentResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgContractDepositRentResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgContractDepositRentResponse();
     while (reader.pos < end) {
@@ -426,9 +820,31 @@ export const MsgContractDepositRentResponse = {
     }
     return message;
   },
-  fromPartial(_: DeepPartial<MsgContractDepositRentResponse>): MsgContractDepositRentResponse {
+  fromPartial(_: Partial<MsgContractDepositRentResponse>): MsgContractDepositRentResponse {
     const message = createBaseMsgContractDepositRentResponse();
     return message;
+  },
+  fromAmino(_: MsgContractDepositRentResponseAmino): MsgContractDepositRentResponse {
+    return {};
+  },
+  toAmino(_: MsgContractDepositRentResponse): MsgContractDepositRentResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgContractDepositRentResponseAminoMsg): MsgContractDepositRentResponse {
+    return MsgContractDepositRentResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgContractDepositRentResponseProtoMsg): MsgContractDepositRentResponse {
+    return MsgContractDepositRentResponse.decode(message.value);
+  },
+  toProto(message: MsgContractDepositRentResponse): Uint8Array {
+    return MsgContractDepositRentResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgContractDepositRentResponse): MsgContractDepositRentResponseProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.MsgContractDepositRentResponse",
+      value: MsgContractDepositRentResponse.encode(message).finish()
+    };
   }
 };
 function createBaseMsgUnregisterContract(): MsgUnregisterContract {
@@ -438,7 +854,8 @@ function createBaseMsgUnregisterContract(): MsgUnregisterContract {
   };
 }
 export const MsgUnregisterContract = {
-  encode(message: MsgUnregisterContract, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.dex.MsgUnregisterContract",
+  encode(message: MsgUnregisterContract, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
@@ -447,8 +864,8 @@ export const MsgUnregisterContract = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUnregisterContract {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUnregisterContract {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUnregisterContract();
     while (reader.pos < end) {
@@ -467,22 +884,50 @@ export const MsgUnregisterContract = {
     }
     return message;
   },
-  fromPartial(object: DeepPartial<MsgUnregisterContract>): MsgUnregisterContract {
+  fromPartial(object: Partial<MsgUnregisterContract>): MsgUnregisterContract {
     const message = createBaseMsgUnregisterContract();
     message.creator = object.creator ?? "";
     message.contractAddr = object.contractAddr ?? "";
     return message;
+  },
+  fromAmino(object: MsgUnregisterContractAmino): MsgUnregisterContract {
+    return {
+      creator: object.creator,
+      contractAddr: object.contractAddr
+    };
+  },
+  toAmino(message: MsgUnregisterContract): MsgUnregisterContractAmino {
+    const obj: any = {};
+    obj.creator = message.creator;
+    obj.contractAddr = message.contractAddr;
+    return obj;
+  },
+  fromAminoMsg(object: MsgUnregisterContractAminoMsg): MsgUnregisterContract {
+    return MsgUnregisterContract.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgUnregisterContractProtoMsg): MsgUnregisterContract {
+    return MsgUnregisterContract.decode(message.value);
+  },
+  toProto(message: MsgUnregisterContract): Uint8Array {
+    return MsgUnregisterContract.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUnregisterContract): MsgUnregisterContractProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.MsgUnregisterContract",
+      value: MsgUnregisterContract.encode(message).finish()
+    };
   }
 };
 function createBaseMsgUnregisterContractResponse(): MsgUnregisterContractResponse {
   return {};
 }
 export const MsgUnregisterContractResponse = {
-  encode(_: MsgUnregisterContractResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.dex.MsgUnregisterContractResponse",
+  encode(_: MsgUnregisterContractResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUnregisterContractResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUnregisterContractResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUnregisterContractResponse();
     while (reader.pos < end) {
@@ -495,9 +940,31 @@ export const MsgUnregisterContractResponse = {
     }
     return message;
   },
-  fromPartial(_: DeepPartial<MsgUnregisterContractResponse>): MsgUnregisterContractResponse {
+  fromPartial(_: Partial<MsgUnregisterContractResponse>): MsgUnregisterContractResponse {
     const message = createBaseMsgUnregisterContractResponse();
     return message;
+  },
+  fromAmino(_: MsgUnregisterContractResponseAmino): MsgUnregisterContractResponse {
+    return {};
+  },
+  toAmino(_: MsgUnregisterContractResponse): MsgUnregisterContractResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgUnregisterContractResponseAminoMsg): MsgUnregisterContractResponse {
+    return MsgUnregisterContractResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgUnregisterContractResponseProtoMsg): MsgUnregisterContractResponse {
+    return MsgUnregisterContractResponse.decode(message.value);
+  },
+  toProto(message: MsgUnregisterContractResponse): Uint8Array {
+    return MsgUnregisterContractResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUnregisterContractResponse): MsgUnregisterContractResponseProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.MsgUnregisterContractResponse",
+      value: MsgUnregisterContractResponse.encode(message).finish()
+    };
   }
 };
 function createBaseMsgRegisterPairs(): MsgRegisterPairs {
@@ -507,7 +974,8 @@ function createBaseMsgRegisterPairs(): MsgRegisterPairs {
   };
 }
 export const MsgRegisterPairs = {
-  encode(message: MsgRegisterPairs, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.dex.MsgRegisterPairs",
+  encode(message: MsgRegisterPairs, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
@@ -516,8 +984,8 @@ export const MsgRegisterPairs = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgRegisterPairs {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgRegisterPairs {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgRegisterPairs();
     while (reader.pos < end) {
@@ -536,22 +1004,54 @@ export const MsgRegisterPairs = {
     }
     return message;
   },
-  fromPartial(object: DeepPartial<MsgRegisterPairs>): MsgRegisterPairs {
+  fromPartial(object: Partial<MsgRegisterPairs>): MsgRegisterPairs {
     const message = createBaseMsgRegisterPairs();
     message.creator = object.creator ?? "";
     message.batchcontractpair = object.batchcontractpair?.map(e => BatchContractPair.fromPartial(e)) || [];
     return message;
+  },
+  fromAmino(object: MsgRegisterPairsAmino): MsgRegisterPairs {
+    return {
+      creator: object.creator,
+      batchcontractpair: Array.isArray(object?.batchcontractpair) ? object.batchcontractpair.map((e: any) => BatchContractPair.fromAmino(e)) : []
+    };
+  },
+  toAmino(message: MsgRegisterPairs): MsgRegisterPairsAmino {
+    const obj: any = {};
+    obj.creator = message.creator;
+    if (message.batchcontractpair) {
+      obj.batchcontractpair = message.batchcontractpair.map(e => e ? BatchContractPair.toAmino(e) : undefined);
+    } else {
+      obj.batchcontractpair = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: MsgRegisterPairsAminoMsg): MsgRegisterPairs {
+    return MsgRegisterPairs.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgRegisterPairsProtoMsg): MsgRegisterPairs {
+    return MsgRegisterPairs.decode(message.value);
+  },
+  toProto(message: MsgRegisterPairs): Uint8Array {
+    return MsgRegisterPairs.encode(message).finish();
+  },
+  toProtoMsg(message: MsgRegisterPairs): MsgRegisterPairsProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.MsgRegisterPairs",
+      value: MsgRegisterPairs.encode(message).finish()
+    };
   }
 };
 function createBaseMsgRegisterPairsResponse(): MsgRegisterPairsResponse {
   return {};
 }
 export const MsgRegisterPairsResponse = {
-  encode(_: MsgRegisterPairsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.dex.MsgRegisterPairsResponse",
+  encode(_: MsgRegisterPairsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgRegisterPairsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgRegisterPairsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgRegisterPairsResponse();
     while (reader.pos < end) {
@@ -564,9 +1064,31 @@ export const MsgRegisterPairsResponse = {
     }
     return message;
   },
-  fromPartial(_: DeepPartial<MsgRegisterPairsResponse>): MsgRegisterPairsResponse {
+  fromPartial(_: Partial<MsgRegisterPairsResponse>): MsgRegisterPairsResponse {
     const message = createBaseMsgRegisterPairsResponse();
     return message;
+  },
+  fromAmino(_: MsgRegisterPairsResponseAmino): MsgRegisterPairsResponse {
+    return {};
+  },
+  toAmino(_: MsgRegisterPairsResponse): MsgRegisterPairsResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgRegisterPairsResponseAminoMsg): MsgRegisterPairsResponse {
+    return MsgRegisterPairsResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgRegisterPairsResponseProtoMsg): MsgRegisterPairsResponse {
+    return MsgRegisterPairsResponse.decode(message.value);
+  },
+  toProto(message: MsgRegisterPairsResponse): Uint8Array {
+    return MsgRegisterPairsResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgRegisterPairsResponse): MsgRegisterPairsResponseProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.MsgRegisterPairsResponse",
+      value: MsgRegisterPairsResponse.encode(message).finish()
+    };
   }
 };
 function createBaseMsgUpdatePriceTickSize(): MsgUpdatePriceTickSize {
@@ -576,7 +1098,8 @@ function createBaseMsgUpdatePriceTickSize(): MsgUpdatePriceTickSize {
   };
 }
 export const MsgUpdatePriceTickSize = {
-  encode(message: MsgUpdatePriceTickSize, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.dex.MsgUpdatePriceTickSize",
+  encode(message: MsgUpdatePriceTickSize, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
@@ -585,8 +1108,8 @@ export const MsgUpdatePriceTickSize = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdatePriceTickSize {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdatePriceTickSize {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdatePriceTickSize();
     while (reader.pos < end) {
@@ -605,11 +1128,42 @@ export const MsgUpdatePriceTickSize = {
     }
     return message;
   },
-  fromPartial(object: DeepPartial<MsgUpdatePriceTickSize>): MsgUpdatePriceTickSize {
+  fromPartial(object: Partial<MsgUpdatePriceTickSize>): MsgUpdatePriceTickSize {
     const message = createBaseMsgUpdatePriceTickSize();
     message.creator = object.creator ?? "";
     message.tickSizeList = object.tickSizeList?.map(e => TickSize.fromPartial(e)) || [];
     return message;
+  },
+  fromAmino(object: MsgUpdatePriceTickSizeAmino): MsgUpdatePriceTickSize {
+    return {
+      creator: object.creator,
+      tickSizeList: Array.isArray(object?.tickSizeList) ? object.tickSizeList.map((e: any) => TickSize.fromAmino(e)) : []
+    };
+  },
+  toAmino(message: MsgUpdatePriceTickSize): MsgUpdatePriceTickSizeAmino {
+    const obj: any = {};
+    obj.creator = message.creator;
+    if (message.tickSizeList) {
+      obj.tickSizeList = message.tickSizeList.map(e => e ? TickSize.toAmino(e) : undefined);
+    } else {
+      obj.tickSizeList = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: MsgUpdatePriceTickSizeAminoMsg): MsgUpdatePriceTickSize {
+    return MsgUpdatePriceTickSize.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgUpdatePriceTickSizeProtoMsg): MsgUpdatePriceTickSize {
+    return MsgUpdatePriceTickSize.decode(message.value);
+  },
+  toProto(message: MsgUpdatePriceTickSize): Uint8Array {
+    return MsgUpdatePriceTickSize.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUpdatePriceTickSize): MsgUpdatePriceTickSizeProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.MsgUpdatePriceTickSize",
+      value: MsgUpdatePriceTickSize.encode(message).finish()
+    };
   }
 };
 function createBaseMsgUpdateQuantityTickSize(): MsgUpdateQuantityTickSize {
@@ -619,7 +1173,8 @@ function createBaseMsgUpdateQuantityTickSize(): MsgUpdateQuantityTickSize {
   };
 }
 export const MsgUpdateQuantityTickSize = {
-  encode(message: MsgUpdateQuantityTickSize, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.dex.MsgUpdateQuantityTickSize",
+  encode(message: MsgUpdateQuantityTickSize, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
@@ -628,8 +1183,8 @@ export const MsgUpdateQuantityTickSize = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateQuantityTickSize {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateQuantityTickSize {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateQuantityTickSize();
     while (reader.pos < end) {
@@ -648,22 +1203,54 @@ export const MsgUpdateQuantityTickSize = {
     }
     return message;
   },
-  fromPartial(object: DeepPartial<MsgUpdateQuantityTickSize>): MsgUpdateQuantityTickSize {
+  fromPartial(object: Partial<MsgUpdateQuantityTickSize>): MsgUpdateQuantityTickSize {
     const message = createBaseMsgUpdateQuantityTickSize();
     message.creator = object.creator ?? "";
     message.tickSizeList = object.tickSizeList?.map(e => TickSize.fromPartial(e)) || [];
     return message;
+  },
+  fromAmino(object: MsgUpdateQuantityTickSizeAmino): MsgUpdateQuantityTickSize {
+    return {
+      creator: object.creator,
+      tickSizeList: Array.isArray(object?.tickSizeList) ? object.tickSizeList.map((e: any) => TickSize.fromAmino(e)) : []
+    };
+  },
+  toAmino(message: MsgUpdateQuantityTickSize): MsgUpdateQuantityTickSizeAmino {
+    const obj: any = {};
+    obj.creator = message.creator;
+    if (message.tickSizeList) {
+      obj.tickSizeList = message.tickSizeList.map(e => e ? TickSize.toAmino(e) : undefined);
+    } else {
+      obj.tickSizeList = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: MsgUpdateQuantityTickSizeAminoMsg): MsgUpdateQuantityTickSize {
+    return MsgUpdateQuantityTickSize.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgUpdateQuantityTickSizeProtoMsg): MsgUpdateQuantityTickSize {
+    return MsgUpdateQuantityTickSize.decode(message.value);
+  },
+  toProto(message: MsgUpdateQuantityTickSize): Uint8Array {
+    return MsgUpdateQuantityTickSize.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUpdateQuantityTickSize): MsgUpdateQuantityTickSizeProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.MsgUpdateQuantityTickSize",
+      value: MsgUpdateQuantityTickSize.encode(message).finish()
+    };
   }
 };
 function createBaseMsgUpdateTickSizeResponse(): MsgUpdateTickSizeResponse {
   return {};
 }
 export const MsgUpdateTickSizeResponse = {
-  encode(_: MsgUpdateTickSizeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.dex.MsgUpdateTickSizeResponse",
+  encode(_: MsgUpdateTickSizeResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateTickSizeResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateTickSizeResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateTickSizeResponse();
     while (reader.pos < end) {
@@ -676,9 +1263,31 @@ export const MsgUpdateTickSizeResponse = {
     }
     return message;
   },
-  fromPartial(_: DeepPartial<MsgUpdateTickSizeResponse>): MsgUpdateTickSizeResponse {
+  fromPartial(_: Partial<MsgUpdateTickSizeResponse>): MsgUpdateTickSizeResponse {
     const message = createBaseMsgUpdateTickSizeResponse();
     return message;
+  },
+  fromAmino(_: MsgUpdateTickSizeResponseAmino): MsgUpdateTickSizeResponse {
+    return {};
+  },
+  toAmino(_: MsgUpdateTickSizeResponse): MsgUpdateTickSizeResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgUpdateTickSizeResponseAminoMsg): MsgUpdateTickSizeResponse {
+    return MsgUpdateTickSizeResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgUpdateTickSizeResponseProtoMsg): MsgUpdateTickSizeResponse {
+    return MsgUpdateTickSizeResponse.decode(message.value);
+  },
+  toProto(message: MsgUpdateTickSizeResponse): Uint8Array {
+    return MsgUpdateTickSizeResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUpdateTickSizeResponse): MsgUpdateTickSizeResponseProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.MsgUpdateTickSizeResponse",
+      value: MsgUpdateTickSizeResponse.encode(message).finish()
+    };
   }
 };
 function createBaseMsgUnsuspendContract(): MsgUnsuspendContract {
@@ -688,7 +1297,8 @@ function createBaseMsgUnsuspendContract(): MsgUnsuspendContract {
   };
 }
 export const MsgUnsuspendContract = {
-  encode(message: MsgUnsuspendContract, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.dex.MsgUnsuspendContract",
+  encode(message: MsgUnsuspendContract, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
@@ -697,8 +1307,8 @@ export const MsgUnsuspendContract = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUnsuspendContract {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUnsuspendContract {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUnsuspendContract();
     while (reader.pos < end) {
@@ -717,22 +1327,50 @@ export const MsgUnsuspendContract = {
     }
     return message;
   },
-  fromPartial(object: DeepPartial<MsgUnsuspendContract>): MsgUnsuspendContract {
+  fromPartial(object: Partial<MsgUnsuspendContract>): MsgUnsuspendContract {
     const message = createBaseMsgUnsuspendContract();
     message.creator = object.creator ?? "";
     message.contractAddr = object.contractAddr ?? "";
     return message;
+  },
+  fromAmino(object: MsgUnsuspendContractAmino): MsgUnsuspendContract {
+    return {
+      creator: object.creator,
+      contractAddr: object.contractAddr
+    };
+  },
+  toAmino(message: MsgUnsuspendContract): MsgUnsuspendContractAmino {
+    const obj: any = {};
+    obj.creator = message.creator;
+    obj.contractAddr = message.contractAddr;
+    return obj;
+  },
+  fromAminoMsg(object: MsgUnsuspendContractAminoMsg): MsgUnsuspendContract {
+    return MsgUnsuspendContract.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgUnsuspendContractProtoMsg): MsgUnsuspendContract {
+    return MsgUnsuspendContract.decode(message.value);
+  },
+  toProto(message: MsgUnsuspendContract): Uint8Array {
+    return MsgUnsuspendContract.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUnsuspendContract): MsgUnsuspendContractProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.MsgUnsuspendContract",
+      value: MsgUnsuspendContract.encode(message).finish()
+    };
   }
 };
 function createBaseMsgUnsuspendContractResponse(): MsgUnsuspendContractResponse {
   return {};
 }
 export const MsgUnsuspendContractResponse = {
-  encode(_: MsgUnsuspendContractResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.dex.MsgUnsuspendContractResponse",
+  encode(_: MsgUnsuspendContractResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUnsuspendContractResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUnsuspendContractResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUnsuspendContractResponse();
     while (reader.pos < end) {
@@ -745,8 +1383,30 @@ export const MsgUnsuspendContractResponse = {
     }
     return message;
   },
-  fromPartial(_: DeepPartial<MsgUnsuspendContractResponse>): MsgUnsuspendContractResponse {
+  fromPartial(_: Partial<MsgUnsuspendContractResponse>): MsgUnsuspendContractResponse {
     const message = createBaseMsgUnsuspendContractResponse();
     return message;
+  },
+  fromAmino(_: MsgUnsuspendContractResponseAmino): MsgUnsuspendContractResponse {
+    return {};
+  },
+  toAmino(_: MsgUnsuspendContractResponse): MsgUnsuspendContractResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgUnsuspendContractResponseAminoMsg): MsgUnsuspendContractResponse {
+    return MsgUnsuspendContractResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgUnsuspendContractResponseProtoMsg): MsgUnsuspendContractResponse {
+    return MsgUnsuspendContractResponse.decode(message.value);
+  },
+  toProto(message: MsgUnsuspendContractResponse): Uint8Array {
+    return MsgUnsuspendContractResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUnsuspendContractResponse): MsgUnsuspendContractResponseProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.MsgUnsuspendContractResponse",
+      value: MsgUnsuspendContractResponse.encode(message).finish()
+    };
   }
 };

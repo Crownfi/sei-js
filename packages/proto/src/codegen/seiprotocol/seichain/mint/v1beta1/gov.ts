@@ -1,6 +1,5 @@
-import { Minter, MinterSDKType } from "./mint";
-import * as _m0 from "protobufjs/minimal";
-import { DeepPartial } from "../../../../helpers";
+import { Minter, MinterAmino, MinterSDKType } from "./mint";
+import { BinaryReader, BinaryWriter } from "../../../../binary";
 /**
  * AddAssetMetadataProposal is a gov Content type for adding a new asset
  * to the dex module's asset list.
@@ -9,6 +8,23 @@ export interface UpdateMinterProposal {
   title: string;
   description: string;
   minter: Minter;
+}
+export interface UpdateMinterProposalProtoMsg {
+  typeUrl: "/seiprotocol.seichain.mint.UpdateMinterProposal";
+  value: Uint8Array;
+}
+/**
+ * AddAssetMetadataProposal is a gov Content type for adding a new asset
+ * to the dex module's asset list.
+ */
+export interface UpdateMinterProposalAmino {
+  title: string;
+  description: string;
+  minter?: MinterAmino;
+}
+export interface UpdateMinterProposalAminoMsg {
+  type: "/seiprotocol.seichain.mint.UpdateMinterProposal";
+  value: UpdateMinterProposalAmino;
 }
 /**
  * AddAssetMetadataProposal is a gov Content type for adding a new asset
@@ -27,7 +43,8 @@ function createBaseUpdateMinterProposal(): UpdateMinterProposal {
   };
 }
 export const UpdateMinterProposal = {
-  encode(message: UpdateMinterProposal, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.mint.UpdateMinterProposal",
+  encode(message: UpdateMinterProposal, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.title !== "") {
       writer.uint32(10).string(message.title);
     }
@@ -39,8 +56,8 @@ export const UpdateMinterProposal = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): UpdateMinterProposal {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateMinterProposal {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUpdateMinterProposal();
     while (reader.pos < end) {
@@ -62,11 +79,40 @@ export const UpdateMinterProposal = {
     }
     return message;
   },
-  fromPartial(object: DeepPartial<UpdateMinterProposal>): UpdateMinterProposal {
+  fromPartial(object: Partial<UpdateMinterProposal>): UpdateMinterProposal {
     const message = createBaseUpdateMinterProposal();
     message.title = object.title ?? "";
     message.description = object.description ?? "";
     message.minter = object.minter !== undefined && object.minter !== null ? Minter.fromPartial(object.minter) : undefined;
     return message;
+  },
+  fromAmino(object: UpdateMinterProposalAmino): UpdateMinterProposal {
+    return {
+      title: object.title,
+      description: object.description,
+      minter: object?.minter ? Minter.fromAmino(object.minter) : undefined
+    };
+  },
+  toAmino(message: UpdateMinterProposal): UpdateMinterProposalAmino {
+    const obj: any = {};
+    obj.title = message.title;
+    obj.description = message.description;
+    obj.minter = message.minter ? Minter.toAmino(message.minter) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: UpdateMinterProposalAminoMsg): UpdateMinterProposal {
+    return UpdateMinterProposal.fromAmino(object.value);
+  },
+  fromProtoMsg(message: UpdateMinterProposalProtoMsg): UpdateMinterProposal {
+    return UpdateMinterProposal.decode(message.value);
+  },
+  toProto(message: UpdateMinterProposal): Uint8Array {
+    return UpdateMinterProposal.encode(message).finish();
+  },
+  toProtoMsg(message: UpdateMinterProposal): UpdateMinterProposalProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.mint.UpdateMinterProposal",
+      value: UpdateMinterProposal.encode(message).finish()
+    };
   }
 };

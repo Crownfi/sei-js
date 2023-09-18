@@ -1,5 +1,4 @@
-import * as _m0 from "protobufjs/minimal";
-import { DeepPartial } from "../../../helpers";
+import { BinaryReader, BinaryWriter } from "../../../binary";
 /**
  * MsgAggregateExchangeRateVote represents a message to submit
  * aggregate exchange rate vote.
@@ -9,6 +8,24 @@ export interface MsgAggregateExchangeRateVote {
   exchangeRates: string;
   feeder: string;
   validator: string;
+}
+export interface MsgAggregateExchangeRateVoteProtoMsg {
+  typeUrl: "/seiprotocol.seichain.oracle.MsgAggregateExchangeRateVote";
+  value: Uint8Array;
+}
+/**
+ * MsgAggregateExchangeRateVote represents a message to submit
+ * aggregate exchange rate vote.
+ */
+export interface MsgAggregateExchangeRateVoteAmino {
+  /** 1 reserved from old field `salt` */
+  exchange_rates: string;
+  feeder: string;
+  validator: string;
+}
+export interface MsgAggregateExchangeRateVoteAminoMsg {
+  type: "/seiprotocol.seichain.oracle.MsgAggregateExchangeRateVote";
+  value: MsgAggregateExchangeRateVoteAmino;
 }
 /**
  * MsgAggregateExchangeRateVote represents a message to submit
@@ -21,6 +38,16 @@ export interface MsgAggregateExchangeRateVoteSDKType {
 }
 /** MsgAggregateExchangeRateVoteResponse defines the Msg/AggregateExchangeRateVote response type. */
 export interface MsgAggregateExchangeRateVoteResponse {}
+export interface MsgAggregateExchangeRateVoteResponseProtoMsg {
+  typeUrl: "/seiprotocol.seichain.oracle.MsgAggregateExchangeRateVoteResponse";
+  value: Uint8Array;
+}
+/** MsgAggregateExchangeRateVoteResponse defines the Msg/AggregateExchangeRateVote response type. */
+export interface MsgAggregateExchangeRateVoteResponseAmino {}
+export interface MsgAggregateExchangeRateVoteResponseAminoMsg {
+  type: "/seiprotocol.seichain.oracle.MsgAggregateExchangeRateVoteResponse";
+  value: MsgAggregateExchangeRateVoteResponseAmino;
+}
 /** MsgAggregateExchangeRateVoteResponse defines the Msg/AggregateExchangeRateVote response type. */
 export interface MsgAggregateExchangeRateVoteResponseSDKType {}
 /**
@@ -30,6 +57,22 @@ export interface MsgAggregateExchangeRateVoteResponseSDKType {}
 export interface MsgDelegateFeedConsent {
   operator: string;
   delegate: string;
+}
+export interface MsgDelegateFeedConsentProtoMsg {
+  typeUrl: "/seiprotocol.seichain.oracle.MsgDelegateFeedConsent";
+  value: Uint8Array;
+}
+/**
+ * MsgDelegateFeedConsent represents a message to
+ * delegate oracle voting rights to another address.
+ */
+export interface MsgDelegateFeedConsentAmino {
+  operator: string;
+  delegate: string;
+}
+export interface MsgDelegateFeedConsentAminoMsg {
+  type: "/seiprotocol.seichain.oracle.MsgDelegateFeedConsent";
+  value: MsgDelegateFeedConsentAmino;
 }
 /**
  * MsgDelegateFeedConsent represents a message to
@@ -41,6 +84,16 @@ export interface MsgDelegateFeedConsentSDKType {
 }
 /** MsgDelegateFeedConsentResponse defines the Msg/DelegateFeedConsent response type. */
 export interface MsgDelegateFeedConsentResponse {}
+export interface MsgDelegateFeedConsentResponseProtoMsg {
+  typeUrl: "/seiprotocol.seichain.oracle.MsgDelegateFeedConsentResponse";
+  value: Uint8Array;
+}
+/** MsgDelegateFeedConsentResponse defines the Msg/DelegateFeedConsent response type. */
+export interface MsgDelegateFeedConsentResponseAmino {}
+export interface MsgDelegateFeedConsentResponseAminoMsg {
+  type: "/seiprotocol.seichain.oracle.MsgDelegateFeedConsentResponse";
+  value: MsgDelegateFeedConsentResponseAmino;
+}
 /** MsgDelegateFeedConsentResponse defines the Msg/DelegateFeedConsent response type. */
 export interface MsgDelegateFeedConsentResponseSDKType {}
 function createBaseMsgAggregateExchangeRateVote(): MsgAggregateExchangeRateVote {
@@ -51,7 +104,8 @@ function createBaseMsgAggregateExchangeRateVote(): MsgAggregateExchangeRateVote 
   };
 }
 export const MsgAggregateExchangeRateVote = {
-  encode(message: MsgAggregateExchangeRateVote, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.oracle.MsgAggregateExchangeRateVote",
+  encode(message: MsgAggregateExchangeRateVote, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.exchangeRates !== "") {
       writer.uint32(18).string(message.exchangeRates);
     }
@@ -63,8 +117,8 @@ export const MsgAggregateExchangeRateVote = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgAggregateExchangeRateVote {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgAggregateExchangeRateVote {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgAggregateExchangeRateVote();
     while (reader.pos < end) {
@@ -86,23 +140,53 @@ export const MsgAggregateExchangeRateVote = {
     }
     return message;
   },
-  fromPartial(object: DeepPartial<MsgAggregateExchangeRateVote>): MsgAggregateExchangeRateVote {
+  fromPartial(object: Partial<MsgAggregateExchangeRateVote>): MsgAggregateExchangeRateVote {
     const message = createBaseMsgAggregateExchangeRateVote();
     message.exchangeRates = object.exchangeRates ?? "";
     message.feeder = object.feeder ?? "";
     message.validator = object.validator ?? "";
     return message;
+  },
+  fromAmino(object: MsgAggregateExchangeRateVoteAmino): MsgAggregateExchangeRateVote {
+    return {
+      exchangeRates: object.exchange_rates,
+      feeder: object.feeder,
+      validator: object.validator
+    };
+  },
+  toAmino(message: MsgAggregateExchangeRateVote): MsgAggregateExchangeRateVoteAmino {
+    const obj: any = {};
+    obj.exchange_rates = message.exchangeRates;
+    obj.feeder = message.feeder;
+    obj.validator = message.validator;
+    return obj;
+  },
+  fromAminoMsg(object: MsgAggregateExchangeRateVoteAminoMsg): MsgAggregateExchangeRateVote {
+    return MsgAggregateExchangeRateVote.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgAggregateExchangeRateVoteProtoMsg): MsgAggregateExchangeRateVote {
+    return MsgAggregateExchangeRateVote.decode(message.value);
+  },
+  toProto(message: MsgAggregateExchangeRateVote): Uint8Array {
+    return MsgAggregateExchangeRateVote.encode(message).finish();
+  },
+  toProtoMsg(message: MsgAggregateExchangeRateVote): MsgAggregateExchangeRateVoteProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.oracle.MsgAggregateExchangeRateVote",
+      value: MsgAggregateExchangeRateVote.encode(message).finish()
+    };
   }
 };
 function createBaseMsgAggregateExchangeRateVoteResponse(): MsgAggregateExchangeRateVoteResponse {
   return {};
 }
 export const MsgAggregateExchangeRateVoteResponse = {
-  encode(_: MsgAggregateExchangeRateVoteResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.oracle.MsgAggregateExchangeRateVoteResponse",
+  encode(_: MsgAggregateExchangeRateVoteResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgAggregateExchangeRateVoteResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgAggregateExchangeRateVoteResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgAggregateExchangeRateVoteResponse();
     while (reader.pos < end) {
@@ -115,9 +199,31 @@ export const MsgAggregateExchangeRateVoteResponse = {
     }
     return message;
   },
-  fromPartial(_: DeepPartial<MsgAggregateExchangeRateVoteResponse>): MsgAggregateExchangeRateVoteResponse {
+  fromPartial(_: Partial<MsgAggregateExchangeRateVoteResponse>): MsgAggregateExchangeRateVoteResponse {
     const message = createBaseMsgAggregateExchangeRateVoteResponse();
     return message;
+  },
+  fromAmino(_: MsgAggregateExchangeRateVoteResponseAmino): MsgAggregateExchangeRateVoteResponse {
+    return {};
+  },
+  toAmino(_: MsgAggregateExchangeRateVoteResponse): MsgAggregateExchangeRateVoteResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgAggregateExchangeRateVoteResponseAminoMsg): MsgAggregateExchangeRateVoteResponse {
+    return MsgAggregateExchangeRateVoteResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgAggregateExchangeRateVoteResponseProtoMsg): MsgAggregateExchangeRateVoteResponse {
+    return MsgAggregateExchangeRateVoteResponse.decode(message.value);
+  },
+  toProto(message: MsgAggregateExchangeRateVoteResponse): Uint8Array {
+    return MsgAggregateExchangeRateVoteResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgAggregateExchangeRateVoteResponse): MsgAggregateExchangeRateVoteResponseProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.oracle.MsgAggregateExchangeRateVoteResponse",
+      value: MsgAggregateExchangeRateVoteResponse.encode(message).finish()
+    };
   }
 };
 function createBaseMsgDelegateFeedConsent(): MsgDelegateFeedConsent {
@@ -127,7 +233,8 @@ function createBaseMsgDelegateFeedConsent(): MsgDelegateFeedConsent {
   };
 }
 export const MsgDelegateFeedConsent = {
-  encode(message: MsgDelegateFeedConsent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.oracle.MsgDelegateFeedConsent",
+  encode(message: MsgDelegateFeedConsent, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -136,8 +243,8 @@ export const MsgDelegateFeedConsent = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDelegateFeedConsent {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgDelegateFeedConsent {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgDelegateFeedConsent();
     while (reader.pos < end) {
@@ -156,22 +263,50 @@ export const MsgDelegateFeedConsent = {
     }
     return message;
   },
-  fromPartial(object: DeepPartial<MsgDelegateFeedConsent>): MsgDelegateFeedConsent {
+  fromPartial(object: Partial<MsgDelegateFeedConsent>): MsgDelegateFeedConsent {
     const message = createBaseMsgDelegateFeedConsent();
     message.operator = object.operator ?? "";
     message.delegate = object.delegate ?? "";
     return message;
+  },
+  fromAmino(object: MsgDelegateFeedConsentAmino): MsgDelegateFeedConsent {
+    return {
+      operator: object.operator,
+      delegate: object.delegate
+    };
+  },
+  toAmino(message: MsgDelegateFeedConsent): MsgDelegateFeedConsentAmino {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.delegate = message.delegate;
+    return obj;
+  },
+  fromAminoMsg(object: MsgDelegateFeedConsentAminoMsg): MsgDelegateFeedConsent {
+    return MsgDelegateFeedConsent.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgDelegateFeedConsentProtoMsg): MsgDelegateFeedConsent {
+    return MsgDelegateFeedConsent.decode(message.value);
+  },
+  toProto(message: MsgDelegateFeedConsent): Uint8Array {
+    return MsgDelegateFeedConsent.encode(message).finish();
+  },
+  toProtoMsg(message: MsgDelegateFeedConsent): MsgDelegateFeedConsentProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.oracle.MsgDelegateFeedConsent",
+      value: MsgDelegateFeedConsent.encode(message).finish()
+    };
   }
 };
 function createBaseMsgDelegateFeedConsentResponse(): MsgDelegateFeedConsentResponse {
   return {};
 }
 export const MsgDelegateFeedConsentResponse = {
-  encode(_: MsgDelegateFeedConsentResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.oracle.MsgDelegateFeedConsentResponse",
+  encode(_: MsgDelegateFeedConsentResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDelegateFeedConsentResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgDelegateFeedConsentResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgDelegateFeedConsentResponse();
     while (reader.pos < end) {
@@ -184,8 +319,30 @@ export const MsgDelegateFeedConsentResponse = {
     }
     return message;
   },
-  fromPartial(_: DeepPartial<MsgDelegateFeedConsentResponse>): MsgDelegateFeedConsentResponse {
+  fromPartial(_: Partial<MsgDelegateFeedConsentResponse>): MsgDelegateFeedConsentResponse {
     const message = createBaseMsgDelegateFeedConsentResponse();
     return message;
+  },
+  fromAmino(_: MsgDelegateFeedConsentResponseAmino): MsgDelegateFeedConsentResponse {
+    return {};
+  },
+  toAmino(_: MsgDelegateFeedConsentResponse): MsgDelegateFeedConsentResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgDelegateFeedConsentResponseAminoMsg): MsgDelegateFeedConsentResponse {
+    return MsgDelegateFeedConsentResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgDelegateFeedConsentResponseProtoMsg): MsgDelegateFeedConsentResponse {
+    return MsgDelegateFeedConsentResponse.decode(message.value);
+  },
+  toProto(message: MsgDelegateFeedConsentResponse): Uint8Array {
+    return MsgDelegateFeedConsentResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgDelegateFeedConsentResponse): MsgDelegateFeedConsentResponseProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.oracle.MsgDelegateFeedConsentResponse",
+      value: MsgDelegateFeedConsentResponse.encode(message).finish()
+    };
   }
 };
