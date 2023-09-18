@@ -1,26 +1,17 @@
 {
-  "name": "sei-js",
-  "version": "1.1.5",
+  "name": "@crownfi/sei-js-workspace",
+  "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "build:all": "nx run-many --target=build",
-    "build:since": "nx affected --target=build",
-    "lint:all": "nx run-many --target=lint",
-    "lint:since": "nx affected --target=lint",
-    "test:all": "nx run-many --target=test",
-    "test:since": "nx affected --target=test",
-    "release": "yarn build:all && changeset publish",
-    "release:internal": "yarn build:all && yarn changeset && yarn changeset version --snapshot internal && yarn changeset publish --no-git-tag --snapshot --tag internal",
-    "postrelease": "git push --follow-tags"
+    "build": "echo \"TODO: build all packages\" && exit 1",
+    "test": "echo \"TODO\" && exit 1",
+    "release": "echo \"TODO\" && exit 1"
   },
   "private": true,
   "dependencies": {
     "@changesets/cli": "^2.26.0"
   },
   "devDependencies": {
-    "@nrwl/eslint-plugin-nx": "15.5.1",
-    "@nrwl/nx-cloud": "latest",
-    "@nrwl/workspace": "15.5.1",
     "@types/jest": "^29.4.0",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "@typescript-eslint/parser": "^5.50.0",
@@ -33,7 +24,6 @@
     "eslint-plugin-react-hooks": "4.6.0",
     "jest": "28.1.1",
     "jest-environment-jsdom": "28.1.1",
-    "nx": "15.5.1",
     "prettier": "^2.6.2",
     "rimraf": "^3.0.2",
     "ts-jest": "28.0.5",

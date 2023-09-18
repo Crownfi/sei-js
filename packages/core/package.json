@@ -1,15 +1,14 @@
 {
-	"name": "@sei-js/core",
+	"name": "@crownfi/sei-js-core",
 	"version": "3.0.2",
 	"description": "TypeScript library for front end integrations with Sei",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"scripts": {
 		"prebuild": "rimraf dist",
-		"build": "yarn build:types && yarn build:js && yarn build:prettier",
+		"build": "npm run build:types && npm run build:js",
 		"build:types": "tsc --project tsconfig.declarations.json",
-		"build:js": "babel src --out-dir dist --extensions '.js,.jsx,.ts,.tsx' --source-maps --copy-files",
-		"build:prettier": "prettier --write dist",
+		"build:js": "tsc",
 		"test": "jest"
 	},
 	"homepage": "https://github.com/sei-protocol/sei-js#readme",
@@ -45,11 +44,6 @@
 		"process": "^0.11.10"
 	},
 	"devDependencies": {
-		"@babel/core": "^7.22.9",
-		"@babel/plugin-transform-runtime": "^7.22.9",
-		"@babel/preset-env": "^7.22.9",
-		"@babel/preset-react": "^7.22.5",
-		"@babel/preset-typescript": "^7.22.5",
 		"@types/crypto-js": "^4.1.1",
 		"@types/elliptic": "^6.4.14",
 		"@types/sha.js": "^2.4.1"

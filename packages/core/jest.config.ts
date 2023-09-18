@@ -1,6 +1,3 @@
-/** @type {import('ts-jest').JestConfigWithTsJest} */
-module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'jsdom',
-  testPathIgnorePatterns: ['node_modules', 'dist'],
-};
+export const preset = "ts-jest";
+export const testEnvironment = "jsdom"
+export const testPathIgnorePatterns = ["node_modules", "dist"]
