@@ -1,9 +1,10 @@
 import { ChainConfig, ChainInfo, Currency } from './types';
 import { AccountData, OfflineSigner } from '@cosmjs/proto-signing';
-import { StdSignature } from '@cosmjs/amino';
+import { OfflineAminoSigner, StdSignature } from '@cosmjs/amino';
 
 export interface SeiProviderCommon {
 	getOfflineSignerAuto: (chainId: string) => Promise<OfflineSigner | undefined>;
+	getOfflineSignerAmino: (chainId: string) => Promise<OfflineAminoSigner | undefined>;
 	enable: (chainId: string) => Promise<void>
 	disable: (chainId: string) => Promise<void>
 	signArbitrary?: (chainId: string, signer: string, message: string) => Promise<StdSignature | undefined>
@@ -11,7 +12,7 @@ export interface SeiProviderCommon {
 	experimentalSuggestChain?: (config: ChainConfig) => Promise<void>
 }
 
-export const KNOWN_SEI_PROVIDERS = ["fin", "compass", "keplr", "leap"] as const;
+export const KNOWN_SEI_PROVIDERS = ["fin", "compass", "keplr", "leap", "shellwallet", "coin98"] as const;
 export type KnownSeiProviders = typeof KNOWN_SEI_PROVIDERS[number];
 export interface SeiProviderInfo<S extends string> {
 	windowKey: S;
@@ -44,6 +45,20 @@ export const KNOWN_SEI_PROVIDER_INFO = {
 		name: "Leap",
 		website: "https://www.leapwallet.io/download",
 		icon: "https://sei-js-assets.s3.us-west-2.amazonaws.com/leap.png"
+	},
+	// "rigorous testing and responsiveness requirements" of guy who uses babel when he's already using tsc and
+	// pollutes the window namespace for everyone instead of configuring his build environment properly. Yeah, sure.
+	"shellwallet": {
+		windowKey: "shellwallet" as const,
+		name: "Shell",
+		website: "https://chrome.google.com/webstore/detail/shell-wallet/kbdcddcmgoplfockflacnnefaehaiocb",
+		icon: "https://shellwallet.io/logo/shell-icon.png"
+	},
+	"coin98": {
+		windowKey: "coin98" as const,
+		name: "Coin98",
+		website: "https://coin98.com/wallet",
+		icon: "https://inventory.coin98.com/images/c98logo.png"
 	}
 }
 
@@ -90,6 +105,9 @@ export class SeiWallet {
 	}
 	async getOfflineSigner(chainId: string): Promise<OfflineSigner | undefined> {
 		return this.getProvider().getOfflineSignerAuto(chainId);
+	}
+	async getOfflineSignerAmino(chainId: string): Promise<OfflineSigner | undefined> {
+		return this.getProvider().getOfflineSignerAmino(chainId);
 	}
 	async getAccounts(chainId: string): Promise<readonly AccountData[]> {
 		const offlineSigner = await this.getProvider().getOfflineSignerAuto(chainId);
