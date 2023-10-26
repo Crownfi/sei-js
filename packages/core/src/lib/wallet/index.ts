@@ -1,3 +1,3 @@
-export * from './config';
-export * from './types';
-export * from './wallet';
+export * from './config.js';
+export * from './types.js';
+export * from './wallet.js';

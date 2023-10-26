@@ -1,6 +1,6 @@
 import { CosmWasmClient, SigningCosmWasmClient, SigningCosmWasmClientOptions } from '@cosmjs/cosmwasm-stargate';
 import { OfflineSigner } from '@cosmjs/proto-signing';
-import { createSeiAminoTypes, createSeiRegistry } from './stargateClient';
+import { createSeiAminoTypes, createSeiRegistry } from './stargateClient.js';
 
 export const getCosmWasmClient = async (rpcEndpoint: string): Promise<CosmWasmClient> => {
 	return CosmWasmClient.connect(rpcEndpoint);

@@ -1,2 +1,2 @@
-export * from './cosmWasmClient';
-export * from './stargateClient';
+export * from './cosmWasmClient.js';
+export * from './stargateClient.js';

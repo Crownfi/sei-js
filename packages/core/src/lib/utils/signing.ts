@@ -1,8 +1,8 @@
 import { serializeSignDoc, StdSignature, StdSignDoc } from '@cosmjs/amino';
 import { fromBase64 } from '@cosmjs/encoding';
-import { toBech32 } from './bech32';
-import { getAddressFromPubKey, isValidSeiAddress, verifyDigest32 } from './address';
-import { sha256 } from './hash';
+import { toBech32 } from './bech32.js';
+import { getAddressFromPubKey, isValidSeiAddress, verifyDigest32 } from './address.js';
+import { sha256 } from './hash.js';
 
 function checkAndValidateADR36AminoSignDoc(signDoc: StdSignDoc): boolean {
 	const hasOnlyMsgSignData = (() => {

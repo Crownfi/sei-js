@@ -1,4 +1,4 @@
-import { ChainConfig, ChainInfo, Currency } from './types';
+import { ChainConfig, ChainInfo, Currency } from './types.js';
 import { AccountData, OfflineSigner } from '@cosmjs/proto-signing';
 import { OfflineAminoSigner, StdSignature } from '@cosmjs/amino';
 
