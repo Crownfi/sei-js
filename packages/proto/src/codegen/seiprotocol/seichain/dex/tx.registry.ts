@@ -1,6 +1,6 @@
 //@ts-nocheck
 import { GeneratedType, Registry } from "@cosmjs/proto-signing";
-import { MsgPlaceOrders, MsgCancelOrders, MsgRegisterContract, MsgContractDepositRent, MsgUnregisterContract, MsgRegisterPairs, MsgUpdatePriceTickSize, MsgUpdateQuantityTickSize, MsgUnsuspendContract } from "./tx";
+import { MsgPlaceOrders, MsgCancelOrders, MsgRegisterContract, MsgContractDepositRent, MsgUnregisterContract, MsgRegisterPairs, MsgUpdatePriceTickSize, MsgUpdateQuantityTickSize, MsgUnsuspendContract } from "./tx.js";
 export const registry: ReadonlyArray<[string, GeneratedType]> = [["/seiprotocol.seichain.dex.MsgPlaceOrders", MsgPlaceOrders], ["/seiprotocol.seichain.dex.MsgCancelOrders", MsgCancelOrders], ["/seiprotocol.seichain.dex.MsgRegisterContract", MsgRegisterContract], ["/seiprotocol.seichain.dex.MsgContractDepositRent", MsgContractDepositRent], ["/seiprotocol.seichain.dex.MsgUnregisterContract", MsgUnregisterContract], ["/seiprotocol.seichain.dex.MsgRegisterPairs", MsgRegisterPairs], ["/seiprotocol.seichain.dex.MsgUpdatePriceTickSize", MsgUpdatePriceTickSize], ["/seiprotocol.seichain.dex.MsgUpdateQuantityTickSize", MsgUpdateQuantityTickSize], ["/seiprotocol.seichain.dex.MsgUnsuspendContract", MsgUnsuspendContract]];
 export const load = (protoRegistry: Registry) => {
   registry.forEach(([typeUrl, mod]) => {

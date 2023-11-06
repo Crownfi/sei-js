@@ -1,10 +1,25 @@
-import * as _m0 from "protobufjs/minimal";
-import { DeepPartial } from "../../../helpers";
+import { BinaryReader, BinaryWriter } from "../../../binary.js";
+import { Decimal } from "@cosmjs/math";
+import { DeepPartial } from "../../../helpers.js";
 export interface Pair {
   priceDenom: string;
   assetDenom: string;
   priceTicksize?: string;
   quantityTicksize?: string;
+}
+export interface PairProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.Pair";
+  value: Uint8Array;
+}
+export interface PairAmino {
+  priceDenom: string;
+  assetDenom: string;
+  priceTicksize: string;
+  quantityTicksize: string;
+}
+export interface PairAminoMsg {
+  type: "/seiprotocol.seichain.dex.Pair";
+  value: PairAmino;
 }
 export interface PairSDKType {
   priceDenom: string;
@@ -15,6 +30,18 @@ export interface PairSDKType {
 export interface BatchContractPair {
   contractAddr: string;
   pairs: Pair[];
+}
+export interface BatchContractPairProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.BatchContractPair";
+  value: Uint8Array;
+}
+export interface BatchContractPairAmino {
+  contractAddr: string;
+  pairs: PairAmino[];
+}
+export interface BatchContractPairAminoMsg {
+  type: "/seiprotocol.seichain.dex.BatchContractPair";
+  value: BatchContractPairAmino;
 }
 export interface BatchContractPairSDKType {
   contractAddr: string;
@@ -29,7 +56,8 @@ function createBasePair(): Pair {
   };
 }
 export const Pair = {
-  encode(message: Pair, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.dex.Pair",
+  encode(message: Pair, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.priceDenom !== "") {
       writer.uint32(10).string(message.priceDenom);
     }
@@ -37,15 +65,15 @@ export const Pair = {
       writer.uint32(18).string(message.assetDenom);
     }
     if (message.priceTicksize !== undefined) {
-      writer.uint32(26).string(message.priceTicksize);
+      writer.uint32(26).string(Decimal.fromUserInput(message.priceTicksize, 18).atomics);
     }
     if (message.quantityTicksize !== undefined) {
-      writer.uint32(34).string(message.quantityTicksize);
+      writer.uint32(34).string(Decimal.fromUserInput(message.quantityTicksize, 18).atomics);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Pair {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Pair {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePair();
     while (reader.pos < end) {
@@ -58,10 +86,10 @@ export const Pair = {
           message.assetDenom = reader.string();
           break;
         case 3:
-          message.priceTicksize = reader.string();
+          message.priceTicksize = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 4:
-          message.quantityTicksize = reader.string();
+          message.quantityTicksize = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         default:
           reader.skipType(tag & 7);
@@ -77,6 +105,37 @@ export const Pair = {
     message.priceTicksize = object.priceTicksize ?? undefined;
     message.quantityTicksize = object.quantityTicksize ?? undefined;
     return message;
+  },
+  fromAmino(object: PairAmino): Pair {
+    return {
+      priceDenom: object.priceDenom,
+      assetDenom: object.assetDenom,
+      priceTicksize: object?.priceTicksize,
+      quantityTicksize: object?.quantityTicksize
+    };
+  },
+  toAmino(message: Pair): PairAmino {
+    const obj: any = {};
+    obj.priceDenom = message.priceDenom;
+    obj.assetDenom = message.assetDenom;
+    obj.priceTicksize = message.priceTicksize;
+    obj.quantityTicksize = message.quantityTicksize;
+    return obj;
+  },
+  fromAminoMsg(object: PairAminoMsg): Pair {
+    return Pair.fromAmino(object.value);
+  },
+  fromProtoMsg(message: PairProtoMsg): Pair {
+    return Pair.decode(message.value);
+  },
+  toProto(message: Pair): Uint8Array {
+    return Pair.encode(message).finish();
+  },
+  toProtoMsg(message: Pair): PairProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.Pair",
+      value: Pair.encode(message).finish()
+    };
   }
 };
 function createBaseBatchContractPair(): BatchContractPair {
@@ -86,7 +145,8 @@ function createBaseBatchContractPair(): BatchContractPair {
   };
 }
 export const BatchContractPair = {
-  encode(message: BatchContractPair, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.dex.BatchContractPair",
+  encode(message: BatchContractPair, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.contractAddr !== "") {
       writer.uint32(10).string(message.contractAddr);
     }
@@ -95,8 +155,8 @@ export const BatchContractPair = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): BatchContractPair {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): BatchContractPair {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseBatchContractPair();
     while (reader.pos < end) {
@@ -120,5 +180,36 @@ export const BatchContractPair = {
     message.contractAddr = object.contractAddr ?? "";
     message.pairs = object.pairs?.map(e => Pair.fromPartial(e)) || [];
     return message;
+  },
+  fromAmino(object: BatchContractPairAmino): BatchContractPair {
+    return {
+      contractAddr: object.contractAddr,
+      pairs: Array.isArray(object?.pairs) ? object.pairs.map((e: any) => Pair.fromAmino(e)) : []
+    };
+  },
+  toAmino(message: BatchContractPair): BatchContractPairAmino {
+    const obj: any = {};
+    obj.contractAddr = message.contractAddr;
+    if (message.pairs) {
+      obj.pairs = message.pairs.map(e => e ? Pair.toAmino(e) : undefined);
+    } else {
+      obj.pairs = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: BatchContractPairAminoMsg): BatchContractPair {
+    return BatchContractPair.fromAmino(object.value);
+  },
+  fromProtoMsg(message: BatchContractPairProtoMsg): BatchContractPair {
+    return BatchContractPair.decode(message.value);
+  },
+  toProto(message: BatchContractPair): Uint8Array {
+    return BatchContractPair.encode(message).finish();
+  },
+  toProtoMsg(message: BatchContractPair): BatchContractPairProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.BatchContractPair",
+      value: BatchContractPair.encode(message).finish()
+    };
   }
 };

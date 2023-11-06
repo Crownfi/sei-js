@@ -1,7 +1,7 @@
-import { Rpc } from "../../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { Rpc } from "../../../../helpers.js";
+import { BinaryReader } from "../../../../binary.js";
 import { QueryClient, createProtobufRpcClient } from "@cosmjs/stargate";
-import { QueryParamsRequest, QueryParamsResponse, QueryMinterRequest, QueryMinterResponse } from "./query";
+import { QueryParamsRequest, QueryParamsResponse, QueryMinterRequest, QueryMinterResponse } from "./query.js";
 /** Query provides defines the gRPC querier service. */
 export interface Query {
   /** Params returns the total set of minting parameters. */
@@ -19,12 +19,12 @@ export class QueryClientImpl implements Query {
   params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.mint.Query", "Params", data);
-    return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
   }
   minter(request: QueryMinterRequest = {}): Promise<QueryMinterResponse> {
     const data = QueryMinterRequest.encode(request).finish();
     const promise = this.rpc.request("seiprotocol.seichain.mint.Query", "Minter", data);
-    return promise.then(data => QueryMinterResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryMinterResponse.decode(new BinaryReader(data)));
   }
 }
 export const createRpcQueryExtension = (base: QueryClient) => {

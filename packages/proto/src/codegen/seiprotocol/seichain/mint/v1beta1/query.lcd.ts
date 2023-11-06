@@ -1,5 +1,5 @@
-import { LCDClient } from "@osmonauts/lcd";
-import { QueryParamsRequest, QueryParamsResponseSDKType, QueryMinterRequest, QueryMinterResponseSDKType } from "./query";
+import { LCDClient } from "@cosmology/lcd";
+import { QueryParamsRequest, QueryParamsResponseSDKType, QueryMinterRequest, QueryMinterResponseSDKType } from "./query.js";
 export class LCDQueryClient {
   req: LCDClient;
   constructor({

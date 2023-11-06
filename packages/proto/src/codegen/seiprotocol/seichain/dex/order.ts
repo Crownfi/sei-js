@@ -1,8 +1,9 @@
-import { OrderStatus, OrderType, PositionDirection, CancellationInitiator } from "./enums";
-import { Long, DeepPartial } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { OrderStatus, OrderType, PositionDirection, CancellationInitiator, orderStatusFromJSON, orderTypeFromJSON, positionDirectionFromJSON, cancellationInitiatorFromJSON } from "./enums.js";
+import { BinaryReader, BinaryWriter } from "../../../binary.js";
+import { Decimal } from "@cosmjs/math";
+import { DeepPartial, isSet } from "../../../helpers.js";
 export interface Order {
-  id?: Long;
+  id?: bigint;
   status?: OrderStatus;
   account?: string;
   contractAddr?: string;
@@ -18,8 +19,33 @@ export interface Order {
   triggerPrice: string;
   triggerStatus: boolean;
 }
+export interface OrderProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.Order";
+  value: Uint8Array;
+}
+export interface OrderAmino {
+  id: string;
+  status: OrderStatus;
+  account: string;
+  contractAddr: string;
+  price: string;
+  quantity: string;
+  priceDenom: string;
+  assetDenom: string;
+  orderType: OrderType;
+  positionDirection: PositionDirection;
+  data: string;
+  statusDescription: string;
+  nominal: string;
+  triggerPrice: string;
+  triggerStatus: boolean;
+}
+export interface OrderAminoMsg {
+  type: "/seiprotocol.seichain.dex.Order";
+  value: OrderAmino;
+}
 export interface OrderSDKType {
-  id?: Long;
+  id?: bigint;
   status?: OrderStatus;
   account?: string;
   contractAddr?: string;
@@ -36,7 +62,7 @@ export interface OrderSDKType {
   triggerStatus: boolean;
 }
 export interface Cancellation {
-  id: Long;
+  id: bigint;
   initiator: CancellationInitiator;
   creator?: string;
   contractAddr: string;
@@ -45,8 +71,26 @@ export interface Cancellation {
   positionDirection: PositionDirection;
   price: string;
 }
+export interface CancellationProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.Cancellation";
+  value: Uint8Array;
+}
+export interface CancellationAmino {
+  id: string;
+  initiator: CancellationInitiator;
+  creator: string;
+  contractAddr: string;
+  priceDenom: string;
+  assetDenom: string;
+  positionDirection: PositionDirection;
+  price: string;
+}
+export interface CancellationAminoMsg {
+  type: "/seiprotocol.seichain.dex.Cancellation";
+  value: CancellationAmino;
+}
 export interface CancellationSDKType {
-  id: Long;
+  id: bigint;
   initiator: CancellationInitiator;
   creator?: string;
   contractAddr: string;
@@ -56,10 +100,21 @@ export interface CancellationSDKType {
   price: string;
 }
 export interface ActiveOrders {
-  ids: Long[];
+  ids: bigint[];
+}
+export interface ActiveOrdersProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.ActiveOrders";
+  value: Uint8Array;
+}
+export interface ActiveOrdersAmino {
+  ids: string[];
+}
+export interface ActiveOrdersAminoMsg {
+  type: "/seiprotocol.seichain.dex.ActiveOrders";
+  value: ActiveOrdersAmino;
 }
 export interface ActiveOrdersSDKType {
-  ids: Long[];
+  ids: bigint[];
 }
 function createBaseOrder(): Order {
   return {
@@ -81,7 +136,8 @@ function createBaseOrder(): Order {
   };
 }
 export const Order = {
-  encode(message: Order, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.dex.Order",
+  encode(message: Order, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== undefined) {
       writer.uint32(8).uint64(message.id);
     }
@@ -95,10 +151,10 @@ export const Order = {
       writer.uint32(34).string(message.contractAddr);
     }
     if (message.price !== "") {
-      writer.uint32(42).string(message.price);
+      writer.uint32(42).string(Decimal.fromUserInput(message.price, 18).atomics);
     }
     if (message.quantity !== "") {
-      writer.uint32(50).string(message.quantity);
+      writer.uint32(50).string(Decimal.fromUserInput(message.quantity, 18).atomics);
     }
     if (message.priceDenom !== "") {
       writer.uint32(58).string(message.priceDenom);
@@ -119,25 +175,25 @@ export const Order = {
       writer.uint32(98).string(message.statusDescription);
     }
     if (message.nominal !== "") {
-      writer.uint32(106).string(message.nominal);
+      writer.uint32(106).string(Decimal.fromUserInput(message.nominal, 18).atomics);
     }
     if (message.triggerPrice !== "") {
-      writer.uint32(114).string(message.triggerPrice);
+      writer.uint32(114).string(Decimal.fromUserInput(message.triggerPrice, 18).atomics);
     }
     if (message.triggerStatus === true) {
       writer.uint32(120).bool(message.triggerStatus);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Order {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Order {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseOrder();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = (reader.uint64() as Long);
+          message.id = reader.uint64();
           break;
         case 2:
           message.status = (reader.int32() as any);
@@ -149,10 +205,10 @@ export const Order = {
           message.contractAddr = reader.string();
           break;
         case 5:
-          message.price = reader.string();
+          message.price = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 6:
-          message.quantity = reader.string();
+          message.quantity = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 7:
           message.priceDenom = reader.string();
@@ -173,10 +229,10 @@ export const Order = {
           message.statusDescription = reader.string();
           break;
         case 13:
-          message.nominal = reader.string();
+          message.nominal = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 14:
-          message.triggerPrice = reader.string();
+          message.triggerPrice = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 15:
           message.triggerStatus = reader.bool();
@@ -190,7 +246,7 @@ export const Order = {
   },
   fromPartial(object: DeepPartial<Order>): Order {
     const message = createBaseOrder();
-    message.id = object.id !== undefined && object.id !== null ? Long.fromValue(object.id) : undefined;
+    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : undefined;
     message.status = object.status ?? undefined;
     message.account = object.account ?? undefined;
     message.contractAddr = object.contractAddr ?? undefined;
@@ -206,11 +262,64 @@ export const Order = {
     message.triggerPrice = object.triggerPrice ?? "";
     message.triggerStatus = object.triggerStatus ?? false;
     return message;
+  },
+  fromAmino(object: OrderAmino): Order {
+    return {
+      id: object?.id ? BigInt(object.id) : undefined,
+      status: isSet(object.status) ? orderStatusFromJSON(object.status) : undefined,
+      account: object?.account,
+      contractAddr: object?.contractAddr,
+      price: object.price,
+      quantity: object.quantity,
+      priceDenom: object.priceDenom,
+      assetDenom: object.assetDenom,
+      orderType: isSet(object.orderType) ? orderTypeFromJSON(object.orderType) : -1,
+      positionDirection: isSet(object.positionDirection) ? positionDirectionFromJSON(object.positionDirection) : -1,
+      data: object.data,
+      statusDescription: object.statusDescription,
+      nominal: object.nominal,
+      triggerPrice: object.triggerPrice,
+      triggerStatus: object.triggerStatus
+    };
+  },
+  toAmino(message: Order): OrderAmino {
+    const obj: any = {};
+    obj.id = message.id ? message.id.toString() : undefined;
+    obj.status = message.status;
+    obj.account = message.account;
+    obj.contractAddr = message.contractAddr;
+    obj.price = message.price;
+    obj.quantity = message.quantity;
+    obj.priceDenom = message.priceDenom;
+    obj.assetDenom = message.assetDenom;
+    obj.orderType = message.orderType;
+    obj.positionDirection = message.positionDirection;
+    obj.data = message.data;
+    obj.statusDescription = message.statusDescription;
+    obj.nominal = message.nominal;
+    obj.triggerPrice = message.triggerPrice;
+    obj.triggerStatus = message.triggerStatus;
+    return obj;
+  },
+  fromAminoMsg(object: OrderAminoMsg): Order {
+    return Order.fromAmino(object.value);
+  },
+  fromProtoMsg(message: OrderProtoMsg): Order {
+    return Order.decode(message.value);
+  },
+  toProto(message: Order): Uint8Array {
+    return Order.encode(message).finish();
+  },
+  toProtoMsg(message: Order): OrderProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.Order",
+      value: Order.encode(message).finish()
+    };
   }
 };
 function createBaseCancellation(): Cancellation {
   return {
-    id: Long.UZERO,
+    id: BigInt(0),
     initiator: 0,
     creator: undefined,
     contractAddr: "",
@@ -221,8 +330,9 @@ function createBaseCancellation(): Cancellation {
   };
 }
 export const Cancellation = {
-  encode(message: Cancellation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.id.isZero()) {
+  typeUrl: "/seiprotocol.seichain.dex.Cancellation",
+  encode(message: Cancellation, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.id !== BigInt(0)) {
       writer.uint32(8).uint64(message.id);
     }
     if (message.initiator !== 0) {
@@ -244,19 +354,19 @@ export const Cancellation = {
       writer.uint32(56).int32(message.positionDirection);
     }
     if (message.price !== "") {
-      writer.uint32(66).string(message.price);
+      writer.uint32(66).string(Decimal.fromUserInput(message.price, 18).atomics);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Cancellation {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Cancellation {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCancellation();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = (reader.uint64() as Long);
+          message.id = reader.uint64();
           break;
         case 2:
           message.initiator = (reader.int32() as any);
@@ -277,7 +387,7 @@ export const Cancellation = {
           message.positionDirection = (reader.int32() as any);
           break;
         case 8:
-          message.price = reader.string();
+          message.price = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         default:
           reader.skipType(tag & 7);
@@ -288,7 +398,7 @@ export const Cancellation = {
   },
   fromPartial(object: DeepPartial<Cancellation>): Cancellation {
     const message = createBaseCancellation();
-    message.id = object.id !== undefined && object.id !== null ? Long.fromValue(object.id) : Long.UZERO;
+    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
     message.initiator = object.initiator ?? 0;
     message.creator = object.creator ?? undefined;
     message.contractAddr = object.contractAddr ?? "";
@@ -297,6 +407,45 @@ export const Cancellation = {
     message.positionDirection = object.positionDirection ?? 0;
     message.price = object.price ?? "";
     return message;
+  },
+  fromAmino(object: CancellationAmino): Cancellation {
+    return {
+      id: BigInt(object.id),
+      initiator: isSet(object.initiator) ? cancellationInitiatorFromJSON(object.initiator) : -1,
+      creator: object?.creator,
+      contractAddr: object.contractAddr,
+      priceDenom: object.priceDenom,
+      assetDenom: object.assetDenom,
+      positionDirection: isSet(object.positionDirection) ? positionDirectionFromJSON(object.positionDirection) : -1,
+      price: object.price
+    };
+  },
+  toAmino(message: Cancellation): CancellationAmino {
+    const obj: any = {};
+    obj.id = message.id ? message.id.toString() : undefined;
+    obj.initiator = message.initiator;
+    obj.creator = message.creator;
+    obj.contractAddr = message.contractAddr;
+    obj.priceDenom = message.priceDenom;
+    obj.assetDenom = message.assetDenom;
+    obj.positionDirection = message.positionDirection;
+    obj.price = message.price;
+    return obj;
+  },
+  fromAminoMsg(object: CancellationAminoMsg): Cancellation {
+    return Cancellation.fromAmino(object.value);
+  },
+  fromProtoMsg(message: CancellationProtoMsg): Cancellation {
+    return Cancellation.decode(message.value);
+  },
+  toProto(message: Cancellation): Uint8Array {
+    return Cancellation.encode(message).finish();
+  },
+  toProtoMsg(message: Cancellation): CancellationProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.Cancellation",
+      value: Cancellation.encode(message).finish()
+    };
   }
 };
 function createBaseActiveOrders(): ActiveOrders {
@@ -305,7 +454,8 @@ function createBaseActiveOrders(): ActiveOrders {
   };
 }
 export const ActiveOrders = {
-  encode(message: ActiveOrders, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.dex.ActiveOrders",
+  encode(message: ActiveOrders, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     writer.uint32(10).fork();
     for (const v of message.ids) {
       writer.uint64(v);
@@ -313,8 +463,8 @@ export const ActiveOrders = {
     writer.ldelim();
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ActiveOrders {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ActiveOrders {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseActiveOrders();
     while (reader.pos < end) {
@@ -324,10 +474,10 @@ export const ActiveOrders = {
           if ((tag & 7) === 2) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
-              message.ids.push((reader.uint64() as Long));
+              message.ids.push(reader.uint64());
             }
           } else {
-            message.ids.push((reader.uint64() as Long));
+            message.ids.push(reader.uint64());
           }
           break;
         default:
@@ -339,7 +489,36 @@ export const ActiveOrders = {
   },
   fromPartial(object: DeepPartial<ActiveOrders>): ActiveOrders {
     const message = createBaseActiveOrders();
-    message.ids = object.ids?.map(e => Long.fromValue(e)) || [];
+    message.ids = object.ids?.map(e => BigInt(e.toString())) || [];
     return message;
+  },
+  fromAmino(object: ActiveOrdersAmino): ActiveOrders {
+    return {
+      ids: Array.isArray(object?.ids) ? object.ids.map((e: any) => BigInt(e)) : []
+    };
+  },
+  toAmino(message: ActiveOrders): ActiveOrdersAmino {
+    const obj: any = {};
+    if (message.ids) {
+      obj.ids = message.ids.map(e => e.toString());
+    } else {
+      obj.ids = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: ActiveOrdersAminoMsg): ActiveOrders {
+    return ActiveOrders.fromAmino(object.value);
+  },
+  fromProtoMsg(message: ActiveOrdersProtoMsg): ActiveOrders {
+    return ActiveOrders.decode(message.value);
+  },
+  toProto(message: ActiveOrders): Uint8Array {
+    return ActiveOrders.encode(message).finish();
+  },
+  toProtoMsg(message: ActiveOrders): ActiveOrdersProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.ActiveOrders",
+      value: ActiveOrders.encode(message).finish()
+    };
   }
 };

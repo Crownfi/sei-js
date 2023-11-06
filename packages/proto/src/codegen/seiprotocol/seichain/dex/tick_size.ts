@@ -1,38 +1,53 @@
-import { Pair, PairSDKType } from "./pair";
-import * as _m0 from "protobufjs/minimal";
-import { DeepPartial } from "../../../helpers";
+import { Pair, PairAmino, PairSDKType } from "./pair.js";
+import { BinaryReader, BinaryWriter } from "../../../binary.js";
+import { Decimal } from "@cosmjs/math";
+import { DeepPartial } from "../../../helpers.js";
 export interface TickSize {
-  pair: Pair;
+  pair?: Pair;
   ticksize: string;
   contractAddr: string;
 }
+export interface TickSizeProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.TickSize";
+  value: Uint8Array;
+}
+export interface TickSizeAmino {
+  pair?: PairAmino;
+  ticksize: string;
+  contractAddr: string;
+}
+export interface TickSizeAminoMsg {
+  type: "/seiprotocol.seichain.dex.TickSize";
+  value: TickSizeAmino;
+}
 export interface TickSizeSDKType {
-  pair: PairSDKType;
+  pair?: PairSDKType;
   ticksize: string;
   contractAddr: string;
 }
 function createBaseTickSize(): TickSize {
   return {
-    pair: Pair.fromPartial({}),
+    pair: undefined,
     ticksize: "",
     contractAddr: ""
   };
 }
 export const TickSize = {
-  encode(message: TickSize, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.dex.TickSize",
+  encode(message: TickSize, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pair !== undefined) {
       Pair.encode(message.pair, writer.uint32(10).fork()).ldelim();
     }
     if (message.ticksize !== "") {
-      writer.uint32(18).string(message.ticksize);
+      writer.uint32(18).string(Decimal.fromUserInput(message.ticksize, 18).atomics);
     }
     if (message.contractAddr !== "") {
       writer.uint32(26).string(message.contractAddr);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): TickSize {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): TickSize {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseTickSize();
     while (reader.pos < end) {
@@ -42,7 +57,7 @@ export const TickSize = {
           message.pair = Pair.decode(reader, reader.uint32());
           break;
         case 2:
-          message.ticksize = reader.string();
+          message.ticksize = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 3:
           message.contractAddr = reader.string();
@@ -56,9 +71,38 @@ export const TickSize = {
   },
   fromPartial(object: DeepPartial<TickSize>): TickSize {
     const message = createBaseTickSize();
-    message.pair = object.pair !== undefined && object.pair !== null ? Pair.fromPartial(object.pair) : undefined;
+    message.pair = Pair.fromPartial(object.pair ?? {});
     message.ticksize = object.ticksize ?? "";
     message.contractAddr = object.contractAddr ?? "";
     return message;
+  },
+  fromAmino(object: TickSizeAmino): TickSize {
+    return {
+      pair: object?.pair ? Pair.fromAmino(object.pair) : Pair.fromPartial({}),
+      ticksize: object.ticksize,
+      contractAddr: object.contractAddr
+    };
+  },
+  toAmino(message: TickSize): TickSizeAmino {
+    const obj: any = {};
+    obj.pair = message.pair ? Pair.toAmino(message.pair) : undefined;
+    obj.ticksize = message.ticksize;
+    obj.contractAddr = message.contractAddr;
+    return obj;
+  },
+  fromAminoMsg(object: TickSizeAminoMsg): TickSize {
+    return TickSize.fromAmino(object.value);
+  },
+  fromProtoMsg(message: TickSizeProtoMsg): TickSize {
+    return TickSize.decode(message.value);
+  },
+  toProto(message: TickSize): Uint8Array {
+    return TickSize.encode(message).finish();
+  },
+  toProtoMsg(message: TickSize): TickSizeProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.TickSize",
+      value: TickSize.encode(message).finish()
+    };
   }
 };

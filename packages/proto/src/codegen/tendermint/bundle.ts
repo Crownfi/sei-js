@@ -1,14 +1,14 @@
-import * as _115 from "./abci/types";
-import * as _116 from "./crypto/keys";
-import * as _117 from "./crypto/proof";
-import * as _118 from "./libs/bits/types";
-import * as _119 from "./p2p/types";
-import * as _120 from "./types/block";
-import * as _121 from "./types/evidence";
-import * as _122 from "./types/params";
-import * as _123 from "./types/types";
-import * as _124 from "./types/validator";
-import * as _125 from "./version/types";
+import * as _115 from "./abci/types.js";
+import * as _116 from "./crypto/keys.js";
+import * as _117 from "./crypto/proof.js";
+import * as _118 from "./libs/bits/types.js";
+import * as _119 from "./p2p/types.js";
+import * as _120 from "./types/block.js";
+import * as _121 from "./types/evidence.js";
+import * as _122 from "./types/params.js";
+import * as _123 from "./types/types.js";
+import * as _124 from "./types/validator.js";
+import * as _125 from "./version/types.js";
 export namespace tendermint {
   export const abci = {
     ..._115

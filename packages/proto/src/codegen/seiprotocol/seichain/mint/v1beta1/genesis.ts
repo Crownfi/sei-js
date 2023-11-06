@@ -1,12 +1,27 @@
-import { Minter, MinterSDKType, Params, ParamsSDKType } from "./mint";
-import * as _m0 from "protobufjs/minimal";
-import { DeepPartial } from "../../../../helpers";
+import { Minter, MinterAmino, MinterSDKType, Params, ParamsAmino, ParamsSDKType } from "./mint.js";
+import { BinaryReader, BinaryWriter } from "../../../../binary.js";
+import { DeepPartial } from "../../../../helpers.js";
 /** GenesisState defines the mint module's genesis state. */
 export interface GenesisState {
   /** minter is a space for holding current inflation information. */
   minter: Minter;
   /** params defines all the paramaters of the module. */
   params: Params;
+}
+export interface GenesisStateProtoMsg {
+  typeUrl: "/seiprotocol.seichain.mint.GenesisState";
+  value: Uint8Array;
+}
+/** GenesisState defines the mint module's genesis state. */
+export interface GenesisStateAmino {
+  /** minter is a space for holding current inflation information. */
+  minter?: MinterAmino;
+  /** params defines all the paramaters of the module. */
+  params?: ParamsAmino;
+}
+export interface GenesisStateAminoMsg {
+  type: "/seiprotocol.seichain.mint.GenesisState";
+  value: GenesisStateAmino;
 }
 /** GenesisState defines the mint module's genesis state. */
 export interface GenesisStateSDKType {
@@ -20,7 +35,8 @@ function createBaseGenesisState(): GenesisState {
   };
 }
 export const GenesisState = {
-  encode(message: GenesisState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.mint.GenesisState",
+  encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.minter !== undefined) {
       Minter.encode(message.minter, writer.uint32(10).fork()).ldelim();
     }
@@ -29,8 +45,8 @@ export const GenesisState = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GenesisState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GenesisState {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGenesisState();
     while (reader.pos < end) {
@@ -51,8 +67,35 @@ export const GenesisState = {
   },
   fromPartial(object: DeepPartial<GenesisState>): GenesisState {
     const message = createBaseGenesisState();
-    message.minter = object.minter !== undefined && object.minter !== null ? Minter.fromPartial(object.minter) : undefined;
-    message.params = object.params !== undefined && object.params !== null ? Params.fromPartial(object.params) : undefined;
+    message.minter = Minter.fromPartial(object.minter ?? {});
+    message.params = Params.fromPartial(object.params ?? {});
     return message;
+  },
+  fromAmino(object: GenesisStateAmino): GenesisState {
+    return {
+      minter: object?.minter ? Minter.fromAmino(object.minter) : Minter.fromPartial({}),
+      params: object?.params ? Params.fromAmino(object.params) : Params.fromPartial({})
+    };
+  },
+  toAmino(message: GenesisState): GenesisStateAmino {
+    const obj: any = {};
+    obj.minter = message.minter ? Minter.toAmino(message.minter) : undefined;
+    obj.params = message.params ? Params.toAmino(message.params) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: GenesisStateAminoMsg): GenesisState {
+    return GenesisState.fromAmino(object.value);
+  },
+  fromProtoMsg(message: GenesisStateProtoMsg): GenesisState {
+    return GenesisState.decode(message.value);
+  },
+  toProto(message: GenesisState): Uint8Array {
+    return GenesisState.encode(message).finish();
+  },
+  toProtoMsg(message: GenesisState): GenesisStateProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.mint.GenesisState",
+      value: GenesisState.encode(message).finish()
+    };
   }
 };

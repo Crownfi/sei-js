@@ -1,29 +1,44 @@
-import { Header, HeaderSDKType, Data, DataSDKType, Commit, CommitSDKType } from "./types";
-import { EvidenceList, EvidenceListSDKType } from "./evidence";
-import * as _m0 from "protobufjs/minimal";
-import { DeepPartial } from "../../helpers";
+import { Header, HeaderAmino, HeaderSDKType, Data, DataAmino, DataSDKType, Commit, CommitAmino, CommitSDKType } from "./types.js";
+import { EvidenceList, EvidenceListAmino, EvidenceListSDKType } from "./evidence.js";
+import { BinaryReader, BinaryWriter } from "../../binary.js";
+import { DeepPartial } from "../../helpers.js";
 export interface Block {
   header: Header;
   data: Data;
   evidence: EvidenceList;
-  lastCommit: Commit;
+  lastCommit?: Commit;
+}
+export interface BlockProtoMsg {
+  typeUrl: "/tendermint.types.Block";
+  value: Uint8Array;
+}
+export interface BlockAmino {
+  header?: HeaderAmino;
+  data?: DataAmino;
+  evidence?: EvidenceListAmino;
+  last_commit?: CommitAmino;
+}
+export interface BlockAminoMsg {
+  type: "/tendermint.types.Block";
+  value: BlockAmino;
 }
 export interface BlockSDKType {
   header: HeaderSDKType;
   data: DataSDKType;
   evidence: EvidenceListSDKType;
-  last_commit: CommitSDKType;
+  last_commit?: CommitSDKType;
 }
 function createBaseBlock(): Block {
   return {
     header: Header.fromPartial({}),
     data: Data.fromPartial({}),
     evidence: EvidenceList.fromPartial({}),
-    lastCommit: Commit.fromPartial({})
+    lastCommit: undefined
   };
 }
 export const Block = {
-  encode(message: Block, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/tendermint.types.Block",
+  encode(message: Block, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.header !== undefined) {
       Header.encode(message.header, writer.uint32(10).fork()).ldelim();
     }
@@ -38,8 +53,8 @@ export const Block = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Block {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Block {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseBlock();
     while (reader.pos < end) {
@@ -66,10 +81,41 @@ export const Block = {
   },
   fromPartial(object: DeepPartial<Block>): Block {
     const message = createBaseBlock();
-    message.header = object.header !== undefined && object.header !== null ? Header.fromPartial(object.header) : undefined;
-    message.data = object.data !== undefined && object.data !== null ? Data.fromPartial(object.data) : undefined;
-    message.evidence = object.evidence !== undefined && object.evidence !== null ? EvidenceList.fromPartial(object.evidence) : undefined;
-    message.lastCommit = object.lastCommit !== undefined && object.lastCommit !== null ? Commit.fromPartial(object.lastCommit) : undefined;
+    message.header = Header.fromPartial(object.header ?? {});
+    message.data = Data.fromPartial(object.data ?? {});
+    message.evidence = EvidenceList.fromPartial(object.evidence ?? {});
+    message.lastCommit = Commit.fromPartial(object.lastCommit ?? {});
     return message;
+  },
+  fromAmino(object: BlockAmino): Block {
+    return {
+      header: object?.header ? Header.fromAmino(object.header) : Header.fromPartial({}),
+      data: object?.data ? Data.fromAmino(object.data) : Data.fromPartial({}),
+      evidence: object?.evidence ? EvidenceList.fromAmino(object.evidence) : EvidenceList.fromPartial({}),
+      lastCommit: object?.last_commit ? Commit.fromAmino(object.last_commit) : Commit.fromPartial({})
+    };
+  },
+  toAmino(message: Block): BlockAmino {
+    const obj: any = {};
+    obj.header = message.header ? Header.toAmino(message.header) : undefined;
+    obj.data = message.data ? Data.toAmino(message.data) : undefined;
+    obj.evidence = message.evidence ? EvidenceList.toAmino(message.evidence) : undefined;
+    obj.last_commit = message.lastCommit ? Commit.toAmino(message.lastCommit) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: BlockAminoMsg): Block {
+    return Block.fromAmino(object.value);
+  },
+  fromProtoMsg(message: BlockProtoMsg): Block {
+    return Block.decode(message.value);
+  },
+  toProto(message: Block): Uint8Array {
+    return Block.encode(message).finish();
+  },
+  toProtoMsg(message: Block): BlockProtoMsg {
+    return {
+      typeUrl: "/tendermint.types.Block",
+      value: Block.encode(message).finish()
+    };
   }
 };

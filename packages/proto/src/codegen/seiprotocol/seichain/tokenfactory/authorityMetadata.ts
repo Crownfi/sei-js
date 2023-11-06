@@ -1,5 +1,5 @@
-import * as _m0 from "protobufjs/minimal";
-import { DeepPartial } from "../../../helpers";
+import { BinaryReader, BinaryWriter } from "../../../binary.js";
+import { DeepPartial } from "../../../helpers.js";
 /**
  * DenomAuthorityMetadata specifies metadata for addresses that have specific
  * capabilities over a token factory denom. Right now there is only one Admin
@@ -8,6 +8,23 @@ import { DeepPartial } from "../../../helpers";
 export interface DenomAuthorityMetadata {
   /** Can be empty for no admin, or a valid sei address */
   admin: string;
+}
+export interface DenomAuthorityMetadataProtoMsg {
+  typeUrl: "/seiprotocol.seichain.tokenfactory.DenomAuthorityMetadata";
+  value: Uint8Array;
+}
+/**
+ * DenomAuthorityMetadata specifies metadata for addresses that have specific
+ * capabilities over a token factory denom. Right now there is only one Admin
+ * permission, but is planned to be extended to the future.
+ */
+export interface DenomAuthorityMetadataAmino {
+  /** Can be empty for no admin, or a valid sei address */
+  admin: string;
+}
+export interface DenomAuthorityMetadataAminoMsg {
+  type: "/seiprotocol.seichain.tokenfactory.DenomAuthorityMetadata";
+  value: DenomAuthorityMetadataAmino;
 }
 /**
  * DenomAuthorityMetadata specifies metadata for addresses that have specific
@@ -23,14 +40,15 @@ function createBaseDenomAuthorityMetadata(): DenomAuthorityMetadata {
   };
 }
 export const DenomAuthorityMetadata = {
-  encode(message: DenomAuthorityMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.tokenfactory.DenomAuthorityMetadata",
+  encode(message: DenomAuthorityMetadata, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.admin !== "") {
       writer.uint32(10).string(message.admin);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): DenomAuthorityMetadata {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): DenomAuthorityMetadata {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDenomAuthorityMetadata();
     while (reader.pos < end) {
@@ -50,5 +68,30 @@ export const DenomAuthorityMetadata = {
     const message = createBaseDenomAuthorityMetadata();
     message.admin = object.admin ?? "";
     return message;
+  },
+  fromAmino(object: DenomAuthorityMetadataAmino): DenomAuthorityMetadata {
+    return {
+      admin: object.admin
+    };
+  },
+  toAmino(message: DenomAuthorityMetadata): DenomAuthorityMetadataAmino {
+    const obj: any = {};
+    obj.admin = message.admin;
+    return obj;
+  },
+  fromAminoMsg(object: DenomAuthorityMetadataAminoMsg): DenomAuthorityMetadata {
+    return DenomAuthorityMetadata.fromAmino(object.value);
+  },
+  fromProtoMsg(message: DenomAuthorityMetadataProtoMsg): DenomAuthorityMetadata {
+    return DenomAuthorityMetadata.decode(message.value);
+  },
+  toProto(message: DenomAuthorityMetadata): Uint8Array {
+    return DenomAuthorityMetadata.encode(message).finish();
+  },
+  toProtoMsg(message: DenomAuthorityMetadata): DenomAuthorityMetadataProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.tokenfactory.DenomAuthorityMetadata",
+      value: DenomAuthorityMetadata.encode(message).finish()
+    };
   }
 };

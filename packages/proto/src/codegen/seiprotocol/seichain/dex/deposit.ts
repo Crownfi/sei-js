@@ -1,9 +1,23 @@
-import * as _m0 from "protobufjs/minimal";
-import { DeepPartial } from "../../../helpers";
+import { BinaryReader, BinaryWriter } from "../../../binary.js";
+import { Decimal } from "@cosmjs/math";
+import { DeepPartial } from "../../../helpers.js";
 export interface DepositInfoEntry {
   creator: string;
   denom: string;
   amount: string;
+}
+export interface DepositInfoEntryProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.DepositInfoEntry";
+  value: Uint8Array;
+}
+export interface DepositInfoEntryAmino {
+  creator: string;
+  denom: string;
+  amount: string;
+}
+export interface DepositInfoEntryAminoMsg {
+  type: "/seiprotocol.seichain.dex.DepositInfoEntry";
+  value: DepositInfoEntryAmino;
 }
 export interface DepositInfoEntrySDKType {
   creator: string;
@@ -18,7 +32,8 @@ function createBaseDepositInfoEntry(): DepositInfoEntry {
   };
 }
 export const DepositInfoEntry = {
-  encode(message: DepositInfoEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.dex.DepositInfoEntry",
+  encode(message: DepositInfoEntry, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
@@ -26,12 +41,12 @@ export const DepositInfoEntry = {
       writer.uint32(18).string(message.denom);
     }
     if (message.amount !== "") {
-      writer.uint32(26).string(message.amount);
+      writer.uint32(26).string(Decimal.fromUserInput(message.amount, 18).atomics);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): DepositInfoEntry {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): DepositInfoEntry {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDepositInfoEntry();
     while (reader.pos < end) {
@@ -44,7 +59,7 @@ export const DepositInfoEntry = {
           message.denom = reader.string();
           break;
         case 3:
-          message.amount = reader.string();
+          message.amount = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         default:
           reader.skipType(tag & 7);
@@ -59,5 +74,34 @@ export const DepositInfoEntry = {
     message.denom = object.denom ?? "";
     message.amount = object.amount ?? "";
     return message;
+  },
+  fromAmino(object: DepositInfoEntryAmino): DepositInfoEntry {
+    return {
+      creator: object.creator,
+      denom: object.denom,
+      amount: object.amount
+    };
+  },
+  toAmino(message: DepositInfoEntry): DepositInfoEntryAmino {
+    const obj: any = {};
+    obj.creator = message.creator;
+    obj.denom = message.denom;
+    obj.amount = message.amount;
+    return obj;
+  },
+  fromAminoMsg(object: DepositInfoEntryAminoMsg): DepositInfoEntry {
+    return DepositInfoEntry.fromAmino(object.value);
+  },
+  fromProtoMsg(message: DepositInfoEntryProtoMsg): DepositInfoEntry {
+    return DepositInfoEntry.decode(message.value);
+  },
+  toProto(message: DepositInfoEntry): Uint8Array {
+    return DepositInfoEntry.encode(message).finish();
+  },
+  toProtoMsg(message: DepositInfoEntry): DepositInfoEntryProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.DepositInfoEntry",
+      value: DepositInfoEntry.encode(message).finish()
+    };
   }
 };

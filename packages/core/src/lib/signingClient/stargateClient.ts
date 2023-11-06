@@ -7,7 +7,7 @@ import {
 	ibcAminoConverters,
 	seiprotocolProtoRegistry,
 	seiprotocolAminoConverters
-} from '@sei-js/proto';
+} from '@crownfi/sei-js-proto';
 
 export const createSeiRegistry = (): Registry => {
 	return new Registry([...defaultRegistryTypes, ...cosmwasmProtoRegistry, ...seiprotocolProtoRegistry]);

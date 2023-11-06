@@ -4,6 +4,7 @@ export enum PositionDirection {
   UNRECOGNIZED = -1,
 }
 export const PositionDirectionSDKType = PositionDirection;
+export const PositionDirectionAmino = PositionDirection;
 export function positionDirectionFromJSON(object: any): PositionDirection {
   switch (object) {
     case 0:
@@ -35,6 +36,7 @@ export enum PositionEffect {
   UNRECOGNIZED = -1,
 }
 export const PositionEffectSDKType = PositionEffect;
+export const PositionEffectAmino = PositionEffect;
 export function positionEffectFromJSON(object: any): PositionEffect {
   switch (object) {
     case 0:
@@ -72,6 +74,7 @@ export enum OrderType {
   UNRECOGNIZED = -1,
 }
 export const OrderTypeSDKType = OrderType;
+export const OrderTypeAmino = OrderType;
 export function orderTypeFromJSON(object: any): OrderType {
   switch (object) {
     case 0:
@@ -125,6 +128,7 @@ export enum Unit {
   UNRECOGNIZED = -1,
 }
 export const UnitSDKType = Unit;
+export const UnitAmino = Unit;
 export function unitFromJSON(object: any): Unit {
   switch (object) {
     case 0:
@@ -168,6 +172,7 @@ export enum OrderStatus {
   UNRECOGNIZED = -1,
 }
 export const OrderStatusSDKType = OrderStatus;
+export const OrderStatusAmino = OrderStatus;
 export function orderStatusFromJSON(object: any): OrderStatus {
   switch (object) {
     case 0:
@@ -209,6 +214,7 @@ export enum CancellationInitiator {
   UNRECOGNIZED = -1,
 }
 export const CancellationInitiatorSDKType = CancellationInitiator;
+export const CancellationInitiatorAmino = CancellationInitiator;
 export function cancellationInitiatorFromJSON(object: any): CancellationInitiator {
   switch (object) {
     case 0:

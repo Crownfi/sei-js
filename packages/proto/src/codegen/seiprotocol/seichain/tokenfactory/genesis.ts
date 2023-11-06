@@ -1,12 +1,26 @@
-import { Params, ParamsSDKType } from "./params";
-import { DenomAuthorityMetadata, DenomAuthorityMetadataSDKType } from "./authorityMetadata";
-import * as _m0 from "protobufjs/minimal";
-import { DeepPartial } from "../../../helpers";
+import { Params, ParamsAmino, ParamsSDKType } from "./params.js";
+import { DenomAuthorityMetadata, DenomAuthorityMetadataAmino, DenomAuthorityMetadataSDKType } from "./authorityMetadata.js";
+import { BinaryReader, BinaryWriter } from "../../../binary.js";
+import { DeepPartial } from "../../../helpers.js";
 /** GenesisState defines the tokenfactory module's genesis state. */
 export interface GenesisState {
   /** params defines the paramaters of the module. */
   params: Params;
   factoryDenoms: GenesisDenom[];
+}
+export interface GenesisStateProtoMsg {
+  typeUrl: "/seiprotocol.seichain.tokenfactory.GenesisState";
+  value: Uint8Array;
+}
+/** GenesisState defines the tokenfactory module's genesis state. */
+export interface GenesisStateAmino {
+  /** params defines the paramaters of the module. */
+  params?: ParamsAmino;
+  factory_denoms: GenesisDenomAmino[];
+}
+export interface GenesisStateAminoMsg {
+  type: "/seiprotocol.seichain.tokenfactory.GenesisState";
+  value: GenesisStateAmino;
 }
 /** GenesisState defines the tokenfactory module's genesis state. */
 export interface GenesisStateSDKType {
@@ -21,6 +35,23 @@ export interface GenesisStateSDKType {
 export interface GenesisDenom {
   denom: string;
   authorityMetadata: DenomAuthorityMetadata;
+}
+export interface GenesisDenomProtoMsg {
+  typeUrl: "/seiprotocol.seichain.tokenfactory.GenesisDenom";
+  value: Uint8Array;
+}
+/**
+ * GenesisDenom defines a tokenfactory denom that is defined within genesis
+ * state. The structure contains DenomAuthorityMetadata which defines the
+ * denom's admin.
+ */
+export interface GenesisDenomAmino {
+  denom: string;
+  authority_metadata?: DenomAuthorityMetadataAmino;
+}
+export interface GenesisDenomAminoMsg {
+  type: "/seiprotocol.seichain.tokenfactory.GenesisDenom";
+  value: GenesisDenomAmino;
 }
 /**
  * GenesisDenom defines a tokenfactory denom that is defined within genesis
@@ -38,7 +69,8 @@ function createBaseGenesisState(): GenesisState {
   };
 }
 export const GenesisState = {
-  encode(message: GenesisState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.tokenfactory.GenesisState",
+  encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
@@ -47,8 +79,8 @@ export const GenesisState = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GenesisState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GenesisState {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGenesisState();
     while (reader.pos < end) {
@@ -69,9 +101,40 @@ export const GenesisState = {
   },
   fromPartial(object: DeepPartial<GenesisState>): GenesisState {
     const message = createBaseGenesisState();
-    message.params = object.params !== undefined && object.params !== null ? Params.fromPartial(object.params) : undefined;
+    message.params = Params.fromPartial(object.params ?? {});
     message.factoryDenoms = object.factoryDenoms?.map(e => GenesisDenom.fromPartial(e)) || [];
     return message;
+  },
+  fromAmino(object: GenesisStateAmino): GenesisState {
+    return {
+      params: object?.params ? Params.fromAmino(object.params) : Params.fromPartial({}),
+      factoryDenoms: Array.isArray(object?.factory_denoms) ? object.factory_denoms.map((e: any) => GenesisDenom.fromAmino(e)) : []
+    };
+  },
+  toAmino(message: GenesisState): GenesisStateAmino {
+    const obj: any = {};
+    obj.params = message.params ? Params.toAmino(message.params) : undefined;
+    if (message.factoryDenoms) {
+      obj.factory_denoms = message.factoryDenoms.map(e => e ? GenesisDenom.toAmino(e) : undefined);
+    } else {
+      obj.factory_denoms = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: GenesisStateAminoMsg): GenesisState {
+    return GenesisState.fromAmino(object.value);
+  },
+  fromProtoMsg(message: GenesisStateProtoMsg): GenesisState {
+    return GenesisState.decode(message.value);
+  },
+  toProto(message: GenesisState): Uint8Array {
+    return GenesisState.encode(message).finish();
+  },
+  toProtoMsg(message: GenesisState): GenesisStateProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.tokenfactory.GenesisState",
+      value: GenesisState.encode(message).finish()
+    };
   }
 };
 function createBaseGenesisDenom(): GenesisDenom {
@@ -81,7 +144,8 @@ function createBaseGenesisDenom(): GenesisDenom {
   };
 }
 export const GenesisDenom = {
-  encode(message: GenesisDenom, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.tokenfactory.GenesisDenom",
+  encode(message: GenesisDenom, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.denom !== "") {
       writer.uint32(10).string(message.denom);
     }
@@ -90,8 +154,8 @@ export const GenesisDenom = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GenesisDenom {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GenesisDenom {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGenesisDenom();
     while (reader.pos < end) {
@@ -113,7 +177,34 @@ export const GenesisDenom = {
   fromPartial(object: DeepPartial<GenesisDenom>): GenesisDenom {
     const message = createBaseGenesisDenom();
     message.denom = object.denom ?? "";
-    message.authorityMetadata = object.authorityMetadata !== undefined && object.authorityMetadata !== null ? DenomAuthorityMetadata.fromPartial(object.authorityMetadata) : undefined;
+    message.authorityMetadata = DenomAuthorityMetadata.fromPartial(object.authorityMetadata ?? {});
     return message;
+  },
+  fromAmino(object: GenesisDenomAmino): GenesisDenom {
+    return {
+      denom: object.denom,
+      authorityMetadata: object?.authority_metadata ? DenomAuthorityMetadata.fromAmino(object.authority_metadata) : DenomAuthorityMetadata.fromPartial({})
+    };
+  },
+  toAmino(message: GenesisDenom): GenesisDenomAmino {
+    const obj: any = {};
+    obj.denom = message.denom;
+    obj.authority_metadata = message.authorityMetadata ? DenomAuthorityMetadata.toAmino(message.authorityMetadata) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: GenesisDenomAminoMsg): GenesisDenom {
+    return GenesisDenom.fromAmino(object.value);
+  },
+  fromProtoMsg(message: GenesisDenomProtoMsg): GenesisDenom {
+    return GenesisDenom.decode(message.value);
+  },
+  toProto(message: GenesisDenom): Uint8Array {
+    return GenesisDenom.encode(message).finish();
+  },
+  toProtoMsg(message: GenesisDenom): GenesisDenomProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.tokenfactory.GenesisDenom",
+      value: GenesisDenom.encode(message).finish()
+    };
   }
 };

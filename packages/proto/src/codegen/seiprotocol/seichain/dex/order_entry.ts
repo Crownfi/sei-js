@@ -1,11 +1,27 @@
-import { Long, DeepPartial } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../../binary.js";
+import { Decimal } from "@cosmjs/math";
+import { DeepPartial } from "../../../helpers.js";
 export interface OrderEntry {
   price: string;
   quantity: string;
   allocations: Allocation[];
   priceDenom: string;
   assetDenom: string;
+}
+export interface OrderEntryProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.OrderEntry";
+  value: Uint8Array;
+}
+export interface OrderEntryAmino {
+  price: string;
+  quantity: string;
+  allocations: AllocationAmino[];
+  priceDenom: string;
+  assetDenom: string;
+}
+export interface OrderEntryAminoMsg {
+  type: "/seiprotocol.seichain.dex.OrderEntry";
+  value: OrderEntryAmino;
 }
 export interface OrderEntrySDKType {
   price: string;
@@ -15,12 +31,25 @@ export interface OrderEntrySDKType {
   assetDenom: string;
 }
 export interface Allocation {
-  orderId: Long;
+  orderId: bigint;
   quantity: string;
   account: string;
 }
+export interface AllocationProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.Allocation";
+  value: Uint8Array;
+}
+export interface AllocationAmino {
+  orderId: string;
+  quantity: string;
+  account: string;
+}
+export interface AllocationAminoMsg {
+  type: "/seiprotocol.seichain.dex.Allocation";
+  value: AllocationAmino;
+}
 export interface AllocationSDKType {
-  orderId: Long;
+  orderId: bigint;
   quantity: string;
   account: string;
 }
@@ -34,12 +63,13 @@ function createBaseOrderEntry(): OrderEntry {
   };
 }
 export const OrderEntry = {
-  encode(message: OrderEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.dex.OrderEntry",
+  encode(message: OrderEntry, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.price !== "") {
-      writer.uint32(10).string(message.price);
+      writer.uint32(10).string(Decimal.fromUserInput(message.price, 18).atomics);
     }
     if (message.quantity !== "") {
-      writer.uint32(18).string(message.quantity);
+      writer.uint32(18).string(Decimal.fromUserInput(message.quantity, 18).atomics);
     }
     for (const v of message.allocations) {
       Allocation.encode(v!, writer.uint32(26).fork()).ldelim();
@@ -52,18 +82,18 @@ export const OrderEntry = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): OrderEntry {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): OrderEntry {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseOrderEntry();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.price = reader.string();
+          message.price = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 2:
-          message.quantity = reader.string();
+          message.quantity = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 3:
           message.allocations.push(Allocation.decode(reader, reader.uint32()));
@@ -89,40 +119,78 @@ export const OrderEntry = {
     message.priceDenom = object.priceDenom ?? "";
     message.assetDenom = object.assetDenom ?? "";
     return message;
+  },
+  fromAmino(object: OrderEntryAmino): OrderEntry {
+    return {
+      price: object.price,
+      quantity: object.quantity,
+      allocations: Array.isArray(object?.allocations) ? object.allocations.map((e: any) => Allocation.fromAmino(e)) : [],
+      priceDenom: object.priceDenom,
+      assetDenom: object.assetDenom
+    };
+  },
+  toAmino(message: OrderEntry): OrderEntryAmino {
+    const obj: any = {};
+    obj.price = message.price;
+    obj.quantity = message.quantity;
+    if (message.allocations) {
+      obj.allocations = message.allocations.map(e => e ? Allocation.toAmino(e) : undefined);
+    } else {
+      obj.allocations = [];
+    }
+    obj.priceDenom = message.priceDenom;
+    obj.assetDenom = message.assetDenom;
+    return obj;
+  },
+  fromAminoMsg(object: OrderEntryAminoMsg): OrderEntry {
+    return OrderEntry.fromAmino(object.value);
+  },
+  fromProtoMsg(message: OrderEntryProtoMsg): OrderEntry {
+    return OrderEntry.decode(message.value);
+  },
+  toProto(message: OrderEntry): Uint8Array {
+    return OrderEntry.encode(message).finish();
+  },
+  toProtoMsg(message: OrderEntry): OrderEntryProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.OrderEntry",
+      value: OrderEntry.encode(message).finish()
+    };
   }
 };
 function createBaseAllocation(): Allocation {
   return {
-    orderId: Long.UZERO,
+    orderId: BigInt(0),
     quantity: "",
     account: ""
   };
 }
 export const Allocation = {
-  encode(message: Allocation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.orderId.isZero()) {
+  typeUrl: "/seiprotocol.seichain.dex.Allocation",
+  encode(message: Allocation, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.orderId !== BigInt(0)) {
       writer.uint32(8).uint64(message.orderId);
     }
     if (message.quantity !== "") {
-      writer.uint32(18).string(message.quantity);
+      writer.uint32(18).string(Decimal.fromUserInput(message.quantity, 18).atomics);
     }
     if (message.account !== "") {
       writer.uint32(26).string(message.account);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Allocation {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Allocation {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAllocation();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.orderId = (reader.uint64() as Long);
+          message.orderId = reader.uint64();
           break;
         case 2:
-          message.quantity = reader.string();
+          message.quantity = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 3:
           message.account = reader.string();
@@ -136,9 +204,38 @@ export const Allocation = {
   },
   fromPartial(object: DeepPartial<Allocation>): Allocation {
     const message = createBaseAllocation();
-    message.orderId = object.orderId !== undefined && object.orderId !== null ? Long.fromValue(object.orderId) : Long.UZERO;
+    message.orderId = object.orderId !== undefined && object.orderId !== null ? BigInt(object.orderId.toString()) : BigInt(0);
     message.quantity = object.quantity ?? "";
     message.account = object.account ?? "";
     return message;
+  },
+  fromAmino(object: AllocationAmino): Allocation {
+    return {
+      orderId: BigInt(object.orderId),
+      quantity: object.quantity,
+      account: object.account
+    };
+  },
+  toAmino(message: Allocation): AllocationAmino {
+    const obj: any = {};
+    obj.orderId = message.orderId ? message.orderId.toString() : undefined;
+    obj.quantity = message.quantity;
+    obj.account = message.account;
+    return obj;
+  },
+  fromAminoMsg(object: AllocationAminoMsg): Allocation {
+    return Allocation.fromAmino(object.value);
+  },
+  fromProtoMsg(message: AllocationProtoMsg): Allocation {
+    return Allocation.decode(message.value);
+  },
+  toProto(message: Allocation): Uint8Array {
+    return Allocation.encode(message).finish();
+  },
+  toProtoMsg(message: Allocation): AllocationProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.Allocation",
+      value: Allocation.encode(message).finish()
+    };
   }
 };

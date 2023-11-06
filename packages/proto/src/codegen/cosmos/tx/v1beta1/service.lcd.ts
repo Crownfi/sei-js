@@ -1,6 +1,6 @@
-import { setPaginationParams } from "../../../helpers";
-import { LCDClient } from "@osmonauts/lcd";
-import { GetTxRequest, GetTxResponseSDKType, GetTxsEventRequest, GetTxsEventResponseSDKType, GetBlockWithTxsRequest, GetBlockWithTxsResponseSDKType } from "./service";
+import { setPaginationParams } from "../../../helpers.js";
+import { LCDClient } from "@cosmology/lcd";
+import { GetTxRequest, GetTxResponseSDKType, GetTxsEventRequest, GetTxsEventResponseSDKType, GetBlockWithTxsRequest, GetBlockWithTxsResponseSDKType } from "./service.js";
 export class LCDQueryClient {
   req: LCDClient;
   constructor({

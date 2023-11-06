@@ -1,11 +1,25 @@
-import { Metadata, MetadataSDKType } from "../../../cosmos/bank/v1beta1/bank";
-import * as _m0 from "protobufjs/minimal";
-import { DeepPartial } from "../../../helpers";
+import { Metadata, MetadataAmino, MetadataSDKType } from "../../../cosmos/bank/v1beta1/bank.js";
+import { BinaryReader, BinaryWriter } from "../../../binary.js";
+import { DeepPartial } from "../../../helpers.js";
 export interface AssetIBCInfo {
   sourceChannel: string;
   dstChannel: string;
   sourceDenom: string;
   sourceChainID: string;
+}
+export interface AssetIBCInfoProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.AssetIBCInfo";
+  value: Uint8Array;
+}
+export interface AssetIBCInfoAmino {
+  sourceChannel: string;
+  dstChannel: string;
+  sourceDenom: string;
+  sourceChainID: string;
+}
+export interface AssetIBCInfoAminoMsg {
+  type: "/seiprotocol.seichain.dex.AssetIBCInfo";
+  value: AssetIBCInfoAmino;
 }
 export interface AssetIBCInfoSDKType {
   sourceChannel: string;
@@ -14,13 +28,27 @@ export interface AssetIBCInfoSDKType {
   sourceChainID: string;
 }
 export interface AssetMetadata {
-  ibcInfo: AssetIBCInfo;
+  ibcInfo?: AssetIBCInfo;
   /** Ex: cw20, ics20, erc20 */
   typeAsset: string;
   metadata: Metadata;
 }
+export interface AssetMetadataProtoMsg {
+  typeUrl: "/seiprotocol.seichain.dex.AssetMetadata";
+  value: Uint8Array;
+}
+export interface AssetMetadataAmino {
+  ibcInfo?: AssetIBCInfoAmino;
+  /** Ex: cw20, ics20, erc20 */
+  type_asset: string;
+  metadata?: MetadataAmino;
+}
+export interface AssetMetadataAminoMsg {
+  type: "/seiprotocol.seichain.dex.AssetMetadata";
+  value: AssetMetadataAmino;
+}
 export interface AssetMetadataSDKType {
-  ibcInfo: AssetIBCInfoSDKType;
+  ibcInfo?: AssetIBCInfoSDKType;
   type_asset: string;
   metadata: MetadataSDKType;
 }
@@ -33,7 +61,8 @@ function createBaseAssetIBCInfo(): AssetIBCInfo {
   };
 }
 export const AssetIBCInfo = {
-  encode(message: AssetIBCInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.dex.AssetIBCInfo",
+  encode(message: AssetIBCInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.sourceChannel !== "") {
       writer.uint32(10).string(message.sourceChannel);
     }
@@ -48,8 +77,8 @@ export const AssetIBCInfo = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): AssetIBCInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): AssetIBCInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAssetIBCInfo();
     while (reader.pos < end) {
@@ -81,17 +110,49 @@ export const AssetIBCInfo = {
     message.sourceDenom = object.sourceDenom ?? "";
     message.sourceChainID = object.sourceChainID ?? "";
     return message;
+  },
+  fromAmino(object: AssetIBCInfoAmino): AssetIBCInfo {
+    return {
+      sourceChannel: object.sourceChannel,
+      dstChannel: object.dstChannel,
+      sourceDenom: object.sourceDenom,
+      sourceChainID: object.sourceChainID
+    };
+  },
+  toAmino(message: AssetIBCInfo): AssetIBCInfoAmino {
+    const obj: any = {};
+    obj.sourceChannel = message.sourceChannel;
+    obj.dstChannel = message.dstChannel;
+    obj.sourceDenom = message.sourceDenom;
+    obj.sourceChainID = message.sourceChainID;
+    return obj;
+  },
+  fromAminoMsg(object: AssetIBCInfoAminoMsg): AssetIBCInfo {
+    return AssetIBCInfo.fromAmino(object.value);
+  },
+  fromProtoMsg(message: AssetIBCInfoProtoMsg): AssetIBCInfo {
+    return AssetIBCInfo.decode(message.value);
+  },
+  toProto(message: AssetIBCInfo): Uint8Array {
+    return AssetIBCInfo.encode(message).finish();
+  },
+  toProtoMsg(message: AssetIBCInfo): AssetIBCInfoProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.AssetIBCInfo",
+      value: AssetIBCInfo.encode(message).finish()
+    };
   }
 };
 function createBaseAssetMetadata(): AssetMetadata {
   return {
-    ibcInfo: AssetIBCInfo.fromPartial({}),
+    ibcInfo: undefined,
     typeAsset: "",
     metadata: Metadata.fromPartial({})
   };
 }
 export const AssetMetadata = {
-  encode(message: AssetMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/seiprotocol.seichain.dex.AssetMetadata",
+  encode(message: AssetMetadata, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.ibcInfo !== undefined) {
       AssetIBCInfo.encode(message.ibcInfo, writer.uint32(10).fork()).ldelim();
     }
@@ -103,8 +164,8 @@ export const AssetMetadata = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): AssetMetadata {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): AssetMetadata {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAssetMetadata();
     while (reader.pos < end) {
@@ -128,9 +189,38 @@ export const AssetMetadata = {
   },
   fromPartial(object: DeepPartial<AssetMetadata>): AssetMetadata {
     const message = createBaseAssetMetadata();
-    message.ibcInfo = object.ibcInfo !== undefined && object.ibcInfo !== null ? AssetIBCInfo.fromPartial(object.ibcInfo) : undefined;
+    message.ibcInfo = AssetIBCInfo.fromPartial(object.ibcInfo ?? {});
     message.typeAsset = object.typeAsset ?? "";
-    message.metadata = object.metadata !== undefined && object.metadata !== null ? Metadata.fromPartial(object.metadata) : undefined;
+    message.metadata = Metadata.fromPartial(object.metadata ?? {});
     return message;
+  },
+  fromAmino(object: AssetMetadataAmino): AssetMetadata {
+    return {
+      ibcInfo: object?.ibcInfo ? AssetIBCInfo.fromAmino(object.ibcInfo) : AssetIBCInfo.fromPartial({}),
+      typeAsset: object.type_asset,
+      metadata: object?.metadata ? Metadata.fromAmino(object.metadata) : Metadata.fromPartial({})
+    };
+  },
+  toAmino(message: AssetMetadata): AssetMetadataAmino {
+    const obj: any = {};
+    obj.ibcInfo = message.ibcInfo ? AssetIBCInfo.toAmino(message.ibcInfo) : undefined;
+    obj.type_asset = message.typeAsset;
+    obj.metadata = message.metadata ? Metadata.toAmino(message.metadata) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: AssetMetadataAminoMsg): AssetMetadata {
+    return AssetMetadata.fromAmino(object.value);
+  },
+  fromProtoMsg(message: AssetMetadataProtoMsg): AssetMetadata {
+    return AssetMetadata.decode(message.value);
+  },
+  toProto(message: AssetMetadata): Uint8Array {
+    return AssetMetadata.encode(message).finish();
+  },
+  toProtoMsg(message: AssetMetadata): AssetMetadataProtoMsg {
+    return {
+      typeUrl: "/seiprotocol.seichain.dex.AssetMetadata",
+      value: AssetMetadata.encode(message).finish()
+    };
   }
 };

@@ -1,6 +1,6 @@
-import { setPaginationParams } from "../../../../helpers";
-import { LCDClient } from "@osmonauts/lcd";
-import { QueryDenomTraceRequest, QueryDenomTraceResponseSDKType, QueryDenomTracesRequest, QueryDenomTracesResponseSDKType, QueryParamsRequest, QueryParamsResponseSDKType } from "./query";
+import { setPaginationParams } from "../../../../helpers.js";
+import { LCDClient } from "@cosmology/lcd";
+import { QueryDenomTraceRequest, QueryDenomTraceResponseSDKType, QueryDenomTracesRequest, QueryDenomTracesResponseSDKType, QueryParamsRequest, QueryParamsResponseSDKType } from "./query.js";
 export class LCDQueryClient {
   req: LCDClient;
   constructor({

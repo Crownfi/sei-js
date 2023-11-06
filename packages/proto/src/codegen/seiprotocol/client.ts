@@ -1,12 +1,12 @@
 import { GeneratedType, Registry, OfflineSigner } from "@cosmjs/proto-signing";
 import { defaultRegistryTypes, AminoTypes, SigningStargateClient } from "@cosmjs/stargate";
 import { HttpEndpoint } from "@cosmjs/tendermint-rpc";
-import * as seiprotocolSeichainDexTxRegistry from "./seichain/dex/tx.registry";
-import * as seiprotocolSeichainOracleTxRegistry from "./seichain/oracle/tx.registry";
-import * as seiprotocolSeichainTokenfactoryTxRegistry from "./seichain/tokenfactory/tx.registry";
-import * as seiprotocolSeichainDexTxAmino from "./seichain/dex/tx.amino";
-import * as seiprotocolSeichainOracleTxAmino from "./seichain/oracle/tx.amino";
-import * as seiprotocolSeichainTokenfactoryTxAmino from "./seichain/tokenfactory/tx.amino";
+import * as seiprotocolSeichainDexTxRegistry from "./seichain/dex/tx.registry.js";
+import * as seiprotocolSeichainOracleTxRegistry from "./seichain/oracle/tx.registry.js";
+import * as seiprotocolSeichainTokenfactoryTxRegistry from "./seichain/tokenfactory/tx.registry.js";
+import * as seiprotocolSeichainDexTxAmino from "./seichain/dex/tx.amino.js";
+import * as seiprotocolSeichainOracleTxAmino from "./seichain/oracle/tx.amino.js";
+import * as seiprotocolSeichainTokenfactoryTxAmino from "./seichain/tokenfactory/tx.amino.js";
 export const seiprotocolAminoConverters = {
   ...seiprotocolSeichainDexTxAmino.AminoConverter,
   ...seiprotocolSeichainOracleTxAmino.AminoConverter,
@@ -46,7 +46,7 @@ export const getSigningSeiprotocolClient = async ({
     defaultTypes
   });
   const client = await SigningStargateClient.connectWithSigner(rpcEndpoint, signer, {
-    registry,
+    registry: (registry as any),
     aminoTypes
   });
   return client;
