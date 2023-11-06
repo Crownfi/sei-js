@@ -1,6 +1,6 @@
 import { fromBech32 } from '@cosmjs/encoding';
 import CryptoJS from 'crypto-js';
-import { ec as EllipticCurve } from 'elliptic';
+import elliptic from 'elliptic'; // CommonJS module interop...
 
 export const isValidSeiAddress = (address: string) => {
 	try {
@@ -11,8 +11,8 @@ export const isValidSeiAddress = (address: string) => {
 	}
 };
 
-export const pubKeyToKeyPair = (pubKey: Uint8Array): EllipticCurve.KeyPair => {
-	const secp256k1 = new EllipticCurve('secp256k1');
+export const pubKeyToKeyPair = (pubKey: Uint8Array): elliptic.ec.KeyPair => {
+	const secp256k1 = new elliptic.ec('secp256k1');
 
 	return secp256k1.keyFromPublic(Buffer.from(pubKey).toString('hex'), 'hex');
 };
@@ -50,7 +50,7 @@ export const verifyDigest32 = (digest: Uint8Array, signature: Uint8Array, pubKey
 		throw new Error(`Invalid length of signature: ${signature.length}`);
 	}
 
-	const secp256k1 = new EllipticCurve('secp256k1');
+	const secp256k1 = new elliptic.ec('secp256k1');
 
 	const r = signature.slice(0, 32);
 	const s = signature.slice(32);
