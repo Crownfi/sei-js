@@ -46,8 +46,7 @@ export const KNOWN_SEI_PROVIDER_INFO = {
 		website: "https://www.leapwallet.io/download",
 		icon: "https://sei-js-assets.s3.us-west-2.amazonaws.com/leap.png"
 	},
-	// "rigorous testing and responsiveness requirements" of guy who uses babel when he's already using tsc and
-	// pollutes the window namespace for everyone instead of configuring his build environment properly. Yeah, sure.
+	// "rigorous testing and responsiveness requirements"
 	"shellwallet": {
 		windowKey: "shellwallet" as const,
 		name: "Shell",
