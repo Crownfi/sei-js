@@ -1,6 +1,6 @@
 {
 	"name": "@crownfi/sei-js-core",
-	"version": "4.0.0-beta.0",
+	"version": "4.0.0-beta.1",
 	"description": "TypeScript library for front end integrations with Sei",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
