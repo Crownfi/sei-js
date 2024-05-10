@@ -12,7 +12,7 @@ export interface SeiProviderCommon {
 	experimentalSuggestChain?: (config: ChainConfig) => Promise<void>
 }
 
-export const KNOWN_SEI_PROVIDERS = ["fin", "compass", "keplr", "leap", "shellwallet", "coin98"] as const;
+export const KNOWN_SEI_PROVIDERS = ["tailwind", "fin", "compass", "keplr", "leap", "shellwallet", "coin98"] as const;
 export type KnownSeiProviders = typeof KNOWN_SEI_PROVIDERS[number];
 export interface SeiProviderInfo<S extends string> {
 	windowKey: S;
@@ -22,6 +22,12 @@ export interface SeiProviderInfo<S extends string> {
 }
 
 export const KNOWN_SEI_PROVIDER_INFO = {
+	"tailwind": {
+		windowKey: "tailwind" as const,
+		name: "TAILWIND Wallet",
+		website: "https://tailwind.zone",
+		icon: "./tailwind-logo.png"
+	},
 	"fin": {
 		windowKey: "fin" as const,
 		name: "Fin",
