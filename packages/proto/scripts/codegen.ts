@@ -1,4 +1,4 @@
-import { resolve, dirname } from 'path';
+import { resolve, dirname, sep } from 'path';
 import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -22,7 +22,7 @@ await telescope({
 		removeUnusedImports: true,
 		interfaces: {
 			// I'll give credit where it's due, thanks, carson.
-			useUnionTypes: true
+			useUnionTypes: true,
 		},
 		prototypes: {
 			excluded: {
@@ -61,6 +61,7 @@ await telescope({
 			includePackageVar: false,
 			allowUndefinedTypes: true,
 			typingsFormat: {
+				num64: "bigint",
 				useExact: false,
 				useDeepPartial: true,
 				timestamp: 'date',
@@ -85,6 +86,14 @@ await telescope({
 const files = await fg(outPath + "/**/*.ts", { onlyFiles: true });
 for (const filePath of files) {
 	let fileContent = await fsp.readFile(filePath, "utf-8");
+	const lcdClientPath = (".." + sep)
+		.repeat(filePath.substring(outPath.length).split(sep).length - 1) +
+		"lcd_client.js";
+
+	fileContent = fileContent.replace(
+		"import { LCDClient } from \"@cosmology/lcd\";",
+		"import { LCDClient } from \"" + lcdClientPath + "\";"
+	)
 
 	// The tsc team thinks that import rewriting is sinful, so we now gotta commit some sins or our own.
 	fileContent = fileContent.replace(/^\s*import(.*?)from\s*"(\..*?)"\s*;?\s*$/gm, (_, g1, g2) => {
