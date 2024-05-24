@@ -1,6 +1,6 @@
 {
   "name": "@crownfi/sei-js-proto",
-  "version": "4.0.0-beta.0",
+  "version": "5.0.0",
   "description": "TypeScript library for Sei protobufs generated using Telescope",
   "homepage": "https://github.com/Crownfi/sei-js#readme",
   "license": "MIT",
@@ -9,13 +9,9 @@
 	"types": "./dist/index.d.ts",
   "files": ["dist"],
   "scripts": {
-		"prebuild": "rimraf dist",
-		"build": "tsc",
-    "codegen": "ts-node scripts/codegen.ts",
-    "lint": "eslint --ext .ts",
-    "test": "jest --passWithNoTests",
-    "test:watch": "jest --watch",
-    "test:debug": "node --inspect node_modules/.bin/jest --runInBand"
+		"prebuild": "rimraf dist && rimraf src/codegen",
+		"build": "node --loader ts-node/esm scripts/codegen.js && tsc",
+    "test": "echo \"TODO: tests\" && exit 1"
   },
   "publishConfig": {
     "access": "public"
@@ -29,20 +25,17 @@
     "url": "https://github.com/Crownfi/sei-js/issues"
   },
   "devDependencies": {
-    "@cosmology/telescope": "^1.2.5",
+    "@cosmology/telescope": "^1.5.3",
     "@protobufs/cosmos": "^0.1.0",
-    "@protobufs/cosmwasm": "^0.1.1",
-    "cross-env": "^7.0.2",
-    "jest-in-case": "^1.0.2",
-    "long": "^5.2.0"
+    "@protobufs/cosmwasm": "^0.1.1"
   },
   "dependencies": {
-    "@cosmjs/amino": "^0.32.1",
-    "@cosmjs/encoding": "^0.32.1",
-    "@cosmjs/proto-signing": "^0.32.1",
-    "@cosmjs/stargate": "^0.32.1",
-    "@cosmjs/tendermint-rpc": "^0.32.1",
+    "@cosmjs/amino": "^0.32.3",
+    "@cosmjs/encoding": "^0.32.3",
+    "@cosmjs/proto-signing": "^0.32.3",
+    "@cosmjs/stargate": "^0.32.3",
+    "@cosmjs/tendermint-rpc": "^0.32.3",
     "@cosmology/lcd": "^0.13.3",
-    "protobufjs": "^6.11.2"
+    "protobufjs": "^7.2.6"
   }
 }

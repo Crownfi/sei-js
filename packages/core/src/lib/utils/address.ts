@@ -1,6 +1,6 @@
-import { fromBech32 } from '@cosmjs/encoding';
-import CryptoJS from 'crypto-js';
-import elliptic from 'elliptic'; // CommonJS module interop...
+import { fromBech32, toBech32 } from '@cosmjs/encoding';
+import { sha256 } from './hash.js';
+import { Secp256k1, Secp256k1Signature, ripemd160 } from '@cosmjs/crypto';
 
 export const isValidSeiAddress = (address: string) => {
 	try {
@@ -11,37 +11,45 @@ export const isValidSeiAddress = (address: string) => {
 	}
 };
 
-export const pubKeyToKeyPair = (pubKey: Uint8Array): elliptic.ec.KeyPair => {
-	const secp256k1 = new elliptic.ec('secp256k1');
-
-	return secp256k1.keyFromPublic(Buffer.from(pubKey).toString('hex'), 'hex');
+/**
+ * Normalizes the pubkey given into its compressed or uncompressed form.
+ */
+export const normalizePubkey = (pubKey: Uint8Array, uncompressed?: boolean): Uint8Array => {
+	// Aritz: The design choices of upstream continue to amaze and exasperate me.
+	// cosmjs' Secp256k1 compression functions already don't touch the thing if they are already the required length.
+	return uncompressed ? Secp256k1.uncompressPubkey(pubKey) : Secp256k1.compressPubkey(pubKey)	
 };
 
-export const pubKeyToBytes = (pubKey: Uint8Array, uncompressed?: boolean): Uint8Array => {
-	if (uncompressed && pubKey.length === 65) {
-		return pubKey;
-	}
-	if (!uncompressed && pubKey.length === 33) {
-		return pubKey;
-	}
-
-	const keyPair = pubKeyToKeyPair(pubKey);
-
-	if (uncompressed) {
-		return new Uint8Array(Buffer.from(keyPair.getPublic().encode('hex', false), 'hex'));
-	} else {
-		return new Uint8Array(Buffer.from(keyPair.getPublic().encodeCompressed('hex'), 'hex'));
-	}
+/**
+ * Gets the "canonical address" from the public key
+ * @param pubkey A byte array representing a public key.
+ * @returns What cosmwasm calls the "CanonicalAddr"
+ */
+export function getCanonicalAddressFromPubKey(pubkey: Uint8Array): Uint8Array {
+	return ripemd160(sha256(normalizePubkey(pubkey)));
 };
 
-export const getAddressFromPubKey = (pubKey: Uint8Array): Uint8Array => {
-	let hash = CryptoJS.SHA256(CryptoJS.lib.WordArray.create(pubKeyToBytes(pubKey) as any)).toString();
-	hash = CryptoJS.RIPEMD160(CryptoJS.enc.Hex.parse(hash)).toString();
+/**
+ * Gets the human-readable address form the public key
+ * 
+ * @param pubkey A byte array representing a public key.
+ * @returns What cosmwasm calls the "Addr"
+ */
+export function getAddressStringFromPubKey(pubkey: Uint8Array): string {
+	return canonicalAddressToString(getCanonicalAddressFromPubKey(pubkey));
+}
 
-	return new Uint8Array(Buffer.from(hash, 'hex'));
-};
 
-export const verifyDigest32 = (digest: Uint8Array, signature: Uint8Array, pubKey: Uint8Array): boolean => {
+export function canonicalAddressToString(seiCanonicalAddr: Uint8Array): string {
+	return toBech32("sei", seiCanonicalAddr);
+}
+
+export function stringToCanonicalAddr(addr: string): Uint8Array {
+	const { data } = fromBech32(addr);
+	return data;
+}
+
+export const verifyDigest32 = (digest: Uint8Array, signature: Uint8Array, pubKey: Uint8Array): Promise<boolean> => {
 	if (digest.length !== 32) {
 		throw new Error(`Invalid length of digest to verify: ${digest.length}`);
 	}
@@ -50,17 +58,9 @@ export const verifyDigest32 = (digest: Uint8Array, signature: Uint8Array, pubKey
 		throw new Error(`Invalid length of signature: ${signature.length}`);
 	}
 
-	const secp256k1 = new elliptic.ec('secp256k1');
-
-	const r = signature.slice(0, 32);
-	const s = signature.slice(32);
-
-	return secp256k1.verify(
+	return Secp256k1.verifySignature(
+		Secp256k1Signature.fromFixedLength(signature),
 		digest,
-		{
-			r: Buffer.from(r).toString('hex'),
-			s: Buffer.from(s).toString('hex')
-		},
-		pubKeyToKeyPair(pubKey)
+		pubKey
 	);
 };

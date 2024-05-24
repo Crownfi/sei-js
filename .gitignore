@@ -6,6 +6,7 @@ tmp
 /out-tsc
 main
 module
+packages/proto/src/codegen
 
 # dependencies
 node_modules

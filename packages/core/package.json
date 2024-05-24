@@ -1,17 +1,18 @@
 {
 	"name": "@crownfi/sei-js-core",
-	"version": "4.0.0-beta.2",
+	"version": "5.0.0",
 	"description": "TypeScript library for front end integrations with Sei",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"type": "module",
-	"files": ["dist"],
+	"files": [
+		"dist"
+	],
 	"scripts": {
 		"prebuild": "rimraf dist",
 		"build": "npm run build:types && npm run build:js",
 		"build:types": "tsc --project tsconfig.declarations.json",
-		"build:js": "tsc",
-		"test": "jest"
+		"build:js": "tsc"
 	},
 	"homepage": "https://github.com/Crownfi/sei-js#readme",
 	"keywords": [
@@ -21,36 +22,28 @@
 		"cosmos"
 	],
 	"repository": {
-	  "type": "git",
-	  "url": "https://github.com/Crownfi/sei-js"
+		"type": "git",
+		"url": "https://github.com/Crownfi/sei-js"
 	},
 	"bugs": {
-	  "url": "https://github.com/Crownfi/sei-js/issues"
+		"url": "https://github.com/Crownfi/sei-js/issues"
 	},
 	"license": "MIT",
 	"private": false,
 	"dependencies": {
-		"@cosmjs/amino": "^0.32.1",
-		"@cosmjs/cosmwasm-stargate": "^0.32.1",
-		"@cosmjs/crypto": "^0.32.1",
-		"@cosmjs/encoding": "^0.32.1",
-		"@cosmjs/json-rpc": "^0.32.1",
-		"@cosmjs/math": "^0.32.1",
-		"@cosmjs/proto-signing": "^0.32.1",
-		"@cosmjs/stargate": "^0.32.1",
-		"@cosmjs/tendermint-rpc": "^0.32.1",
-		"@cosmjs/utils": "^0.32.1",
-		"@crownfi/sei-js-proto": "^4.0.0-beta.0",
-		"crypto-js": "^4.1.1",
-		"readonly-date": "^1.0.0",
-		"sha.js": "^2.4.11",
-		"xstream": "^11.14.0",
-		"elliptic": "^6.5.4"
+		"@cosmjs/amino": "^0.32.3",
+		"@cosmjs/cosmwasm-stargate": "^0.32.3",
+		"@cosmjs/crypto": "^0.32.3",
+		"@cosmjs/encoding": "^0.32.3",
+		"@cosmjs/proto-signing": "^0.32.3",
+		"@cosmjs/stargate": "^0.32.3",
+		"@cosmjs/tendermint-rpc": "^0.32.3",
+		"@cosmjs/utils": "^0.32.3",
+		"@crownfi/sei-js-proto": "^5.0.0",
+		"sha.js": "^2.4.11"
 	},
 	"devDependencies": {
-		"@types/crypto-js": "^4.1.1",
-		"@types/elliptic": "^6.4.14",
-		"@types/sha.js": "^2.4.1"
+		"@types/sha.js": "^2.4.4"
 	},
 	"publishConfig": {
 		"access": "public"
