@@ -1,6 +1,6 @@
 {
   "name": "@crownfi/sei-js-proto",
-  "version": "5.2.0",
+  "version": "5.2.1",
   "description": "TypeScript library for Sei protobufs generated using Telescope",
   "homepage": "https://github.com/Crownfi/sei-js#readme",
   "license": "MIT",
