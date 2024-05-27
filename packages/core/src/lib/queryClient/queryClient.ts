@@ -1,4 +1,4 @@
-import { createSeiLCDClient, createDexRpcQueryExtension, createEpochRpcQueryExtension, createEvmRpcQueryExtension, createMintRpcQueryExtension, createOracleRpcQueryExtension, createTokenFactoryRpcQueryExtension } from '@crownfi/sei-js-proto';
+import { createSeiLCDClient, createDexRpcQueryExtension, createEpochRpcQueryExtension, createEvmRpcQueryExtension, createMintRpcQueryExtension, createOracleRpcQueryExtension, createTokenFactoryRpcQueryExtension, createTxsRpcQueryExtension } from '@crownfi/sei-js-proto';
 import { AuthExtension, BankExtension, QueryClient as StargateQueryClient, TxExtension, setupAuthExtension, setupBankExtension, setupTxExtension } from "@cosmjs/stargate";
 import { CometClient, connectComet } from '@cosmjs/tendermint-rpc';
 import { WasmExtension, setupWasmExtension } from '@cosmjs/cosmwasm-stargate';
@@ -90,6 +90,20 @@ export function setupSeiTokenFactoryExtension(client: StargateQueryClient): SeiT
 	}
 }
 
+// This is a hack. For some reason @cosmjs/stargate's setupTxExtension function only implements a limited subset of
+// queries. Most importantly, it excludes search-transaction-by-event query.
+// Importing the full type this way leads to (even more) duplicate code, but this works for now. Ideally we'd re-use
+// the definitions from "@cosmjs/types" somehow, but I've spent too much time on trying to make a sane Sei client, and
+// this is the quickest way I can get this working for now.
+export type TxsExtension = {
+	txs: ReturnType<typeof createTxsRpcQueryExtension>
+}
+export function setupTxsExtension(client: StargateQueryClient): TxsExtension {
+	return {
+		txs: createTxsRpcQueryExtension(client)
+	}
+}
+
 export type SeiQueryClient =
 	StargateQueryClient &
 	WasmExtension &
@@ -101,7 +115,8 @@ export type SeiQueryClient =
 	SeiEvmExtension &
 	SeiMintExtension &
 	SeiOracleExtension &
-	SeiTokenFactoryExtension;
+	SeiTokenFactoryExtension &
+	TxsExtension;
 
 export async function getRpcQueryClient(rpcEndpoint: string | CometClient): Promise<SeiQueryClient> {
 	if (typeof rpcEndpoint === "string") {
@@ -118,6 +133,7 @@ export async function getRpcQueryClient(rpcEndpoint: string | CometClient): Prom
 		setupSeiEvmExtension,
 		setupSeiMintExtension,
 		setupSeiOracleExtension,
-		setupSeiTokenFactoryExtension
+		setupSeiTokenFactoryExtension,
+		setupTxsExtension
 	);
 }

@@ -23,3 +23,4 @@ export const createEvmRpcQueryExtension = (await import("./codegen/evm/query.rpc
 export const createMintRpcQueryExtension = (await import("./codegen/mint/v1beta1/query.rpc.Query.js")).createRpcQueryExtension;
 export const createOracleRpcQueryExtension = (await import("./codegen/oracle/query.rpc.Query.js")).createRpcQueryExtension;
 export const createTokenFactoryRpcQueryExtension = (await import("./codegen/tokenfactory/query.rpc.Query.js")).createRpcQueryExtension;
+export const createTxsRpcQueryExtension = (await import("./codegen/cosmos/tx/v1beta1/service.rpc.Service.js")).createRpcQueryExtension;
