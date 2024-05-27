@@ -91,16 +91,16 @@ export function setupSeiTokenFactoryExtension(client: StargateQueryClient): SeiT
 }
 
 export type SeiQueryClient =
-	StargateQueryClient |
-	WasmExtension |
-	AuthExtension |
-	BankExtension |
-	TxExtension |
-	SeiDexExtension |
-	SeiEpochExtension |
-	SeiEvmExtension |
-	SeiMintExtension |
-	SeiOracleExtension |
+	StargateQueryClient &
+	WasmExtension &
+	AuthExtension &
+	BankExtension &
+	TxExtension &
+	SeiDexExtension &
+	SeiEpochExtension &
+	SeiEvmExtension &
+	SeiMintExtension &
+	SeiOracleExtension &
 	SeiTokenFactoryExtension;
 
 export async function getRpcQueryClient(rpcEndpoint: string | CometClient): Promise<SeiQueryClient> {
