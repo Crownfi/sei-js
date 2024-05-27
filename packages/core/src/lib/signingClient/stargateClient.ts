@@ -8,6 +8,7 @@ import {
 	seiprotocolProtoRegistry,
 	seiprotocolAminoConverters
 } from '@crownfi/sei-js-proto';
+import { CometClient } from '@cosmjs/tendermint-rpc';
 
 /**
  * Creates a Registry object that maps CosmWasm and Sei protobuf type identifiers to their actual implementations.
@@ -73,16 +74,35 @@ export const createSeiAminoTypes = (): AminoTypes => {
 	return new AminoTypes(types);
 };
 
-export const getStargateClient = async (rpcEndpoint: string, options: StargateClientOptions = {}): Promise<StargateClient> => {
-	return StargateClient.connect(rpcEndpoint, options);
+export function getStargateClient(
+	rpcEndpoint: string | CometClient,
+	options?: StargateClientOptions
+): Promise<StargateClient> {
+	if (typeof rpcEndpoint == "string") {
+		return StargateClient.connect(rpcEndpoint, options);
+	} else {
+		return StargateClient.create(rpcEndpoint, options);
+	}
 };
 
-export const getSigningClient = async (rpcEndpoint: string, signer: OfflineSigner, options: SigningStargateClientOptions = {}): Promise<SigningStargateClient> => {
+export function getSigningClient(
+	rpcEndpoint: string | CometClient,
+	signer: OfflineSigner,
+	options: SigningStargateClientOptions = {}
+): Promise<SigningStargateClient> {
 	const registry = createSeiRegistry();
 	const aminoTypes = createSeiAminoTypes();
-	return SigningStargateClient.connectWithSigner(rpcEndpoint, signer, {
-		registry,
-		aminoTypes,
-		...options
-	});
+	if (typeof rpcEndpoint == "string") {
+		return SigningStargateClient.connectWithSigner(rpcEndpoint, signer, {
+			registry,
+			aminoTypes,
+			...options
+		});
+	} else {
+		return SigningStargateClient.createWithSigner(rpcEndpoint, signer, {
+			registry,
+			aminoTypes,
+			...options
+		})
+	}
 };
