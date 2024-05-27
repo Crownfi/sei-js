@@ -1,2 +1,2 @@
 export { verifyArbitrary } from './signing.js';
-export { isValidSeiAddress } from './address.js';
+export * from './address.js';
