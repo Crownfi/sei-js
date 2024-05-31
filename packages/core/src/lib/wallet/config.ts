@@ -12,52 +12,59 @@ export interface SeiProviderCommon {
 	experimentalSuggestChain?: (config: ChainConfig) => Promise<void>
 }
 
-export const KNOWN_SEI_PROVIDERS = ["fin", "compass", "keplr", "leap", "shellwallet", "coin98"] as const;
+export const RECCOMMENDED_SEI_PROVIDER = "tailwind";
+export const KNOWN_SEI_PROVIDERS = ["tailwind", "fin", "compass", "keplr", "leap", "coin98"] as const;
 export type KnownSeiProviders = typeof KNOWN_SEI_PROVIDERS[number];
 export interface SeiProviderInfo<S extends string> {
 	windowKey: S;
 	name: string;
 	icon: string;
+	providesEvm: boolean;
 	website: string;
 }
 
 export const KNOWN_SEI_PROVIDER_INFO = {
+	"tailwind": {
+		windowKey: "tailwind" as const,
+		name: "Tailwind",
+		website: "https://tailwind.zone",
+		icon: "https://app.crownfi.io/assets/wallets/tailwind.svg",
+		providesEvm: true
+	},
 	"fin": {
 		windowKey: "fin" as const,
 		name: "Fin",
 		website: "https://finwallet.com",
 		icon: "https://sei-js-assets.s3.us-west-2.amazonaws.com/fin.png",
+		providesEvm: true
 	},
 	"compass": {
 		windowKey: "compass" as const,
 		name: "Compass",
 		website: "https://chrome.google.com/webstore/detail/compass-wallet/anokgmphncpekkhclmingpimjmcooifb",
-		icon: "https://sei-js-assets.s3.us-west-2.amazonaws.com/compass.png"
+		icon: "https://sei-js-assets.s3.us-west-2.amazonaws.com/compass.png",
+		providesEvm: true
 	},
 	"keplr": {
 		windowKey: "keplr" as const,
 		name: "Keplr",
 		website: "https://www.keplr.app/download",
-		icon: "https://sei-js-assets.s3.us-west-2.amazonaws.com/keplr.png"
+		icon: "https://sei-js-assets.s3.us-west-2.amazonaws.com/keplr.png",
+		providesEvm: false
 	},
 	"leap": {
 		windowKey: "leap" as const,
 		name: "Leap",
 		website: "https://www.leapwallet.io/download",
-		icon: "https://sei-js-assets.s3.us-west-2.amazonaws.com/leap.png"
-	},
-	// "rigorous testing and responsiveness requirements"
-	"shellwallet": {
-		windowKey: "shellwallet" as const,
-		name: "Shell",
-		website: "https://chrome.google.com/webstore/detail/shell-wallet/kbdcddcmgoplfockflacnnefaehaiocb",
-		icon: "https://shellwallet.io/logo/shell-icon.png"
+		icon: "https://sei-js-assets.s3.us-west-2.amazonaws.com/leap.png",
+		providesEvm: false
 	},
 	"coin98": {
 		windowKey: "coin98" as const,
 		name: "Coin98",
 		website: "https://coin98.com/wallet",
-		icon: "https://inventory.coin98.com/images/c98logo.png"
+		icon: "https://inventory.coin98.com/images/c98logo.png",
+		providesEvm: false
 	}
 }
 

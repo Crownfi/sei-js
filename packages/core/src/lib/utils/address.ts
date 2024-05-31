@@ -2,10 +2,10 @@ import { fromBech32, toBech32 } from '@cosmjs/encoding';
 import { sha256 } from './hash.js';
 import { Secp256k1, Secp256k1Signature, ripemd160 } from '@cosmjs/crypto';
 
-export const isValidSeiAddress = (address: string) => {
+export const isValidSeiAddress = (address: string): boolean => {
 	try {
 		const { prefix } = fromBech32(address);
-		return prefix && prefix === 'sei';
+		return prefix === 'sei';
 	} catch (e) {
 		return false;
 	}
