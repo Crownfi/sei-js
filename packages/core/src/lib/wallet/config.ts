@@ -3,10 +3,11 @@ import { AccountData, OfflineSigner } from '@cosmjs/proto-signing';
 import { OfflineAminoSigner, StdSignature } from '@cosmjs/amino';
 
 export interface SeiProviderCommon {
-	getOfflineSignerAuto: (chainId: string) => Promise<OfflineSigner | undefined>;
-	getOfflineSignerAmino: (chainId: string) => Promise<OfflineAminoSigner | undefined>;
-	enable: (chainId: string) => Promise<void>
-	disable: (chainId: string) => Promise<void>
+	getOfflineSigner?: (chainId: string) => Promise<OfflineSigner | undefined>;
+	getOfflineSignerAuto?: (chainId: string) => Promise<OfflineSigner | undefined>;
+	getOfflineSignerAmino?: (chainId: string) => Promise<OfflineAminoSigner | undefined>;
+	enable?: (chainId: string) => Promise<void>
+	disable?: (chainId: string) => Promise<void>
 	signArbitrary?: (chainId: string, signer: string, message: string) => Promise<StdSignature | undefined>
 	verifyArbitrary?: (chainId: string, signingAddress: string, data: string, signature: StdSignature) => Promise<boolean>
 	experimentalSuggestChain?: (config: ChainConfig) => Promise<void>
@@ -21,6 +22,7 @@ export interface SeiProviderInfo<S extends string> {
 	icon: string;
 	providesEvm: boolean;
 	website: string;
+	emulatedBy: string[];
 }
 
 export const KNOWN_SEI_PROVIDER_INFO = {
@@ -29,42 +31,48 @@ export const KNOWN_SEI_PROVIDER_INFO = {
 		name: "Tailwind",
 		website: "https://tailwind.zone",
 		icon: "https://app.crownfi.io/assets/wallets/tailwind.svg",
-		providesEvm: true
+		providesEvm: true,
+		emulatedBy: []
 	},
 	"fin": {
 		windowKey: "fin" as const,
 		name: "Fin",
 		website: "https://finwallet.com",
 		icon: "https://sei-js-assets.s3.us-west-2.amazonaws.com/fin.png",
-		providesEvm: true
+		providesEvm: true,
+		emulatedBy: []
 	},
 	"compass": {
 		windowKey: "compass" as const,
 		name: "Compass",
 		website: "https://chrome.google.com/webstore/detail/compass-wallet/anokgmphncpekkhclmingpimjmcooifb",
 		icon: "https://sei-js-assets.s3.us-west-2.amazonaws.com/compass.png",
-		providesEvm: true
+		providesEvm: true,
+		emulatedBy: ["tailwind"]
 	},
 	"keplr": {
 		windowKey: "keplr" as const,
 		name: "Keplr",
 		website: "https://www.keplr.app/download",
 		icon: "https://sei-js-assets.s3.us-west-2.amazonaws.com/keplr.png",
-		providesEvm: false
+		providesEvm: false,
+		emulatedBy: ["tailwind"]
 	},
 	"leap": {
 		windowKey: "leap" as const,
 		name: "Leap",
 		website: "https://www.leapwallet.io/download",
 		icon: "https://sei-js-assets.s3.us-west-2.amazonaws.com/leap.png",
-		providesEvm: false
+		providesEvm: false,
+		emulatedBy: []
 	},
 	"coin98": {
 		windowKey: "coin98" as const,
 		name: "Coin98",
 		website: "https://coin98.com/wallet",
 		icon: "https://inventory.coin98.com/images/c98logo.png",
-		providesEvm: false
+		providesEvm: false,
+		emulatedBy: []
 	}
 }
 
@@ -81,13 +89,18 @@ export class SeiWallet {
 		}
 		this.getProvider(); // Error out if wallet isn't installed
 	}
+	static isNotEmulated(providerId: KnownSeiProviders) {
+		return KNOWN_SEI_PROVIDER_INFO[providerId].emulatedBy.findIndex(realProvider => {
+			return (window as any)[realProvider] != undefined;
+		}) == -1;
+	}
 	static discoveredWallets(): {[k in KnownSeiProviders]: boolean} {
 		if (typeof window == "undefined") {
 			throw new Error("Not running in browser");
 		}
 		const result = {} as any;
 		for (const k of KNOWN_SEI_PROVIDERS) {
-			result[k] = (window as any)[k] != undefined;
+			result[k] = (window as any)[k] != undefined && this.isNotEmulated(k);
 		}
 		return result;
 	}
@@ -110,20 +123,41 @@ export class SeiWallet {
 		return (window as any)[this.walletInfo.windowKey];
 	}
 	async getOfflineSigner(chainId: string): Promise<OfflineSigner | undefined> {
-		return this.getProvider().getOfflineSignerAuto(chainId);
+		const provider = this.getProvider();
+		if (provider.getOfflineSignerAuto != undefined) {
+			return provider.getOfflineSignerAuto(chainId);
+		}
+		if (provider.getOfflineSigner != undefined) {
+			return provider.getOfflineSigner(chainId);
+		}
 	}
-	async getOfflineSignerAmino(chainId: string): Promise<OfflineSigner | undefined> {
-		return this.getProvider().getOfflineSignerAmino(chainId);
+	async getOfflineSignerAmino(chainId: string): Promise<OfflineAminoSigner | undefined> {
+		const provider = this.getProvider();
+		if (provider.getOfflineSignerAmino != undefined) {
+			return provider.getOfflineSignerAmino(chainId);
+		}
+		if (provider.getOfflineSigner != undefined) {
+			const signer = await provider.getOfflineSigner(chainId);
+			if (signer && "signAmino" in signer) {
+				return signer;
+			}
+		}
 	}
 	async getAccounts(chainId: string): Promise<readonly AccountData[]> {
-		const offlineSigner = await this.getProvider().getOfflineSignerAuto(chainId);
+		const offlineSigner = await this.getOfflineSigner(chainId);
 		return offlineSigner?.getAccounts() || []
 	};
 	async connect(chainId: string): Promise<void> {
-		await this.getProvider().enable(chainId);
+		const provider = this.getProvider();
+		if (provider.enable != undefined) {
+			provider.enable(chainId);
+		}
 	};
 	async disconnect(chainId: string): Promise<void> {
-		await this.getProvider().disable(chainId);
+		const provider = this.getProvider();
+		if (provider.disable != undefined) {
+			provider.disable(chainId);
+		}
 	};
 	async suggestChain(config: ChainConfig): Promise<void> {
 		const provider = this.getProvider();
