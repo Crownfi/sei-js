@@ -110,7 +110,7 @@ export class SeiWallet {
 		}
 		const result: KnownSeiProviders[] = [];
 		for (const k of KNOWN_SEI_PROVIDERS) {
-			if ((window as any)[k] != undefined) {
+			if ((window as any)[k] != undefined && this.isNotEmulated(k)) {
 				result.push(k);
 			}
 		}
