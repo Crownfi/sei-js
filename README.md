@@ -6,7 +6,7 @@ This is a fork of SeiJS. It works.
 
 ## Documentation
 
-Detailed documentation coming soon. Though the most useful thing here is probably `@crownfi/sei-js-core`'s exported `getRpcQueryClient`.
+Documentation can be found at [developer.crownfi.io](https://developer.crownfi.io/)
 
 ## Packages
 
