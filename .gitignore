@@ -7,6 +7,7 @@ tmp
 main
 module
 packages/proto/src/codegen
+docs/
 
 # dependencies
 node_modules
