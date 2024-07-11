@@ -17,8 +17,8 @@ import { CometClient } from '@cosmjs/tendermint-rpc';
  * ```tsx
  * import { Registry } from "@cosmjs/proto-signing";
  * import { defaultRegistryTypes } from "@cosmjs/stargate";
- * import { getSigningStargateClient } from '@sei-js/cosmjs';
- * import { seiprotocol, seiprotocolProtoRegistry } from "@sei-js/proto";
+ * import { getSigningStargateClient } from '@crownfi/sei-js-core';
+ * import { seiprotocol, seiprotocolProtoRegistry } from "@crownfi/sei-js-proto";
  *
  * ...
  *
@@ -46,8 +46,8 @@ export const createSeiRegistry = (): Registry => {
  * ```tsx
  * import { Registry } from "@cosmjs/proto-signing";
  * import { defaultRegistryTypes } from "@cosmjs/stargate";
- * import { getSigningStargateClient } from '@sei-js/cosmjs';
- * import { seiprotocol, seiprotocolProtoRegistry } from "@sei-js/proto";
+ * import { getSigningStargateClient } from '@crownfi/sei-js-core';
+ * import { seiprotocol, seiprotocolProtoRegistry } from "@crownfi/sei-js-proto";
  *
  * ...
  *
@@ -74,6 +74,12 @@ export const createSeiAminoTypes = (): AminoTypes => {
 	return new AminoTypes(types);
 };
 
+/**
+ * Returns a basic Sei client with no extensions
+ * @param rpcEndpoint The url of the RPC Endpoint used to connect to the Sei chain.
+ * @param options A StargateClient object from @cosmjs/stargate containing options to configure the signing client.
+ * @returns 
+ */
 export function getStargateClient(
 	rpcEndpoint: string | CometClient,
 	options?: StargateClientOptions
@@ -85,6 +91,15 @@ export function getStargateClient(
 	}
 };
 
+import {restoreWallet, generateWallet, SeiWallet} from "../wallet/index.js";
+/**
+ * Returns a basic Sei client with no extensions
+ * @param rpcEndpoint The url of the RPC Endpoint used to connect to the Sei chain.
+ * @param signer An OfflineAminoSigner or OfflineDirectSigner from @cosmjs/amino containing info about the signer. You
+ * would usually get this from {@link restoreWallet}, {@link generateWallet}, or {@link SeiWallet.getOfflineSigner}.
+ * @param options A StargateClient object from @cosmjs/stargate containing options to configure the signing client.
+ * @returns 
+ */
 export function getSigningClient(
 	rpcEndpoint: string | CometClient,
 	signer: OfflineSigner,

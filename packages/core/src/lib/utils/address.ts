@@ -2,6 +2,11 @@ import { fromBech32, toBech32 } from '@cosmjs/encoding';
 import { sha256 } from './hash.js';
 import { Secp256k1, Secp256k1Signature, ripemd160 } from '@cosmjs/crypto';
 
+/**
+ * Checks the address
+ * @param address the address to check
+ * @returns true if `address` is a valid `sei1` address, false otherwise.
+ */
 export const isValidSeiAddress = (address: string): boolean => {
 	try {
 		const { prefix } = fromBech32(address);
@@ -39,11 +44,21 @@ export function getAddressStringFromPubKey(pubkey: Uint8Array): string {
 	return canonicalAddressToString(getCanonicalAddressFromPubKey(pubkey));
 }
 
-
+/**
+ * Turns the `CanonicalAddr`, i.e., the decoded sei1 address represented as 20 or 32 bytes into the human-readable
+ * address.
+ * @param seiCanonicalAddr 
+ * @returns 
+ */
 export function canonicalAddressToString(seiCanonicalAddr: Uint8Array): string {
 	return toBech32("sei", seiCanonicalAddr);
 }
 
+/**
+ * Converts a sei1 address into its byte form, usually either 20 or 32 bytes
+ * @param addr the sei1 address
+ * @returns bytes
+ */
 export function stringToCanonicalAddr(addr: string): Uint8Array {
 	const { data } = fromBech32(addr);
 	return data;

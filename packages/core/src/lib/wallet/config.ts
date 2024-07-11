@@ -14,12 +14,19 @@ export interface SeiProviderCommon {
 }
 
 export const RECCOMMENDED_SEI_PROVIDER = "tailwind";
+/**
+ * An array of values which correspond to the keys of {@link KNOWN_SEI_PROVIDER_INFO}
+ */
 export const KNOWN_SEI_PROVIDERS = ["tailwind", "fin", "compass", "keplr", "leap", "coin98"] as const;
 export type KnownSeiProviders = typeof KNOWN_SEI_PROVIDERS[number];
 export interface SeiProviderInfo<S extends string> {
+	/** property name injected in `window` expected */
 	windowKey: S;
+	/** The name of the wallet */
 	name: string;
+	/** A URL to the logo of the wallet */
 	icon: string;
+	/** Whether or not the wallet also provides EVM */
 	providesEvm: boolean;
 	website: string;
 	emulatedBy: string[];

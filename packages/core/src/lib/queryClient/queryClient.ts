@@ -9,11 +9,14 @@ import { WasmExtension, setupWasmExtension } from '@cosmjs/cosmwasm-stargate';
 export const getQueryClient = getRestQueryClient;
 
 /**
- * Gets a client used to interact with the Sei chain.
+ * Gets a client used to query the Sei chain via the REST API.
+ * 
+ * Note: the EVM queries are non-functional via the REST API at the time of writing. Try using the
+ * {@link getRpcQueryClient | RPC Query client} instead 
  *
  * @example
- * ```tsx
- * import { getQueryClient } from '@sei-js/cosmjs';
+ * ```ts
+ * import { getQueryClient } from '@crownfi/sei-js-core';
  *
  * const queryClient = await getQueryClient(REST_URL);
  *
@@ -117,7 +120,12 @@ export type SeiQueryClient =
 	SeiOracleExtension &
 	SeiTokenFactoryExtension &
 	TxsExtension;
-
+/**
+ * 
+ * @param rpcEndpoint the RPC endpoint to use
+ * @returns An RPC client object that can be used to query the Sei chain.
+ * @category Clients
+ */
 export async function getRpcQueryClient(rpcEndpoint: string | CometClient): Promise<SeiQueryClient> {
 	if (typeof rpcEndpoint === "string") {
 		rpcEndpoint = await connectComet(rpcEndpoint);
