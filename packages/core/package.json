@@ -10,7 +10,7 @@
 	],
 	"scripts": {
 		"prebuild": "rimraf dist",
-		"docs": "typedoc --plugin typedoc-plugin-missing-exports src/index.ts",
+		"docs": "typedoc src/index.ts",
 		"build": "npm run build:types && npm run build:js",
 		"build:types": "tsc --project tsconfig.declarations.json",
 		"build:js": "tsc"
