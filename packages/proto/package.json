@@ -10,6 +10,7 @@
   "files": ["dist"],
   "scripts": {
 		"prebuild": "rimraf dist && rimraf src/codegen",
+    "docs": "typedoc --plugin typedoc-plugin-missing-exports src/index.ts",
 		"build": "node --loader ts-node/esm scripts/codegen.js && tsc",
     "test": "echo \"TODO: tests\" && exit 1"
   },
@@ -27,7 +28,9 @@
   "devDependencies": {
     "@cosmology/telescope": "^1.5.3",
     "@protobufs/cosmos": "^0.1.0",
-    "@protobufs/cosmwasm": "^0.1.1"
+    "@protobufs/cosmwasm": "^0.1.1",
+    "typedoc": "^0.26.6",
+    "typedoc-plugin-missing-exports": "^3.0.0"
   },
   "dependencies": {
     "@cosmjs/amino": "^0.32.3",

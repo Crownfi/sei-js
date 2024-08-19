@@ -1,0 +1,31 @@
+{
+	"externalSymbolLinkMappings": {
+		"@crownfi/sei-js-proto": {
+			"*": "https://developer.crownfi.io/npm/@crownfi/sei-js-proto/"
+		},
+		"@cosmjs/amino": {
+			"*": "https://cosmos.github.io/cosmjs/latest/amino/"
+		},
+		"@cosmjs/cosmwasm-stargate": {
+			"*": "https://cosmos.github.io/cosmjs/latest/cosmwasm-stargate/"
+		},
+		"@cosmjs/crypto": {
+			"*": "https://cosmos.github.io/cosmjs/latest/crypto/"
+		},
+		"@cosmjs/encoding": {
+			"*": "https://cosmos.github.io/cosmjs/latest/encoding/"
+		},
+		"@cosmjs/proto-signing": {
+			"*": "https://cosmos.github.io/cosmjs/latest/proto-signing/"
+		},
+		"@cosmjs/stargate": {
+			"*": "https://cosmos.github.io/cosmjs/latest/stargate/"
+		},
+		"@cosmjs/tendermint-rpc": {
+			"*": "https://cosmos.github.io/cosmjs/latest/tendermint-rpc/"
+		},
+		"@cosmjs/utils": {
+			"*": "https://cosmos.github.io/cosmjs/latest/utils/"
+		}
+	}
+}

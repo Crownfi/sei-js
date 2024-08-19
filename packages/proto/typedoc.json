@@ -1,0 +1,25 @@
+{
+	"externalSymbolLinkMappings": {
+		"@cosmjs/amino": {
+			"*": "https://cosmos.github.io/cosmjs/latest/amino/"
+		},
+		"@cosmjs/encoding": {
+			"*": "https://cosmos.github.io/cosmjs/latest/encoding/"
+		},
+		"@cosmjs/tendermint-rpc": {
+			"*": "https://cosmos.github.io/cosmjs/latest/tendermint-rpc/"
+		},
+		"@cosmjs/proto-signing": {
+			"*": "https://cosmos.github.io/cosmjs/latest/proto-signing/"
+		},
+		"@cosmjs/stargate": {
+			"*": "https://cosmos.github.io/cosmjs/latest/stargate/"
+		},
+		"@aritz-cracker/browser-utils": {
+			"*": "https://docs.aritzcracker.ca/npm/@aritz-cracker/browser-utils/"
+		},
+		"dropdown-menu-element": {
+			"*": "https://docs.aritzcracker.ca/npm/dropdown-menu-element/"
+		}
+	}
+}

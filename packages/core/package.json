@@ -10,7 +10,7 @@
 	],
 	"scripts": {
 		"prebuild": "rimraf dist",
-		"docs": "typedoc src/index.ts",
+		"docs": "typedoc --plugin typedoc-plugin-missing-exports src/index.ts",
 		"build": "npm run build:types && npm run build:js",
 		"build:types": "tsc --project tsconfig.declarations.json",
 		"build:js": "tsc"
@@ -45,7 +45,8 @@
 	},
 	"devDependencies": {
 		"@types/sha.js": "^2.4.4",
-		"typedoc": "^0.26.4"
+		"typedoc": "^0.26.6",
+		"typedoc-plugin-missing-exports": "^3.0.0"
 	},
 	"publishConfig": {
 		"access": "public"
